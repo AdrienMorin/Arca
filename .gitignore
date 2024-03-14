@@ -1,0 +1,8 @@
+# dependencies
+/hello-world/node_modules
+
+/nuxt-ui-pro-dashboard/node_modules
+
+# IDE
+.idea
+*.iml
