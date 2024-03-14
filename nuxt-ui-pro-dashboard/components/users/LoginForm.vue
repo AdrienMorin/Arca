@@ -21,10 +21,30 @@ async function onSubmit (event: FormSubmitEvent<any>) {
   // Do something with data
   console.log(event.data)
 
-
+  loginUser({email: state.email, password: state.password});
 
   emit('close')
 }
+
+async function loginUser({email, password}: { email: any, password: any }) {
+  const response = await fetch('http://localhost:3333/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ email, password })
+  });
+
+  if (!response.ok) {
+    throw new Error('Login failed');
+  }
+
+  const data = await response.json();
+
+  // Store the token in a secure way
+  localStorage.setItem('token', data.token);
+}
+
 </script>
 
 <template>
