@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { sub } from 'date-fns'
 import type { Period, Range } from '~/types'
-import LoginForm from "~/components/users/LoginForm.vue";
+import auth  from "~/components/users/LoginForm.vue";
+import but from "~/components/users/but.vue";
 
 </script>
 
@@ -15,9 +16,10 @@ import LoginForm from "~/components/users/LoginForm.vue";
       <UDashboardPanelContent>
         <div>
           <!-- ~/components/home/LoginForm.vue -->
-          <LoginForm />
+          <but/>
         </div>
       </UDashboardPanelContent>
     </UDashboardPanel>
   </UDashboardPage>
 </template>
+
