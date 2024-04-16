@@ -6,7 +6,7 @@
 export default {
     methods: {
     goToPage() {
-        this.$router.push('/Ajout_document');
+        this.$router.push('/Detail_document');
         }
     }
       

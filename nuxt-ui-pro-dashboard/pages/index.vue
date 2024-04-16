@@ -3,6 +3,7 @@ import { sub } from 'date-fns'
 import type { Period, Range } from '~/types'
 import auth  from "~/components/users/LoginForm.vue";
 import but from "~/components/users/but.vue";
+import popup from "~/components/users/popup_supressionDoc.vue";
 
 </script>
 
