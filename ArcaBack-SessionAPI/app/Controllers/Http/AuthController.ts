@@ -10,6 +10,7 @@ export default class AuthController {
     await User.create(payload)
     return response.status(200).json({message: 'Utilisateur créé avec succès'})
   }
+
   public async login({auth, request, response}: HttpContextContract){
     const {email, password} = await request.validate(LoginUserValidator)
     console.log(email, password)
@@ -26,5 +27,10 @@ export default class AuthController {
       console.error(error)
       return response.badRequest('An error occurred during authentication')
     }
+  }
+
+  public async logout({auth, response}){
+    await auth.use('web').logout()
+    response.redirect('/')
   }
 }

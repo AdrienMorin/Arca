@@ -20,25 +20,35 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
+// Protected route group by authentication
 Route.group(() => {
+  // Auth routes
   Route.post("/auth/register", 'AuthController.register')
-  Route.post("/auth/login", 'AuthController.login')
-  Route.post('/auth/logout', async ({ auth, response }) => {
-    await auth.use('web').logout()
-    response.redirect('/')
+
+  Route.post('/auth/logout', 'AuthController.logout')
+
+  // User page
+  Route.get('/getUser', 'UsersController.getLoggedUser')
+
+  Route.get('/getUser/:id', 'UsersController.getUserById')
+
+  Route.get("/fetchUsers", 'UsersController.fetchUsers')
+
+}).prefix("/api").middleware('auth')
+
+// Unprotected routes
+Route.group( () => {
+  // Index page
+  Route.get('/', () => {
+    return "Veuillez vous connecter pour pouvoir accéder à l'application"
   })
 
-}).prefix("/api")
-
-Route.get('/protected', () => {
-  return "page protégée API token"
-}).middleware('auth')
-
-Route.get('/', () => {
-  return "Accueil"
+  // Login page
+  Route.post("/api/auth/login", 'AuthController.login')
 })
 
-Route.get('/user', async ({ auth }) => {
-  await auth.use('web').authenticate()
-  console.log(auth.use('web').user!)
-})
+
+
+
+
+
