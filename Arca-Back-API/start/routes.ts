@@ -28,10 +28,10 @@ Route.group(() => {
 
   Route.post('/auth/logout', 'AuthController.logout')
 
-  // Admin pages
+  // Admin routes
   Route.post('/deleteUser', 'UsersController.deleteUserById')
 
-  // User page
+  // User routes
   Route.get('/getUser', 'UsersController.getLoggedUser')
 
   Route.get('/getUser/:id', 'UsersController.getUserById')
@@ -42,7 +42,7 @@ Route.group(() => {
 
 // Unprotected routes
 Route.group( () => {
-  // Index page
+  // Index route
   Route.get('/', async ({auth}: HttpContextContract) => {
     try {
       await auth.use('web').authenticate()
@@ -57,7 +57,7 @@ Route.group( () => {
 
   })
 
-  // Login page
+  // Login route
   Route.post("/auth/login", 'AuthController.login')
 }).prefix("/api")
 
