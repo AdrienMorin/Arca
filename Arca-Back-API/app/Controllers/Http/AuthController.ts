@@ -33,6 +33,6 @@ export default class AuthController {
 
   public async logout({auth, response}){
     await auth.use('web').logout()
-    response.redirect('/')
+    response.redirect('/api/')
   }
 }

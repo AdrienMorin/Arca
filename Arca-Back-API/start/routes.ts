@@ -28,10 +28,10 @@ Route.group(() => {
 
   Route.post('/auth/logout', 'AuthController.logout')
 
-  // Admin pages
+  // Admin routes
   Route.post('/deleteUser', 'UsersController.deleteUserById')
 
-  // User page
+  // User routes
   Route.get('/getUser', 'UsersController.getLoggedUser')
 
   Route.get('/getUser/:id', 'UsersController.getUserById')
@@ -42,20 +42,24 @@ Route.group(() => {
 
 // Unprotected routes
 Route.group( () => {
-  // Index page
+  // Index route
   Route.get('/', async ({auth}: HttpContextContract) => {
-    await auth.use('web').authenticate()
-    if(auth.use('web').isLoggedIn){
-      return "Vous êtes connecté"
-    } else {
+    try {
+      await auth.use('web').authenticate()
+      if(auth.use('web').isLoggedIn){
+        return "Vous êtes connecté"
+      } else {
+        return "Veuillez vous connecter pour pouvoir accéder à l'application"
+      }
+    } catch (error) {
       return "Veuillez vous connecter pour pouvoir accéder à l'application"
     }
 
   })
 
-  // Login page
-  Route.post("/api/auth/login", 'AuthController.login')
-})
+  // Login route
+  Route.post("/auth/login", 'AuthController.login')
+}).prefix("/api")
 
 
 
