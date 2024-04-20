@@ -44,18 +44,22 @@ Route.group(() => {
 Route.group( () => {
   // Index page
   Route.get('/', async ({auth}: HttpContextContract) => {
-    await auth.use('web').authenticate()
-    if(auth.use('web').isLoggedIn){
-      return "Vous êtes connecté"
-    } else {
+    try {
+      await auth.use('web').authenticate()
+      if(auth.use('web').isLoggedIn){
+        return "Vous êtes connecté"
+      } else {
+        return "Veuillez vous connecter pour pouvoir accéder à l'application"
+      }
+    } catch (error) {
       return "Veuillez vous connecter pour pouvoir accéder à l'application"
     }
 
   })
 
   // Login page
-  Route.post("/api/auth/login", 'AuthController.login')
-})
+  Route.post("/auth/login", 'AuthController.login')
+}).prefix("/api")
 
 
 
