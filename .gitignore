@@ -1,6 +1,26 @@
-# dependencies
-/hello-world/node_modules
+# Arca Back API ignore
+/Arca-Back-API/node_modules
+/Arca-Back-API/build
+/Arca-Back-API/coverage
+/Arca-Back-API/.vscode
+/Arca-Back-API/.DS_STORE
+/Arca-Back-API/.env
+/Arca-Back-API/tmp
+/Arca-Back-API/npm-debug.log*
+/Arca-Back-API/yarn-debug.log*
+/Arca-Back-API/yarn-error.log*
+/Arca-Back-API/lerna-debug.log*
+/Arca-Back-API/.pnpm-debug.log*
+/Arca-Back-API/logs
+/Arca-Back-API/*.log
+/Arca-Back-API/.yarn/cache
+/Arca-Back-API/.yarn/unplugged
+/Arca-Back-API/.yarn/build-state.yml
+/Arca-Back-API/.yarn/install-state.gz
+/Arca-Back-API/.pnp.*
+/Arca-Back-API/.yarn-integrity
 
+# Arca Front End ignore
 /nuxt-ui-pro-dashboard/node_modules
 
 # IDE
