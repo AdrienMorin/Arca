@@ -15,7 +15,6 @@ export default class AuthController {
 
   public async login({auth, request, response}: HttpContextContract){
     const {email, password} = await request.validate(LoginUserValidator)
-    console.log(email, password)
     try {
       const authentication = await auth.use('web').attempt(email, password)
       console.log(authentication)
