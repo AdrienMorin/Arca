@@ -36,9 +36,4 @@ export default class UsersController {
         }
 
     }
-
-    public async deleteUserTest({response}: HttpContextContract) {
-        console.log("deleteUser")
-        return response.status(200).json("test")
-    }
 }
