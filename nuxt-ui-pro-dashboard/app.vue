@@ -34,12 +34,11 @@ useSeoMeta({
 <template>
   <div>
     <NuxtLoadingIndicator />
-
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>
-
     <UNotifications />
     <UModals />
+    <RouterView />
   </div>
 </template>
