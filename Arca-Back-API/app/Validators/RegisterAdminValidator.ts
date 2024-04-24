@@ -1,7 +1,7 @@
-import { schema, rules, CustomMessages } from '@ioc:Adonis/Core/Validator'
+import {schema, CustomMessages, rules} from '@ioc:Adonis/Core/Validator'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
-export default class RegisterUserValidator {
+export default class RegisterAdminValidator {
   constructor(protected ctx: HttpContextContract) {}
 
   /*
@@ -51,7 +51,7 @@ export default class RegisterUserValidator {
       rules.maxLength(30)
     ]),
     role: schema.string({}, [
-
+        rules.equalTo('admin')
     ])
   })
 
