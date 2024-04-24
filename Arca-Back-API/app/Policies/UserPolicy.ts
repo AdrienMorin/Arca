@@ -8,8 +8,11 @@ export default class UserPolicy extends BasePolicy {
 	public async view(user: User) {
 		return user.role === 'admin'
 	}
-	public async create(user: User) {
-		return user.role === 'admin'
+	public async createUser(user: User) {
+		return user.role === 'admin' || user.role === 'superuser'
+	}
+	public async createAdmin(user: User) {
+		return user.role === 'superuser'
 	}
 	public async update(user: User) {
 		return user.role === 'admin'
