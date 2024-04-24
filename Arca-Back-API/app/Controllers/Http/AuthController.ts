@@ -10,10 +10,17 @@ export default class AuthController {
     request,
     response,
   }: HttpContextContract) {
-    //await auth.use('web').authenticate()
-    //await bouncer.with('UserPolicy').authorize('create')
+    await auth.use("web").authenticate();
+    await bouncer.with("UserPolicy").authorize("createUser");
     const payload = await request.validate(RegisterUserValidator);
-    await User.create(payload);
+    if (payload.role === null || payload.role === "user") {
+      await User.create(payload);
+    } else if (payload.role === "admin") {
+      await bouncer.with("UserPolicy").authorize("createAdmin");
+      await User.create(payload);
+    } else {
+      return response.status(400).json({ message: "Role invalide" });
+    }
     return response
       .status(200)
       .json({ message: "Utilisateur créé avec succès" });
