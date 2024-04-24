@@ -18,51 +18,43 @@
 |
 */
 
-import Route from '@ioc:Adonis/Core/Route'
-import {HttpContextContract} from "@ioc:Adonis/Core/HttpContext";
+import Route from "@ioc:Adonis/Core/Route";
+import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 
 // Protected route group by authentication
 Route.group(() => {
   // Auth routes
-  Route.post("/auth/register", 'AuthController.register')
+  Route.post("/auth/register", "AuthController.register");
 
-  Route.post('/auth/logout', 'AuthController.logout')
+  Route.post("/auth/logout", "AuthController.logout");
 
   // Admin routes
-  Route.post('/deleteUser', 'UsersController.deleteUserById')
+  Route.post("/deleteUser", "UsersController.deleteUserById");
 
   // User routes
-  Route.get('/getUser', 'UsersController.getLoggedUser')
+  Route.get("/getUser", "UsersController.getLoggedUser");
 
-  Route.get('/getUser/:id', 'UsersController.getUserById')
+  Route.get("/getUser/:id", "UsersController.getUserById");
 
-  Route.get("/fetchUsers", 'UsersController.fetchUsers')
-
-}).prefix("/api").middleware('auth')
+  Route.get("/fetchUsers", "UsersController.fetchUsers");
+}).prefix("/api"); //.middleware('auth')
 
 // Unprotected routes
-Route.group( () => {
+Route.group(() => {
   // Index route
-  Route.get('/', async ({auth}: HttpContextContract) => {
+  Route.get("/", async ({ auth }: HttpContextContract) => {
     try {
-      await auth.use('web').authenticate()
-      if(auth.use('web').isLoggedIn){
-        return "Vous êtes connecté"
+      await auth.use("web").authenticate();
+      if (auth.use("web").isLoggedIn) {
+        return "Vous êtes connecté";
       } else {
-        return "Veuillez vous connecter pour pouvoir accéder à l'application"
+        return "Veuillez vous connecter pour pouvoir accéder à l'application";
       }
     } catch (error) {
-      return "Veuillez vous connecter pour pouvoir accéder à l'application"
+      return "Veuillez vous connecter pour pouvoir accéder à l'application";
     }
-
-  })
+  });
 
   // Login route
-  Route.post("/auth/login", 'AuthController.login')
-}).prefix("/api")
-
-
-
-
-
-
+  Route.post("/auth/login", "AuthController.login");
+}).prefix("/api");
