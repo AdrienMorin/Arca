@@ -1,14 +1,11 @@
-<script setup lang="ts">
-const route = useRoute()
-const appConfig = useAppConfig()
-
-
+<script setup>
+// const route = useRoute()
+// const appConfig = useAppConfig()
+import Navbar from "~/components/users/Navbar.vue";
 </script>
 
 <template>
-  <UDashboardLayout>
 
-    <slot />
+  <Navbar />
 
-  </UDashboardLayout>
 </template>
