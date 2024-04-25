@@ -38,6 +38,20 @@ Route.group(() => {
 
   Route.get("/fetchUsers", 'UsersController.fetchUsers')
 
+  // Document routes
+
+  Route.post('/document/create', 'DocumentsController.createDocument')
+
+  Route.post('/document/delete', 'DocumentsController.deleteDocumentById')
+
+  Route.get('/document/fetchDocuments', 'DocumentsController.fetchDocuments')
+
+  Route.get('/document/getDocument/:id', 'DocumentsController.getDocumentById')
+
+  Route.get('/document/getByName/:name','DocumentsController.getByName')
+  
+  Route.put('/document/update/:id', 'DocumentsController.updateDocument')
+
 }).prefix("/api").middleware('auth')
 
 // Unprotected routes
