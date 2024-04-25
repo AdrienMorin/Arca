@@ -37,7 +37,9 @@ Route.group(() => {
   Route.get("/getUser/:id", "UsersController.getUserById");
 
   Route.get("/fetchUsers", "UsersController.fetchUsers");
-}).prefix("/api"); //.middleware('auth')
+})
+  .prefix("/api")
+  .middleware("auth");
 
 // Unprotected routes
 Route.group(() => {
