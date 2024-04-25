@@ -13,7 +13,7 @@
             <img src="~/public/loupe.png" alt="Loupe" class="h-4 w-4">
           </div>
           <div class="flex items-baseline">
-            <RouterLink to="/rechercher" class="text-white px-3 font-medium hover:underline">Rechercher</RouterLink>
+            <RouterLink to="/Rechercher" class="text-white px-3 font-medium hover:underline">Rechercher</RouterLink>
             <span class="text-white px-4">|</span> 
           </div>
           <div class="flex items-center">
@@ -40,6 +40,7 @@
     </div>
   </nav>
 </template>
+
 
 <script>
 export default {
