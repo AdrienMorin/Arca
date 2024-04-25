@@ -1,7 +1,7 @@
 <template>
   <nav class="bg-blue-600 h-16 py-3.5 px-6 md:flex justify-between items-center">
     <div class="flex items-center">
-      <RouterLink to="/">
+      <RouterLink to="/accueil">
         <img src="~/public/logo-thel.png" alt="Logo" class="h-10 w-9">
       </RouterLink>
     </div>
@@ -9,7 +9,7 @@
       <div class="flex items-center justify-center">
         <!-- Navbar content -->
         <div class="hidden md:flex items-center ml-24">
-          <div class="">
+          <div>
             <img src="~/public/loupe.png" alt="Loupe" class="h-4 w-4">
           </div>
           <div class="flex items-baseline">
@@ -25,7 +25,6 @@
             </div>
           </div>
         </div>
-        
       </div>
     </div>
     <div class="flex items-center">

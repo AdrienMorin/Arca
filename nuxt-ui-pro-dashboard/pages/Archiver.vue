@@ -1,6 +1,13 @@
-<script setup>
+<script>
+import Navbar from "~/components/users/Navbar.vue";
+export default {
+  components: {
+    Navbar
+  }
+};
 </script>
 
 <template>
-<h1>page archiverrrrrrrrrr</h1>
+<Navbar />
+<h1>Page Archiver</h1>
 </template>
