@@ -12,10 +12,23 @@
 
 import 'reflect-metadata'
 import sourceMapSupport from 'source-map-support'
+import { createServer } from "https";
 import { Ignitor } from '@adonisjs/core/build/standalone'
+import fs from 'fs'
 
 sourceMapSupport.install({ handleUncaughtExceptions: false })
 
-new Ignitor(__dirname)
+
+
+/*new Ignitor(__dirname)
   .httpServer()
   .start()
+  */
+var certOptions={
+  key:fs.readFileSync('./ca/server.key'),
+  cert:fs.readFileSync('./ca/server.crt')
+}
+
+  new Ignitor(__dirname).httpServer().start((handle) => {
+    return createServer(certOptions,handle);
+  });
