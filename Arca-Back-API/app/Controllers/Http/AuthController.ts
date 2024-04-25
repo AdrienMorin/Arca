@@ -30,7 +30,7 @@ export default class AuthController {
     const { email, password } = await request.validate(LoginUserValidator);
     try {
       const authentication = await auth.use("web").attempt(email, password);
-      console.log(authentication);
+      //console.log(authentication);
 
       if (authentication) {
         return response.status(200).json({ isAuthenticated: true });
@@ -38,7 +38,7 @@ export default class AuthController {
         return response.badRequest("Invalid credentials");
       }
     } catch (error) {
-      console.error(error);
+      //console.error(error);
       return response.badRequest("An error occurred during authentication");
     }
   }
