@@ -3,6 +3,7 @@
 import type { FormError, FormSubmitEvent } from '#ui/types'
 
 const emit = defineEmits(['close'])
+const router = useRouter()
 
 const state = reactive({
   password: undefined,
@@ -11,6 +12,8 @@ const state = reactive({
 
 // https://ui.nuxt.com/components/form
 const validate = (state: any): FormError[] => {
+  console.log("ok")
+  router.push('/Ajout_document');
   const errors = []
   if (!state.name) errors.push({ path: 'password', message: 'Veuillez entrer un mot de passe.' })
   if (!state.email) errors.push({ path: 'email', message: 'Veuillez entrer un email.' })
@@ -18,7 +21,6 @@ const validate = (state: any): FormError[] => {
 }
 
 async function onSubmit (event: FormSubmitEvent<any>) {
-  // Do something with data
   console.log(event.data)
 
   loginUser({email: state.email, password: state.password});
