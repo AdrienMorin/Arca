@@ -1,11 +1,15 @@
-import BaseSeeder from '@ioc:Adonis/Lucid/Seeder'
+import BaseSeeder from "@ioc:Adonis/Lucid/Seeder";
 
 export default class extends BaseSeeder {
-  private async runSeeder(Seeder: {default: typeof BaseSeeder}) {
-    await new Seeder.default(this.client).run()
-    }
+  private async runSeeder(Seeder: { default: typeof BaseSeeder }) {
+    await new Seeder.default(this.client).run();
+  }
 
-  public async run () {
-    await this.runSeeder(await import('../User'))
+  public async run() {
+    if (process.env.NODE_ENV === "test") {
+      await this.runSeeder(await import("../testsSeeds"));
+    } else {
+      await this.runSeeder(await import("../User"));
+    }
   }
 }
