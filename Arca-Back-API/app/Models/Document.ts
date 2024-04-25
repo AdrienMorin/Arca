@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, column, ManyToMany, manyToMany } from '@ioc:Adonis/Lucid/Orm'
+import Person from 'App/Models/Person'
 
 export default class Document extends BaseModel {
   @column({ isPrimary: true })
@@ -9,10 +10,7 @@ export default class Document extends BaseModel {
   public name: string
 
   @column()
-  public type: string
-
-  @column()
-  public persons: string
+  public category: number
 
   @column()
   public date: DateTime
@@ -21,7 +19,19 @@ export default class Document extends BaseModel {
   public description: string
 
   @column()
-  public lieu: string
+  public location: number
+
+  @column()
+  public filename: string
+
+  @manyToMany(()=>Person)
+  public persons: ManyToMany<typeof Person>
+
+  @column()
+  public creator: number
+
+  @column()
+  public lastmodifier: number
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

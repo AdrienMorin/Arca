@@ -31,27 +31,8 @@ export default class CreateDocumentValidator {
       rules.minLength(3),
       rules.maxLength(255)
     ]),
-    type: schema.string({}, [
-      rules.required(),
-      rules.alpha(),
-      rules.trim(),
-      rules.escape(),
-      rules.minLength(3),
-      rules.maxLength(255)
-    ]),
-    persons: schema.string({}, [
-      rules.trim(),
-      rules.escape(),
-      rules.minLength(3),
-      rules.maxLength(255)
-    ]),
-    lieu: schema.string({}, [
-      rules.alpha(),
-      rules.trim(),
-      rules.escape(),
-      rules.minLength(3),
-      rules.maxLength(255)
-    ]),
+    category: schema.number(),
+    location: schema.number(),
     description: schema.string({},[
       rules.trim(),
       rules.escape(),
@@ -59,6 +40,11 @@ export default class CreateDocumentValidator {
       rules.maxLength(255)
     ]),
     date: schema.date(),
+    file: schema.file({
+      size: '10mb',
+      extnames: ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx','jpg','png','jpeg','webp']
+    }),
+    persons: schema.array().members(schema.number())
   })
 
   /**

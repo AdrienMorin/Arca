@@ -2,6 +2,7 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import CreateDocumentValidator from "App/Validators/CreateDocumentValidator";
 import UpdateDocumentValidator from "App/Validators/UpdateDocumentValidator";
 import Document from "App/Models/Document";
+import Drive from '@ioc:Adonis/Core/Drive'
 
 export default class DocumentsController {
 
@@ -9,8 +10,22 @@ export default class DocumentsController {
         await auth.use('web').authenticate()
         await bouncer.with('DocumentPolicy').authorize('create')
         const payload = await request.validate(CreateDocumentValidator)
-        await Document.create(payload)
+        await payload.file.moveToDisk('./')
+        const fileName=payload.file.fileName
+        const doc = await Document.create({
+            name:payload.name,
+            description:payload.description,
+            filename:fileName,
+            location:payload.location,
+            category:payload.category,
+            date:payload.date,
+            creator:auth.user!.id,
+            lastmodifier:auth.user!.id
+        })
+        await doc.related('persons').attach(payload.persons)
+
         return response.status(200).json({message: 'Document créé avec succès'})
+
     }
 
     public async updateDocument({auth, bouncer, request, response}:HttpContextContract){
@@ -18,7 +33,25 @@ export default class DocumentsController {
         await bouncer.with('DocumentPolicy').authorize('update')
         const payload = await request.validate(UpdateDocumentValidator)
         const document=await Document.findOrFail(request.param("id"))
-        await document.merge(payload).save()
+        let fileName
+        if(payload.file){
+            await Drive.delete(document.filename)
+            await payload.file.moveToDisk('./')
+            fileName=payload.file.fileName
+        }
+
+        const updatedDoc=await document.merge(
+            {
+                name:payload.name,
+                description:payload.description,
+                filename:fileName,
+                location:payload.location,
+                category:payload.category,
+                date:payload.date,
+                lastmodifier:auth.user!.id
+            }
+        ).save()
+        await updatedDoc.related('persons').sync(payload.persons)
 
         return response.status(200).json({message:'Document updated'})
 
@@ -52,7 +85,7 @@ export default class DocumentsController {
 
     public async deleteDocumentById({auth, bouncer, request, response}: HttpContextContract) {
         await auth.use('web').authenticate()
-        await bouncer.with('UserPolicy').authorize('delete')
+        await bouncer.with('DocumentPolicy').authorize('delete')
         try {
             const documentId = request.body().id
             const document = await Document.findOrFail(documentId)
