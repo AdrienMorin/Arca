@@ -13,7 +13,8 @@ const state = reactive({
 // https://ui.nuxt.com/components/form
 const validate = (state: any): FormError[] => {
   console.log("ok")
-  router.push('/dropDocument');
+  //router.push('/dropDocument');
+  router.push('/recherche');
   const errors = []
   if (!state.name) errors.push({ path: 'password', message: 'Veuillez entrer un mot de passe.' })
   if (!state.email) errors.push({ path: 'email', message: 'Veuillez entrer un email.' })
