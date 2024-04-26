@@ -42,6 +42,62 @@ Route.group(() => {
 
   Route.post('/changePasswordById', 'UsersController.changeUserPasswordById')
 
+  // Document routes
+
+  Route.post('/document/create', 'DocumentsController.createDocument')
+
+  Route.post('/document/delete', 'DocumentsController.deleteDocumentById')
+
+  Route.get('/document/fetchDocuments', 'DocumentsController.fetchDocuments')
+
+  Route.get('/document/getDocument/:id', 'DocumentsController.getDocumentById')
+
+  Route.get('/document/getByName/:name','DocumentsController.getByName')
+
+  Route.put('/document/update/:id', 'DocumentsController.updateDocument')
+
+  // Person routes
+
+  Route.post('/person/create', 'PeopleController.createPerson')
+
+  Route.post('/person/delete', 'PeopleController.deletePersonById')
+
+  Route.get('/person/fetchPeople', 'PeopleController.fetchPeople')
+
+  Route.get('/person/getPerson/:id', 'PeopleController.getPersonById')
+
+  Route.get('/person/getByName/:name','PeopleController.getByName')
+
+  Route.put('/person/update/:id', 'PeopleController.updatePerson')
+
+  // Location routes
+
+  Route.post('/location/create', 'LocationsController.createLocation')
+
+  Route.post('/location/delete', 'LocationsController.deleteLocationById')
+
+  Route.get('/location/fetchLocations', 'LocationsController.fetchLocations')
+
+  Route.get('/location/getLocation/:id', 'LocationsController.getLocationById')
+
+  Route.get('/location/getByName/:name','LocationsController.getByName')
+
+  Route.put('/location/update/:id', 'LocationsController.updateLocation')
+
+  // Category routes
+
+  Route.post('/category/create', 'CategoriesController.createCategory')
+
+  Route.post('/category/delete', 'CategoriesController.deleteCategoryById')
+
+  Route.get('/category/fetchCategories', 'CategoriesController.fetchCategories')
+
+  Route.get('/category/getCategory/:id', 'CategoriesController.getCategoryById')
+
+  Route.get('/category/getByName/:name','CategoriesController.getByName')
+
+  Route.put('/category/update/:id', 'CategoriesController.updateCategory')
+
 }).prefix("/api").middleware('auth')
 
 // Unprotected routes
