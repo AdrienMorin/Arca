@@ -38,6 +38,10 @@ Route.group(() => {
 
   Route.get("/fetchUsers", 'UsersController.fetchUsers')
 
+  Route.post('/changePassword', 'UsersController.changeUserPassword')
+
+  Route.post('/changePasswordById', 'UsersController.changeUserPasswordById')
+
   // Document routes
 
   Route.post('/document/create', 'DocumentsController.createDocument')
@@ -49,7 +53,7 @@ Route.group(() => {
   Route.get('/document/getDocument/:id', 'DocumentsController.getDocumentById')
 
   Route.get('/document/getByName/:name','DocumentsController.getByName')
-  
+
   Route.put('/document/update/:id', 'DocumentsController.updateDocument')
 
   // Person routes
@@ -83,7 +87,7 @@ Route.group(() => {
   // Category routes
 
   Route.post('/category/create', 'CategoriesController.createCategory')
-  
+
   Route.post('/category/delete', 'CategoriesController.deleteCategoryById')
 
   Route.get('/category/fetchCategories', 'CategoriesController.fetchCategories')
