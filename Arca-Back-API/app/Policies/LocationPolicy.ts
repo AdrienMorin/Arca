@@ -1,8 +1,8 @@
 import { BasePolicy } from '@ioc:Adonis/Addons/Bouncer'
 import User from 'App/Models/User'
 
-export default class DocumentPolicy extends BasePolicy {
-    public async viewList(user: User) {
+export default class LocationPolicy extends BasePolicy {
+	public async viewList(user: User) {
 		return (user.role === 'admin'||user.role === 'user'||user.role === 'superuser')
 	} 
 	public async view(user: User) {

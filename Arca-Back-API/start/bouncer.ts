@@ -6,6 +6,8 @@
  */
 
 import Bouncer from '@ioc:Adonis/Addons/Bouncer'
+import CategoryPolicy from 'App/Policies/CategoryPolicy'
+import LocationPolicy from 'App/Policies/LocationPolicy'
 
 /*
 |--------------------------------------------------------------------------
@@ -56,5 +58,8 @@ export const { actions } = Bouncer
 */
 export const { policies } = Bouncer.registerPolicies({
     UserPolicy: () => import('App/Policies/UserPolicy'),
-    DocumentPolicy: () => import('App/Policies/DocumentPolicy')
+    DocumentPolicy: () => import('App/Policies/DocumentPolicy'),
+    PersonPolicy: () => import('App/Policies/PersonPolicy'),
+    LocationPolicy : () => import('App/Policies/LocationPolicy'),
+    CategoryPolicy : () => import('App/Policies/CategoryPolicy')
 })
