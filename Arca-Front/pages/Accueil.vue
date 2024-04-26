@@ -9,5 +9,5 @@ export default {
 
 <template>
 <Navbar />
-<h1>Page accueil</h1>
+<h1>Page Accueil</h1>
 </template>
