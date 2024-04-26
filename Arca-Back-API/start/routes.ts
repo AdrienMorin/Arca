@@ -38,6 +38,10 @@ Route.group(() => {
 
   Route.get("/fetchUsers", 'UsersController.fetchUsers')
 
+  Route.post('/changePassword', 'UsersController.changeUserPassword')
+
+  Route.post('/changePasswordById', 'UsersController.changeUserPasswordById')
+
 }).prefix("/api").middleware('auth')
 
 // Unprotected routes
