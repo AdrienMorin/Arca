@@ -15,6 +15,9 @@ export default class UsersController {
 
     public async getLoggedUser({auth, response}: HttpContextContract) {
         await auth.use('web').authenticate()
+        const user = auth.use('web').user!
+        user.firstname = user.firstname.charAt(0).toUpperCase() + user.firstname.slice(1);
+        user.lastname = user.lastname.charAt(0).toUpperCase() + user.lastname.slice(1);
         return response.status(200).json(auth.use('web').user!)
     }
 
