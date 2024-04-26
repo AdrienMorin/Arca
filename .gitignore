@@ -21,7 +21,7 @@
 /Arca-Back-API/.yarn-integrity
 
 # Arca Front End ignore
-/nuxt-ui-pro-dashboard/node_modules
+/Arca-Front/node_modules
 
 # IDE
 .idea
