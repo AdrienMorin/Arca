@@ -2,6 +2,8 @@
 
 import {HttpContextContract} from "@ioc:Adonis/Core/HttpContext";
 import User from "App/Models/User";
+import ChangePasswordByIdValidator from "App/Validators/ChangePasswordByIdValidator";
+import ChangePasswordByEmailValidator from "App/Validators/User/ChangePasswordByEmailValidator";
 
 export default class UsersController {
     public async fetchUsers({auth, bouncer, response}: HttpContextContract){
@@ -34,6 +36,56 @@ export default class UsersController {
         } catch (error) {
             return response.status(400).json({message: 'Une erreur est survenue lors de la suppression de l\'utilisateur'})
         }
-
     }
+
+    public async changeUserPassword({auth, request, response}: HttpContextContract) {
+        await auth.use('web').authenticate()
+        try {
+
+            const user = await User.findOrFail(auth.user!.id)
+
+            const {oldPassword, newPassword} = request.body()
+
+            const authentication = await auth.use('web').attempt(auth.user!.email, oldPassword)
+            console.log(authentication)
+
+            if (authentication) {
+                user.password = newPassword
+                await user.save()
+            }
+
+            return response.status(200).json({message: 'Mot de passe modifié avec succès'})
+        } catch (error) {
+            return response.status(400).json({message: 'Une erreur est survenue lors de la modification du mot de passe'})
+        }
+    }
+
+    public async changeUserPasswordById({auth, bouncer, request, response}: HttpContextContract) {
+        await auth.use('web').authenticate()
+        await bouncer.with('UserPolicy').authorize('changePasswordById')
+        try {
+            const {id, newPassword} = await request.validate(ChangePasswordByIdValidator)
+            const user = await User.findOrFail(id)
+            user.password = newPassword
+            await user.save()
+            return response.status(200).json({message: 'Mot de passe modifié avec succès'})
+        } catch (error) {
+            return response.status(400).json({message: 'Une erreur est survenue lors de la modification du mot de passe'})
+        }
+    }
+
+    public async changeUserPasswordByEmail({auth, bouncer, request, response}: HttpContextContract) {
+        await auth.use('web').authenticate()
+        await bouncer.with('UserPolicy').authorize('changePasswordByEmail')
+        try {
+            const {email, newPassword} = await request.validate(ChangePasswordByEmailValidator)
+            const user = await User.findOrFail(email)
+            user.password = newPassword
+            await user.save()
+            return response.status(200).json({message: 'Mot de passe modifié avec succès'})
+        } catch (error) {
+            return response.status(400).json({message: 'Une erreur est survenue lors de la modification du mot de passe'})
+        }
+    }
+
 }
