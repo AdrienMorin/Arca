@@ -4,54 +4,59 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-dependencies:
-  '@heroicons/vue':
-    specifier: ^2.1.3
-    version: 2.1.3(vue@3.4.19)
-  '@iconify-json/heroicons':
-    specifier: ^1.1.20
-    version: 1.1.20
-  '@iconify-json/simple-icons':
-    specifier: ^1.1.94
-    version: 1.1.94
-  '@nuxt/fonts':
-    specifier: ^0.1.0
-    version: 0.1.0
-  '@nuxt/ui-pro':
-    specifier: ^1.0.2
-    version: 1.0.2(nuxt@3.10.3)(vite@5.1.4)(vue@3.4.19)
-  '@unovis/ts':
-    specifier: ^1.3.5
-    version: 1.3.5
-  '@unovis/vue':
-    specifier: ^1.3.5
-    version: 1.3.5(@unovis/ts@1.3.5)(vue@3.4.19)
-  '@vueuse/nuxt':
-    specifier: ^10.9.0
-    version: 10.9.0(nuxt@3.10.3)(vue@3.4.19)
-  date-fns:
-    specifier: ^3.3.1
-    version: 3.3.1
-  nuxt:
-    specifier: ^3.10.3
-    version: 3.10.3(eslint@8.57.0)(typescript@5.3.3)(vite@5.1.4)(vue-tsc@2.0.6)
-  v-calendar:
-    specifier: ^3.1.2
-    version: 3.1.2(@popperjs/core@2.11.8)(vue@3.4.19)
-  vue3-datepicker:
-    specifier: ^0.4.0
-    version: 0.4.0(vue@3.4.19)
+importers:
 
-devDependencies:
-  '@nuxt/eslint-config':
-    specifier: ^0.2.0
-    version: 0.2.0(eslint@8.57.0)
-  eslint:
-    specifier: ^8.57.0
-    version: 8.57.0
-  vue-tsc:
-    specifier: ^2.0.6
-    version: 2.0.6(typescript@5.3.3)
+  .:
+    dependencies:
+      '@heroicons/vue':
+        specifier: ^2.1.3
+        version: 2.1.3(vue@3.4.19(typescript@5.3.3))
+      '@iconify-json/heroicons':
+        specifier: ^1.1.20
+        version: 1.1.20
+      '@iconify-json/simple-icons':
+        specifier: ^1.1.94
+        version: 1.1.94
+      '@nuxt/fonts':
+        specifier: ^0.1.0
+        version: 0.1.0(encoding@0.1.13)(rollup@4.12.0)
+      '@nuxt/ui-pro':
+        specifier: ^1.0.2
+        version: 1.0.2(axios@1.6.8)(nuxt@3.10.3(@parcel/watcher@2.4.0)(@types/node@20.11.19)(encoding@0.1.13)(eslint@8.57.0)(optionator@0.9.3)(rollup@4.12.0)(terser@5.27.2)(typescript@5.3.3)(vite@5.1.4(@types/node@20.11.19)(terser@5.27.2))(vue-tsc@2.0.6(typescript@5.3.3)))(rollup@4.12.0)(vite@5.1.4(@types/node@20.11.19)(terser@5.27.2))(vue@3.4.19(typescript@5.3.3))
+      '@unovis/ts':
+        specifier: ^1.3.5
+        version: 1.3.5
+      '@unovis/vue':
+        specifier: ^1.3.5
+        version: 1.3.5(@unovis/ts@1.3.5)(vue@3.4.19(typescript@5.3.3))
+      '@vueuse/nuxt':
+        specifier: ^10.9.0
+        version: 10.9.0(nuxt@3.10.3(@parcel/watcher@2.4.0)(@types/node@20.11.19)(encoding@0.1.13)(eslint@8.57.0)(optionator@0.9.3)(rollup@4.12.0)(terser@5.27.2)(typescript@5.3.3)(vite@5.1.4(@types/node@20.11.19)(terser@5.27.2))(vue-tsc@2.0.6(typescript@5.3.3)))(rollup@4.12.0)(vue@3.4.19(typescript@5.3.3))
+      axios:
+        specifier: ^1.6.8
+        version: 1.6.8
+      date-fns:
+        specifier: ^3.3.1
+        version: 3.3.1
+      nuxt:
+        specifier: ^3.10.3
+        version: 3.10.3(@parcel/watcher@2.4.0)(@types/node@20.11.19)(encoding@0.1.13)(eslint@8.57.0)(optionator@0.9.3)(rollup@4.12.0)(terser@5.27.2)(typescript@5.3.3)(vite@5.1.4(@types/node@20.11.19)(terser@5.27.2))(vue-tsc@2.0.6(typescript@5.3.3))
+      v-calendar:
+        specifier: ^3.1.2
+        version: 3.1.2(@popperjs/core@2.11.8)(vue@3.4.19(typescript@5.3.3))
+      vue3-datepicker:
+        specifier: ^0.4.0
+        version: 0.4.0(vue@3.4.19(typescript@5.3.3))
+    devDependencies:
+      '@nuxt/eslint-config':
+        specifier: ^0.2.0
+        version: 0.2.0(eslint@8.57.0)
+      eslint:
+        specifier: ^8.57.0
+        version: 8.57.0
+      vue-tsc:
+        specifier: ^2.0.6
+        version: 2.0.6(typescript@5.3.3)
 
 packages:
 
@@ -623,6 +628,11 @@ packages:
     engines: {node: '>=10'}
     peerDependencies:
       vue: ^3.2.0
+
+  '@heroicons/vue@2.1.3':
+    resolution: {integrity: sha512-CP4ipIwFbV4NEn8ULUCN110wkV0wZq6dsViDL3HwgIh+jn5yQGlRm6QaRN+Mv+o+UsUBbRDei3Je/q0NZHf5Gg==}
+    peerDependencies:
+      vue: '>= 3'
 
   '@humanwhocodes/config-array@0.11.14':
     resolution: {integrity: sha512-3T8LkOmg45BV5FICb15QQMsyUSWrQ8AygVfC7ZG32zOalnqrilm018ZVCw0eapXux8FtA33q8PSRSstjee3jSg==}
@@ -2719,9 +2729,6 @@ packages:
     resolution: {integrity: sha512-O1Ld7Dr+nqPnmGpdhzLmMTQ4vAsD+rHwMm1NLUmoUFFymBOMKxCCrtDxqdBRYXdeEPEi3SyoR4TizJLQrnKBNA==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
 
-  h3@1.10.2:
-    resolution: {integrity: sha512-r1iNNcFGL4G9pL3lgYxwX0O2ZmqdKqhILAJsnlw5icn5I1QHnADM4TgVdYRtHUqy+NntVpHIEFwnw/XCbebICg==}
-
   h3@1.11.1:
     resolution: {integrity: sha512-AbaH6IDnZN6nmbnJOH72y3c5Wwh9P97soSVdGSBbcDACRdkC0FEWf25pzx4f/NuOCK6quHmW18yF2Wx+G4Zi1A==}
 
@@ -3186,10 +3193,6 @@ packages:
     resolution: {integrity: sha512-0shqecEPgdFpnI3AP90epXyxZy9g6CRZ+SZ7BcqFwYmtFEnZ1jpevcV5HoyVnlDS9gCnc1UIg3Rsvp3Ci7r8OA==}
     engines: {node: '>=16.14.0'}
 
-  magic-string@0.30.7:
-    resolution: {integrity: sha512-8vBuFF/I/+OSLRmdf2wwFCJCz+nSn0m6DPvGH1fS/KiQoSaR+sETbov0eIk9KhEKy8CYqIkIAnbohxT/4H0kuA==}
-    engines: {node: '>=12'}
-
   magic-string@0.30.8:
     resolution: {integrity: sha512-ISQTe55T2ao7XtlAStud6qwYPZjE4GK1S/BeVPus4jrq6JuOnQ00YKQC581RWhR122W7msZV263KzVeLoqidyQ==}
     engines: {node: '>=12'}
@@ -3324,9 +3327,6 @@ packages:
     resolution: {integrity: sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==}
     engines: {node: '>=10'}
     hasBin: true
-
-  mlly@1.6.0:
-    resolution: {integrity: sha512-YOvg9hfYQmnaB56Yb+KrJE2u0Yzz5zR+sLejEvF4fzwzV1Al6hkf2vyHTwqCRyv0hCi9rVCqVoXpyYevQIRwLQ==}
 
   mlly@1.6.1:
     resolution: {integrity: sha512-vLgaHvaeunuOXHSmEbZ9izxPx3USsk8KCQ8iC+aTlp5sKRSoZvwhHh5L9VbKSaVC6sJDqbyohIS76E2VmHIPAA==}
@@ -4180,6 +4180,7 @@ packages:
   socks@2.7.3:
     resolution: {integrity: sha512-vfuYK48HXCTFD03G/1/zkIls3Ebr2YNa4qU9gHDZdblHLiqhJrJGkY3+0Nx0JpN9qBhJbVObc1CNciT1bIZJxw==}
     engines: {node: '>= 10.0.0', npm: '>= 3.0.0'}
+    deprecated: please use 2.7.4 or 2.8.1 to fix package-lock issue
 
   source-map-js@1.0.2:
     resolution: {integrity: sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw==}
@@ -4513,9 +4514,6 @@ packages:
       vue-router:
         optional: true
 
-  unplugin@1.7.1:
-    resolution: {integrity: sha512-JqzORDAPxxs8ErLV4x+LL7bk5pk3YlcWqpSNsIkAZj972KzFZLClc/ekppahKkOczGkwIG6ElFgdOgOlK4tXZw==}
-
   unplugin@1.9.0:
     resolution: {integrity: sha512-14PslvMY3gNbXnQtNIRB566Q057L5Fe7f5LDEamxVi0QQVxoz5hrveBwwZLcKyHtZ09ysmipxRRj5Lv+BGz2Iw==}
     engines: {node: '>=14.0.0'}
@@ -4751,6 +4749,12 @@ packages:
     hasBin: true
     peerDependencies:
       typescript: '*'
+
+  vue3-datepicker@0.4.0:
+    resolution: {integrity: sha512-o0/y4yuZZc0DXYhiAlX8Znrkm/zvkeYuyV9PUt0UAvwxkno2jqMS388jVUa9Ns+a2s2pOAAybyXo5uQ9YAIwVw==}
+    engines: {node: '>=10.16.0'}
+    peerDependencies:
+      vue: ^3.0.0
 
   vue3-smooth-dnd@0.0.6:
     resolution: {integrity: sha512-CH9ZZhEfE7qU1ef2rlfgBG+nZtQX8PnWlspB2HDDz1uVGU7fXM0Pr65DftBMz4X81S+edw2H+ZFG6Dyb5J81KA==}
@@ -5357,21 +5361,11 @@ snapshots:
       '@tanstack/vue-virtual': 3.1.2(vue@3.4.19(typescript@5.3.3))
       vue: 3.4.19(typescript@5.3.3)
 
-<<<<<<< HEAD:nuxt-ui-pro-dashboard/pnpm-lock.yaml
-  '@humanwhocodes/config-array@0.11.14':
-=======
-  /@heroicons/vue@2.1.3(vue@3.4.19):
-    resolution: {integrity: sha512-CP4ipIwFbV4NEn8ULUCN110wkV0wZq6dsViDL3HwgIh+jn5yQGlRm6QaRN+Mv+o+UsUBbRDei3Je/q0NZHf5Gg==}
-    peerDependencies:
-      vue: '>= 3'
+  '@heroicons/vue@2.1.3(vue@3.4.19(typescript@5.3.3))':
     dependencies:
       vue: 3.4.19(typescript@5.3.3)
-    dev: false
 
-  /@humanwhocodes/config-array@0.11.14:
-    resolution: {integrity: sha512-3T8LkOmg45BV5FICb15QQMsyUSWrQ8AygVfC7ZG32zOalnqrilm018ZVCw0eapXux8FtA33q8PSRSstjee3jSg==}
-    engines: {node: '>=10.10.0'}
->>>>>>> origin/dev:Arca-Front/pnpm-lock.yaml
+  '@humanwhocodes/config-array@0.11.14':
     dependencies:
       '@humanwhocodes/object-schema': 2.0.2
       debug: 4.3.4
@@ -5405,7 +5399,7 @@ snapshots:
       debug: 4.3.4
       kolorist: 1.8.0
       local-pkg: 0.5.0
-      mlly: 1.6.0
+      mlly: 1.6.1
     transitivePeerDependencies:
       - supports-color
 
@@ -5717,7 +5711,7 @@ snapshots:
       ignore: 5.3.1
       jiti: 1.21.0
       knitwork: 1.0.0
-      mlly: 1.6.0
+      mlly: 1.6.1
       pathe: 1.1.2
       pkg-types: 1.0.3
       scule: 1.3.0
@@ -5870,8 +5864,8 @@ snapshots:
       get-port-please: 3.1.2
       h3: 1.11.1
       knitwork: 1.0.0
-      magic-string: 0.30.7
-      mlly: 1.6.0
+      magic-string: 0.30.8
+      mlly: 1.6.1
       ohash: 1.1.3
       pathe: 1.1.2
       perfect-debounce: 1.0.0
@@ -5882,7 +5876,7 @@ snapshots:
       strip-literal: 2.0.0
       ufo: 1.4.0
       unenv: 1.9.0
-      unplugin: 1.7.1
+      unplugin: 1.9.0
       vite: 5.1.4(@types/node@20.11.19)(terser@5.27.2)
       vite-node: 1.3.1(@types/node@20.11.19)(terser@5.27.2)
       vite-plugin-checker: 0.6.4(eslint@8.57.0)(optionator@0.9.3)(typescript@5.3.3)(vite@5.1.4(@types/node@20.11.19)(terser@5.27.2))(vue-tsc@2.0.6(typescript@5.3.3))
@@ -6021,7 +6015,7 @@ snapshots:
       estree-walker: 2.0.2
       glob: 8.1.0
       is-reference: 1.2.1
-      magic-string: 0.30.7
+      magic-string: 0.30.8
     optionalDependencies:
       rollup: 4.12.0
 
@@ -6029,7 +6023,7 @@ snapshots:
     dependencies:
       '@rollup/pluginutils': 5.1.0(rollup@4.12.0)
       estree-walker: 2.0.2
-      magic-string: 0.30.7
+      magic-string: 0.30.8
     optionalDependencies:
       rollup: 4.12.0
 
@@ -6053,7 +6047,7 @@ snapshots:
   '@rollup/plugin-replace@5.0.5(rollup@4.12.0)':
     dependencies:
       '@rollup/pluginutils': 5.1.0(rollup@4.12.0)
-      magic-string: 0.30.7
+      magic-string: 0.30.8
     optionalDependencies:
       rollup: 4.12.0
 
@@ -6681,7 +6675,7 @@ snapshots:
       '@vue/compiler-ssr': 3.4.19
       '@vue/shared': 3.4.19
       estree-walker: 2.0.2
-      magic-string: 0.30.7
+      magic-string: 0.30.8
       postcss: 8.4.35
       source-map-js: 1.0.2
 
@@ -7004,7 +6998,7 @@ snapshots:
       dotenv: 16.4.5
       giget: 1.2.1
       jiti: 1.21.0
-      mlly: 1.6.0
+      mlly: 1.6.1
       ohash: 1.1.3
       pathe: 1.1.2
       perfect-debounce: 1.0.0
@@ -7802,7 +7796,7 @@ snapshots:
   externality@1.0.2:
     dependencies:
       enhanced-resolve: 5.15.0
-      mlly: 1.6.0
+      mlly: 1.6.1
       pathe: 1.1.2
       ufo: 1.4.0
 
@@ -8052,18 +8046,6 @@ snapshots:
   gzip-size@7.0.0:
     dependencies:
       duplexer: 0.1.2
-
-  h3@1.10.2:
-    dependencies:
-      cookie-es: 1.0.0
-      defu: 6.1.4
-      destr: 2.0.3
-      iron-webcrypto: 1.0.0
-      ohash: 1.1.3
-      radix3: 1.1.0
-      ufo: 1.4.0
-      uncrypto: 0.1.3
-      unenv: 1.9.0
 
   h3@1.11.1:
     dependencies:
@@ -8458,7 +8440,7 @@ snapshots:
       h3: 1.11.1
       http-shutdown: 1.2.2
       jiti: 1.21.0
-      mlly: 1.6.0
+      mlly: 1.6.1
       node-forge: 1.3.1
       pathe: 1.1.2
       std-env: 3.7.0
@@ -8472,7 +8454,7 @@ snapshots:
 
   local-pkg@0.5.0:
     dependencies:
-      mlly: 1.6.0
+      mlly: 1.6.1
       pkg-types: 1.0.3
 
   locate-path@6.0.0:
@@ -8530,11 +8512,7 @@ snapshots:
 
   magic-string-ast@0.3.0:
     dependencies:
-      magic-string: 0.30.7
-
-  magic-string@0.30.7:
-    dependencies:
-      '@jridgewell/sourcemap-codec': 1.4.15
+      magic-string: 0.30.8
 
   magic-string@0.30.8:
     dependencies:
@@ -8688,13 +8666,6 @@ snapshots:
 
   mkdirp@1.0.4: {}
 
-  mlly@1.6.0:
-    dependencies:
-      acorn: 8.11.3
-      pathe: 1.1.2
-      pkg-types: 1.0.3
-      ufo: 1.4.0
-
   mlly@1.6.1:
     dependencies:
       acorn: 8.11.3
@@ -8770,9 +8741,9 @@ snapshots:
       klona: 2.0.6
       knitwork: 1.0.0
       listhen: 1.6.0
-      magic-string: 0.30.7
+      magic-string: 0.30.8
       mime: 3.0.0
-      mlly: 1.6.0
+      mlly: 1.6.1
       mri: 1.2.0
       node-fetch-native: 1.6.2
       ofetch: 1.3.3
@@ -8964,13 +8935,13 @@ snapshots:
       estree-walker: 3.0.3
       fs-extra: 11.2.0
       globby: 14.0.1
-      h3: 1.10.2
+      h3: 1.11.1
       hookable: 5.5.3
       jiti: 1.21.0
       klona: 2.0.6
       knitwork: 1.0.0
-      magic-string: 0.30.7
-      mlly: 1.6.0
+      magic-string: 0.30.8
+      mlly: 1.6.1
       nitropack: 2.8.1(encoding@0.1.13)
       nuxi: 3.10.1
       nypm: 0.3.6
@@ -8989,7 +8960,7 @@ snapshots:
       unctx: 2.3.1
       unenv: 1.9.0
       unimport: 3.7.1(rollup@4.12.0)
-      unplugin: 1.7.1
+      unplugin: 1.9.0
       unplugin-vue-router: 0.7.0(rollup@4.12.0)(vue-router@4.3.0(vue@3.4.19(typescript@5.3.3)))(vue@3.4.19(typescript@5.3.3))
       untyped: 1.4.2
       vue: 3.4.19(typescript@5.3.3)
@@ -9222,7 +9193,7 @@ snapshots:
   pkg-types@1.0.3:
     dependencies:
       jsonc-parser: 3.2.1
-      mlly: 1.6.0
+      mlly: 1.6.1
       pathe: 1.1.2
 
   portfinder@1.0.32:
@@ -10027,8 +9998,8 @@ snapshots:
     dependencies:
       acorn: 8.11.3
       estree-walker: 3.0.3
-      magic-string: 0.30.7
-      unplugin: 1.7.1
+      magic-string: 0.30.8
+      unplugin: 1.9.0
 
   undici-types@5.26.5: {}
 
@@ -10072,7 +10043,7 @@ snapshots:
       fast-glob: 3.3.2
       local-pkg: 0.5.0
       magic-string: 0.30.8
-      mlly: 1.6.0
+      mlly: 1.6.1
       pathe: 1.1.2
       pkg-types: 1.0.3
       scule: 1.3.0
@@ -10101,23 +10072,16 @@ snapshots:
       fast-glob: 3.3.2
       json5: 2.2.3
       local-pkg: 0.4.3
-      mlly: 1.6.0
+      mlly: 1.6.1
       pathe: 1.1.2
       scule: 1.3.0
-      unplugin: 1.7.1
+      unplugin: 1.9.0
       yaml: 2.3.4
     optionalDependencies:
       vue-router: 4.3.0(vue@3.4.19(typescript@5.3.3))
     transitivePeerDependencies:
       - rollup
       - vue
-
-  unplugin@1.7.1:
-    dependencies:
-      acorn: 8.11.3
-      chokidar: 3.6.0
-      webpack-sources: 3.2.3
-      webpack-virtual-modules: 0.6.1
 
   unplugin@1.9.0:
     dependencies:
@@ -10268,7 +10232,7 @@ snapshots:
       '@vue/babel-plugin-jsx': 1.2.1(@babel/core@7.23.9)
       '@vue/compiler-dom': 3.4.19
       kolorist: 1.8.0
-      magic-string: 0.30.7
+      magic-string: 0.30.8
       vite: 5.1.4(@types/node@20.11.19)(terser@5.27.2)
     transitivePeerDependencies:
       - supports-color
@@ -10356,24 +10320,12 @@ snapshots:
       semver: 7.6.0
       typescript: 5.3.3
 
-<<<<<<< HEAD:nuxt-ui-pro-dashboard/pnpm-lock.yaml
-  vue3-smooth-dnd@0.0.6(vue@3.4.19(typescript@5.3.3)):
-=======
-  /vue3-datepicker@0.4.0(vue@3.4.19):
-    resolution: {integrity: sha512-o0/y4yuZZc0DXYhiAlX8Znrkm/zvkeYuyV9PUt0UAvwxkno2jqMS388jVUa9Ns+a2s2pOAAybyXo5uQ9YAIwVw==}
-    engines: {node: '>=10.16.0'}
-    peerDependencies:
-      vue: ^3.0.0
+  vue3-datepicker@0.4.0(vue@3.4.19(typescript@5.3.3)):
     dependencies:
       date-fns: 2.30.0
       vue: 3.4.19(typescript@5.3.3)
-    dev: false
 
-  /vue3-smooth-dnd@0.0.6(vue@3.4.19):
-    resolution: {integrity: sha512-CH9ZZhEfE7qU1ef2rlfgBG+nZtQX8PnWlspB2HDDz1uVGU7fXM0Pr65DftBMz4X81S+edw2H+ZFG6Dyb5J81KA==}
-    peerDependencies:
-      vue: ^3.0.11
->>>>>>> origin/dev:Arca-Front/pnpm-lock.yaml
+  vue3-smooth-dnd@0.0.6(vue@3.4.19(typescript@5.3.3)):
     dependencies:
       smooth-dnd: 0.12.1
       vue: 3.4.19(typescript@5.3.3)

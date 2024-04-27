@@ -6,6 +6,6 @@
 
 <template>
 
-  <!-- <Navbar /> -->
+  <slot />
 
 </template>
