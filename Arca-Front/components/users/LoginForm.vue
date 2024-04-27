@@ -12,7 +12,7 @@ export default {
   methods: { 
     async handleSubmit() {
       try {
-        const response = await axios.post(this.$config.API_URL, {
+        const response = await axios.post(this.$config.public.API_URL, {
           email: this.email,
           password: this.password
         });

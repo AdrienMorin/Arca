@@ -5,8 +5,11 @@ export default {
     Navbar
   }
 };
+definePageMeta({
+  middleware:'auth',
+});
 </script>
-
+<!-- c'est ajouterDocument en fait -->
 <template>
 <Navbar />
 <h1>Page Archiver</h1>
