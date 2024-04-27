@@ -13,5 +13,4 @@ export default {
         <LoginForm />
         </div>
     </div>
-    
 </template>
