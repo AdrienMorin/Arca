@@ -22,7 +22,7 @@
 
 # Arca Front End ignore
 /Arca-Front/node_modules
-
+/nuxt-ui-pro-dashboard/node_modules
 # IDE
 .idea
 *.iml
