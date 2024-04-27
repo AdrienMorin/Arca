@@ -8,14 +8,11 @@ export default {
       password:''
     }
   },
-  // mounted() {
-  //   const apiUrl = process.env.API_URL;
-  //   console.log('API URL:', apiUrl);
-  // },
+
   methods: { 
     async handleSubmit() {
       try {
-        const response = await axios.post('https://127.0.0.1:3333/api/auth/login', {
+        const response = await axios.post(this.$config.public.API_URL, {
           email: this.email,
           password: this.password
         });

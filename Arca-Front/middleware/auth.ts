@@ -1,16 +1,15 @@
-import axios from "axios";  
+import axios from "~/node_modules/axios/index";
 export default defineNuxtRouteMiddleware(async(to, from)=> {
-    console.log("hi middleware");
-    let isLoggedIn = false;
-    const response = await axios.get("https://127.0.0.1:3333/api/", {});
-    console.log(response.data);
-    if(response.data=='Vous êtes connecté'){
-        isLoggedIn=true;
-    }
-    if(isLoggedIn){
-        return navigateTo(to.fullPath);
-    }
-    if (to.path !== '/login') {
-        return navigateTo('/login');
+    try {
+        const response = await axios.get(this.$config.public.API_URL);
+        if (response.data.isAuthenticated) {
+            return navigateTo(to.fullPath);
+        }
+        
+        if (to.path !== '/login') {
+            return navigateTo('/login');
+        }
+    } catch (error) {
+        console.error('Error checking session cookie:', error);
     }
 });
