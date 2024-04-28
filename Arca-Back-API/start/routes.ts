@@ -58,6 +58,8 @@ Route.group(() => {
 
   //AWS routes
 
+  Route.post('/uploadDocument','AwsController.uploadDocument')
+
   // Person routes
 
   Route.post('/person/create', 'PeopleController.createPerson')
