@@ -1,1 +1,0 @@
-export { default } from "file:///Users/aziza/Desktop/Insa/INSA-LYON-4A/PLD-SMART/Arca/nuxt-ui-pro-dashboard/node_modules/.pnpm/@nuxt+vite-builder@3.10.3_@types+node@20.11.19_eslint@8.57.0_optionator@0.9.3_rollup@4.12.0_t_l6yxgvvnjvizdzhknivodaw2lm/node_modules/@nuxt/vite-builder/dist/runtime/vite-node.mjs"
