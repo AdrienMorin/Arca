@@ -12,11 +12,17 @@ export default {
   methods: { 
     async handleSubmit() {
       try {
-        const response = await axios.post(this.$config.public.API_URL, {
+        const response = await axios.post(this.$config.public.API_URL + '/auth/login', {
           email: this.email,
           password: this.password
         });
         console.log(response);
+        
+        const userData = response.data;
+
+        this.$auth.setUser(userData);
+
+        console.log('Login successful:', userData);
 
         this.$router.push('/accueil'); //redirection
 

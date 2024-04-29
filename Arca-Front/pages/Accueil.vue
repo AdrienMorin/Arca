@@ -5,9 +5,9 @@ export default {
     Navbar
   },
 };
-definePageMeta({
-  middleware:'auth',
-});
+// definePageMeta({
+//   middleware:'auth',
+// });
 </script>
 
 <template>
