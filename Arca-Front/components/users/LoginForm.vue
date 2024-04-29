@@ -10,20 +10,27 @@ export default {
   },
 
   methods: { 
-    async handleSubmit() {
-      try {
-        const response = await axios.post(this.$config.public.API_URL, {
-          email: this.email,
-          password: this.password
-        });
-        console.log(response);
+    // async handleSubmit() {
+    //   try {
+    //     const response = await axios.post(this.$config.public.API_URL + '/auth/login', {
+    //       email: this.email,
+    //       password: this.password
+    //     });
+    //     console.log(response);
 
-        this.$router.push('/accueil'); //redirection
+    //     const userData = response.data;
 
-      } catch (error) {
-        console.error('Login failed:', error);
-      }
-    }
+    //     this.$auth.setUser(userData);
+
+    //     console.log('Login successful:', userData);
+
+
+    //     this.$router.push('/accueil'); //redirection
+
+    //   } catch (error) {
+    //     console.error('Login failed:', error);
+    //   }
+    // }
   }  
 }   
 </script>
