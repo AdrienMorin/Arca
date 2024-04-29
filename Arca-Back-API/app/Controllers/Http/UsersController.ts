@@ -8,20 +8,20 @@ import ChangePasswordByEmailValidator from "App/Validators/User/ChangePasswordBy
 export default class UsersController {
 
   public async fetchUsers({ auth, bouncer, response }: HttpContextContract) {
-    await auth.use("web").authenticate();
+    await auth.use("api").authenticate();
     await bouncer.with("UserPolicy").authorize("viewList");
     const allUsers = await User.query();
     return response.status(200).json(allUsers);
   }
 
   public async getLoggedUser({ auth, response }: HttpContextContract) {
-    await auth.use("web").authenticate();
-    const user = auth.use("web").user!;
+    await auth.use("api").authenticate();
+    const user = auth.use("api").user!;
     user.firstname =
       user.firstname.charAt(0).toUpperCase() + user.firstname.slice(1);
     user.lastname =
       user.lastname.charAt(0).toUpperCase() + user.lastname.slice(1);
-    return response.status(200).json(auth.use("web").user!);
+    return response.status(200).json(auth.use("api").user!);
   }
 
   public async getUserById({
@@ -30,7 +30,7 @@ export default class UsersController {
     request,
     response,
   }: HttpContextContract) {
-    await auth.use("web").authenticate();
+    await auth.use("api").authenticate();
     await bouncer.with("UserPolicy").authorize("view");
     const user = await User.findOrFail(request.param("id"));
     return response.status(200).json(user);
@@ -42,7 +42,7 @@ export default class UsersController {
     request,
     response,
   }: HttpContextContract) {
-    await auth.use("web").authenticate();
+    await auth.use("api").authenticate();
     await bouncer.with("UserPolicy").authorize("delete");
     try {
       const userId = request.body().id;
@@ -66,14 +66,14 @@ export default class UsersController {
     request,
     response,
   }: HttpContextContract) {
-    await auth.use("web").authenticate();
+    await auth.use("api").authenticate();
     try {
       const user = await User.findOrFail(auth.user!.id);
 
       const { oldPassword, newPassword } = request.body();
 
       const authentication = await auth
-        .use("web")
+        .use("api")
         .attempt(auth.user!.email, oldPassword);
 
       if (authentication) {
@@ -100,7 +100,7 @@ export default class UsersController {
     request,
     response,
   }: HttpContextContract) {
-    await auth.use("web").authenticate();
+    await auth.use("api").authenticate();
     await bouncer.with("UserPolicy").authorize("changePasswordById");
     try {
       const { id, newPassword } = await request.validate(
@@ -128,7 +128,7 @@ export default class UsersController {
     request,
     response,
   }: HttpContextContract) {
-    await auth.use("web").authenticate();
+    await auth.use("api").authenticate();
     await bouncer.with("UserPolicy").authorize("changePasswordByEmail");
     try {
       const { email, newPassword } = await request.validate(
