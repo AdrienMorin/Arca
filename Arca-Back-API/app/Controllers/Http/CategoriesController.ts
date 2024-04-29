@@ -9,7 +9,7 @@ export default class CategoriesController {
         await bouncer.with('CategoryPolicy').authorize('create')
         const payload = await request.validate(CreateCategoryValidator)
         await Category.create(payload)
-        return response.status(200).json({message: 'Catégorie créé avec succès'})
+        return response.status(200).json({message: 'Catégorie créée avec succès'})
     }
 
     public async updateCategory({auth, bouncer, request, response}:HttpContextContract){
@@ -18,8 +18,7 @@ export default class CategoriesController {
         const payload = await request.validate(UpdateCategoryValidator)
         const document=await Category.findOrFail(request.param("id"))
         await document.merge(payload).save()
-
-        return response.status(200).json({message:'Category updated'})
+        return response.status(200).json({message:'Catégorie mise à jour avec succès'})
 
     }
 
@@ -45,8 +44,6 @@ export default class CategoriesController {
         return response.status(200).json(user)
     }
 
-
-
     public async deleteCategoryById({auth, bouncer, request, response}: HttpContextContract) {
         await auth.use('web').authenticate()
         await bouncer.with('CategoryPolicy').authorize('delete')
@@ -54,7 +51,7 @@ export default class CategoriesController {
             const documentId = request.body().id
             const document = await Category.findOrFail(documentId)
             await document.delete()
-            return response.status(200).json({message: 'Catégorie supprimé avec succès'})
+            return response.status(200).json({message: 'Catégorie supprimée avec succès'})
         } catch (error) {
             return response.status(400).json({message: 'Une erreur est survenue lors de la suppression de la catégorie'})
         }

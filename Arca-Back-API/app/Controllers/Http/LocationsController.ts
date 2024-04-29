@@ -19,9 +19,7 @@ export default class LocationsController {
         const payload = await request.validate(UpdateLocationValidator)
         const document=await Location.findOrFail(request.param("id"))
         await document.merge(payload).save()
-
-        return response.status(200).json({message:'Location updated'})
-
+        return response.status(200).json({message:'Lieu mis à jour avec succès'})
     }
 
     public async fetchLocations({auth, bouncer, response}: HttpContextContract){
@@ -46,8 +44,6 @@ export default class LocationsController {
         return response.status(200).json(user)
     }
 
-
-
     public async deleteLocationById({auth, bouncer, request, response}: HttpContextContract) {
         await auth.use('web').authenticate()
         await bouncer.with('LocationPolicy').authorize('delete')
@@ -59,6 +55,5 @@ export default class LocationsController {
         } catch (error) {
             return response.status(400).json({message: 'Une erreur est survenue lors de la suppression du lieu'})
         }
-
     }
 }
