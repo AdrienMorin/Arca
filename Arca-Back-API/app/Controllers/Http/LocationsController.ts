@@ -6,7 +6,7 @@ import Location from "App/Models/Location";
 export default class LocationsController {
 
     public async createLocation({auth, bouncer, request, response}: HttpContextContract){
-        await auth.use('web').authenticate()
+        await auth.use('api').authenticate()
         await bouncer.with('LocationPolicy').authorize('create')
         const payload = await request.validate(CreateLocationValidator)
         await Location.create(payload)
@@ -14,7 +14,7 @@ export default class LocationsController {
     }
 
     public async updateLocation({auth, bouncer, request, response}:HttpContextContract){
-        await auth.use('web').authenticate()
+        await auth.use('api').authenticate()
         await bouncer.with('LocationPolicy').authorize('update')
         const payload = await request.validate(UpdateLocationValidator)
         const document=await Location.findOrFail(request.param("id"))
@@ -25,14 +25,14 @@ export default class LocationsController {
     }
 
     public async fetchLocations({auth, bouncer, response}: HttpContextContract){
-        await auth.use('web').authenticate()
+        await auth.use('api').authenticate()
         await bouncer.with('LocationPolicy').authorize('viewList')
         const allDocuments = await Location.query()
         return response.status(200).json(allDocuments)
     }
 
     public async getByName({auth, bouncer, request, response}: HttpContextContract){
-        await auth.use('web').authenticate()
+        await auth.use('api').authenticate()
         await bouncer.with('LocationPolicy').authorize('viewList')
         const nameParam=request.param("name")
         const allDocuments = await Location.query().where('name', 'like', `%${nameParam}%`);
@@ -40,7 +40,7 @@ export default class LocationsController {
     }
 
     public async getLocationById({auth, bouncer, request, response}: HttpContextContract) {
-        await auth.use('web').authenticate()
+        await auth.use('api').authenticate()
         await bouncer.with('LocationPolicy').authorize('view')
         const user = await Location.findOrFail(request.param("id"))
         return response.status(200).json(user)
@@ -49,7 +49,7 @@ export default class LocationsController {
 
 
     public async deleteLocationById({auth, bouncer, request, response}: HttpContextContract) {
-        await auth.use('web').authenticate()
+        await auth.use('api').authenticate()
         await bouncer.with('LocationPolicy').authorize('delete')
         try {
             const documentId = request.body().id

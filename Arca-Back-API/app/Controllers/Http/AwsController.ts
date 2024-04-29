@@ -7,7 +7,7 @@ import AwsFileUploadValidator from 'App/Validators/AwsFileUploadValidator';
 
 export default class AwsController {
     public async uploadDocument({auth, response,request}: HttpContextContract){
-        await auth.use('web').authenticate()
+        await auth.use('api').authenticate()
         const payload = await request.validate(AwsFileUploadValidator)
 
         if (payload.file.tmpPath) {

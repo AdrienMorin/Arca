@@ -6,7 +6,7 @@ import Person from "App/Models/Person";
 export default class PeopleController {
 
     public async createPerson({auth, bouncer, request, response}: HttpContextContract){
-        await auth.use('web').authenticate()
+        await auth.use('api').authenticate()
         await bouncer.with('PersonPolicy').authorize('create')
         const payload = await request.validate(CreatePersonValidator)
         await Person.create(payload)
@@ -14,7 +14,7 @@ export default class PeopleController {
     }
 
     public async updatePerson({auth, bouncer, request, response}:HttpContextContract){
-        await auth.use('web').authenticate()
+        await auth.use('api').authenticate()
         await bouncer.with('PersonPolicy').authorize('update')
         const payload = await request.validate(UpdatePersonValidator)
         const document=await Person.findOrFail(request.param("id"))
@@ -25,14 +25,14 @@ export default class PeopleController {
     }
 
     public async fetchPeople({auth, bouncer, response}: HttpContextContract){
-        await auth.use('web').authenticate()
+        await auth.use('api').authenticate()
         await bouncer.with('PersonPolicy').authorize('viewList')
         const allDocuments = await Person.query()
         return response.status(200).json(allDocuments)
     }
 
     public async getByName({auth, bouncer, request, response}: HttpContextContract){
-        await auth.use('web').authenticate()
+        await auth.use('api').authenticate()
         await bouncer.with('PersonPolicy').authorize('viewList')
         const nameParam=request.param("name")
         const allDocuments = await Person.query().where('name', 'like', `%${nameParam}%`);
@@ -40,7 +40,7 @@ export default class PeopleController {
     }
 
     public async getPersonById({auth, bouncer, request, response}: HttpContextContract) {
-        await auth.use('web').authenticate()
+        await auth.use('api').authenticate()
         await bouncer.with('PersonPolicy').authorize('view')
         const user = await Person.findOrFail(request.param("id"))
         return response.status(200).json(user)
@@ -49,7 +49,7 @@ export default class PeopleController {
 
 
     public async deletePersonById({auth, bouncer, request, response}: HttpContextContract) {
-        await auth.use('web').authenticate()
+        await auth.use('api').authenticate()
         await bouncer.with('PersonPolicy').authorize('delete')
         try {
             const documentId = request.body().id

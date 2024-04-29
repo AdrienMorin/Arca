@@ -109,8 +109,8 @@ Route.group( () => {
   // Index route
   Route.get('/', async ({auth}: HttpContextContract) => {
     try {
-      await auth.use('web').authenticate()
-      if(auth.use('web').isLoggedIn){
+      await auth.use('api').authenticate()
+      if(auth.use('api').isLoggedIn){
         return "Vous êtes connecté"
       } else {
         return "Veuillez vous connecter pour pouvoir accéder à l'application"

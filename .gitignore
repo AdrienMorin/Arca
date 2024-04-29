@@ -5,6 +5,7 @@
 /Arca-Back-API/.vscode
 /Arca-Back-API/.DS_STORE
 /Arca-Back-API/.env
+/Arca-Back-API/.env.test
 /Arca-Back-API/tmp
 /Arca-Back-API/npm-debug.log*
 /Arca-Back-API/yarn-debug.log*

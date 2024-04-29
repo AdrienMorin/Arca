@@ -5,7 +5,7 @@ import UpdateCategoryValidator from 'App/Validators/Category/UpdateCategoryValid
 
 export default class CategoriesController {
     public async createCategory({auth, bouncer, request, response}: HttpContextContract){
-        await auth.use('web').authenticate()
+        await auth.use('api').authenticate()
         await bouncer.with('CategoryPolicy').authorize('create')
         const payload = await request.validate(CreateCategoryValidator)
         await Category.create(payload)
@@ -13,7 +13,7 @@ export default class CategoriesController {
     }
 
     public async updateCategory({auth, bouncer, request, response}:HttpContextContract){
-        await auth.use('web').authenticate()
+        await auth.use('api').authenticate()
         await bouncer.with('CategoryPolicy').authorize('update')
         const payload = await request.validate(UpdateCategoryValidator)
         const document=await Category.findOrFail(request.param("id"))
@@ -24,14 +24,14 @@ export default class CategoriesController {
     }
 
     public async fetchCategories({auth, bouncer, response}: HttpContextContract){
-        await auth.use('web').authenticate()
+        await auth.use('api').authenticate()
         await bouncer.with('CategoryPolicy').authorize('viewList')
         const allDocuments = await Category.query()
         return response.status(200).json(allDocuments)
     }
 
     public async getByName({auth, bouncer, request, response}: HttpContextContract){
-        await auth.use('web').authenticate()
+        await auth.use('api').authenticate()
         await bouncer.with('CategoryPolicy').authorize('viewList')
         const nameParam=request.param("name")
         const allDocuments = await Category.query().where('name', 'like', `%${nameParam}%`);
@@ -39,7 +39,7 @@ export default class CategoriesController {
     }
 
     public async getCategoryById({auth, bouncer, request, response}: HttpContextContract) {
-        await auth.use('web').authenticate()
+        await auth.use('api').authenticate()
         await bouncer.with('CategoryPolicy').authorize('view')
         const user = await Category.findOrFail(request.param("id"))
         return response.status(200).json(user)
@@ -48,7 +48,7 @@ export default class CategoriesController {
 
 
     public async deleteCategoryById({auth, bouncer, request, response}: HttpContextContract) {
-        await auth.use('web').authenticate()
+        await auth.use('api').authenticate()
         await bouncer.with('CategoryPolicy').authorize('delete')
         try {
             const documentId = request.body().id
