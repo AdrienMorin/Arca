@@ -56,6 +56,10 @@ Route.group(() => {
 
   Route.put('/document/update/:id', 'DocumentsController.updateDocument')
 
+  //AWS routes
+
+  Route.post('/uploadDocument','AwsController.uploadDocument')
+
   // Person routes
 
   Route.post('/person/create', 'PeopleController.createPerson')
