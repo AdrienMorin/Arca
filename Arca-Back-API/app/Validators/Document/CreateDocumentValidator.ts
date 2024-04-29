@@ -1,7 +1,7 @@
-import {rules, schema, CustomMessages } from '@ioc:Adonis/Core/Validator'
+import { rules, schema, CustomMessages } from '@ioc:Adonis/Core/Validator'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
-export default class UpdateDocumentValidator {
+export default class CreateDocumentValidator {
   constructor(protected ctx: HttpContextContract) {}
 
   public schema = schema.create({
@@ -21,8 +21,8 @@ export default class UpdateDocumentValidator {
       rules.maxLength(255)
     ]),
     date: schema.date(),
-    file: schema.file.optional({
-      size: '10mb',
+    file: schema.file({
+      size: '100mb',
       extnames: ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx','jpg','png','jpeg','webp']
     }),
     persons: schema.array().members(schema.number())

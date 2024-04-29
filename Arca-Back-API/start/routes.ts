@@ -56,6 +56,8 @@ Route.group(() => {
 
   Route.put('/document/update/:id', 'DocumentsController.updateDocument')
 
+  Route.get('/document/download/:id', 'DocumentsController.downloadDocumentById')
+
   //AWS routes
 
   Route.post('/uploadDocument','AwsController.uploadDocument')
