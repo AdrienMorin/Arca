@@ -12,7 +12,7 @@ export default class AwsController {
 
         if (payload.file.tmpPath) {
             const buffer = fs.readFileSync(payload.file.tmpPath);
-            await Drive.put('carlin.jpg', buffer)
+            await Drive.put('victor.pdf', buffer)
             return response.status(200).json({message: 'Document créé avec succès'})
         } else {
             console.log('File has not been moved to a temporary path');

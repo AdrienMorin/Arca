@@ -1,8 +1,10 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import CreateDocumentValidator from "App/Validators/CreateDocumentValidator";
 import UpdateDocumentValidator from "App/Validators/UpdateDocumentValidator";
+import AwsFileUploadValidator from 'App/Validators/AwsFileUploadValidator';
 import Document from "App/Models/Document";
-import Drive from '@ioc:Adonis/Core/Drive'
+import Drive from '@ioc:Adonis/Core/Drive';
+import fs from 'fs';
 
 export default class DocumentsController {
 
@@ -10,21 +12,33 @@ export default class DocumentsController {
         await auth.use('web').authenticate()
         await bouncer.with('DocumentPolicy').authorize('create')
         const payload = await request.validate(CreateDocumentValidator)
-        await payload.file.moveToDisk('./')
-        const fileName=payload.file.fileName
+        
         const doc = await Document.create({
             name:payload.name,
             description:payload.description,
-            filename:fileName,
+            filename:"",
             location:payload.location,
             category:payload.category,
             date:payload.date,
             creator:auth.user!.id,
             lastmodifier:auth.user!.id
         })
+        const fileName=doc.id.toString()+"."+payload.file.extname
+        doc.filename=fileName
+        await doc.save()
+
+        if (payload.file.tmpPath) {
+            console.log(payload.file.tmpPath)
+            const buffer = fs.readFileSync(payload.file.tmpPath);
+            await Drive.put(fileName ,buffer)
+            return response.status(200).json({message: 'Document created successfully'})
+        } else {
+            console.log('File has not been moved to a temporary path');
+        }
+
         await doc.related('persons').attach(payload.persons)
 
-        return response.status(200).json({message: 'Document créé avec succès'})
+        return response.status(200).json({message: 'Document created successfully'})
 
     }
 
@@ -96,6 +110,16 @@ export default class DocumentsController {
         }
 
     }
+
+    public async downloadDocumentById({auth, bouncer, request, response}: HttpContextContract) {
+        await auth.use('web').authenticate()
+        await bouncer.with('DocumentPolicy').authorize('download')
+        const document = await Document.findOrFail(request.param("id"))
+        const content= await Drive.get(document.filename)
+        const text=content.toString()
+        return response.status(200).json(text)
+    }
+
 
 
 }

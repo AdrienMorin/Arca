@@ -17,4 +17,7 @@ export default class DocumentPolicy extends BasePolicy {
 	public async delete(user: User) {
 		return (user.role === 'admin'||user.role === 'user'||user.role === 'superuser')
 	}
+	public async download(user: User) {
+		return (user.role === 'admin'||user.role === 'user'||user.role === 'superuser')
+	}
 }
