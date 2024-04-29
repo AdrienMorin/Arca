@@ -31,7 +31,7 @@ test("changePassword Super user ", async ({ client }) => {
       email: user!.email,
       password: "password1",
     });
-    response2.assertStatus(400);
+    response2.assertStatus(401);
 
     await user.delete();
   }
@@ -67,7 +67,7 @@ test("changePassword admin ", async ({ client }) => {
       email: user!.email,
       password: "password1",
     });
-    response2.assertStatus(400);
+    response2.assertStatus(401);
 
     await user.delete();
   }
@@ -103,7 +103,7 @@ test("changePassword user ", async ({ client }) => {
       email: user!.email,
       password: "password1",
     });
-    response2.assertStatus(400);
+    response2.assertStatus(401);
 
     await user.delete();
   }

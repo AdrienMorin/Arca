@@ -5,7 +5,7 @@ test("login wrong mail", async ({ client }) => {
     email: "userdoesntexists@nomail.com",
     password: "password",
   });
-  response.assertStatus(400);
+  response.assertStatus(401);
 });
 
 test("login wrong password SuperAdmin", async ({ client }) => {
@@ -13,7 +13,7 @@ test("login wrong password SuperAdmin", async ({ client }) => {
     email: "superuser@gmail.com",
     password: "wrongpassword",
   });
-  response.assertStatus(400);
+  response.assertStatus(401);
 });
 
 test("login wrong password admin", async ({ client }) => {
@@ -21,7 +21,7 @@ test("login wrong password admin", async ({ client }) => {
     email: "raffolgo@gmail.com",
     password: "wrongpassword",
   });
-  response.assertStatus(400);
+  response.assertStatus(401);
 });
 
 test("login wrong password user", async ({ client }) => {
@@ -29,7 +29,7 @@ test("login wrong password user", async ({ client }) => {
     email: "adLaurent@gmail.com",
     password: "wrongpassword",
   });
-  response.assertStatus(400);
+  response.assertStatus(401);
 });
 
 test("login good credentials SuperAdmin ", async ({ client }) => {

@@ -33,7 +33,7 @@ test("changePassword by ID SuperUser as SuperUser ", async ({ client }) => {
       email: user!.email,
       password: "password1",
     });
-    response2.assertStatus(400);
+    response2.assertStatus(401);
   }
   await user.delete();
 });
@@ -70,7 +70,7 @@ test("changePassword by ID admin as SuperUser ", async ({ client }) => {
       email: user!.email,
       password: "password1",
     });
-    response2.assertStatus(400);
+    response2.assertStatus(401);
   }
   await user.delete();
 });
@@ -107,7 +107,7 @@ test("changePassword by ID user as SuperUser ", async ({ client }) => {
       email: user!.email,
       password: "password1",
     });
-    response2.assertStatus(400);
+    response2.assertStatus(401);
   }
   await user.delete();
 });
@@ -167,7 +167,7 @@ test("changePassword by ID admin as admin ", async ({ client }) => {
       email: user!.email,
       password: "password1",
     });
-    response2.assertStatus(400);
+    response2.assertStatus(401);
   }
   await user.delete();
 });
@@ -204,7 +204,7 @@ test("changePassword by ID user as admin ", async ({ client }) => {
       email: user!.email,
       password: "password1",
     });
-    response2.assertStatus(400);
+    response2.assertStatus(401);
   }
   await user.delete();
 });
@@ -264,7 +264,7 @@ test("changePassword by ID admin as user ", async ({ client }) => {
       email: user!.email,
       password: "password1",
     });
-    response2.assertStatus(400);
+    response2.assertStatus(401);
   }
   await user.delete();
 });
@@ -301,7 +301,7 @@ test("changePassword by ID user as user ", async ({ client }) => {
       email: user!.email,
       password: "password1",
     });
-    response2.assertStatus(400);
+    response2.assertStatus(401);
   }
   await user.delete();
 });
