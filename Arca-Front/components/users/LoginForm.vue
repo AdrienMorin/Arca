@@ -1,7 +1,8 @@
 <script>
-import axios from "axios";    
-export default {    
-  name: "Login",  
+import axios from 'axios'
+
+export default {
+  name: 'Login',
   data(){
     return{
       email:'',
@@ -9,23 +10,25 @@ export default {
     }
   },
 
-  methods: { 
+  methods: {
     async handleSubmit() {
-      try {
-        const response = await axios.post(this.$config.public.API_URL, {
-          email: this.email,
-          password: this.password
-        });
-        console.log(response);
 
-        this.$router.push('/accueil'); //redirection
+      const response = await axios.post('https://127.0.0.1:3333/api/auth/login', {
+        email: this.email,
+        password: this.password
+      })
 
-      } catch (error) {
-        console.error('Login failed:', error);
+      const tokenCookie = useCookie('token')
+      tokenCookie.value = response.data.token
+
+      // redirect to homepage if user is authenticated
+      if (response.status === 200) {
+        this.$router.push('/accueil');
       }
+
     }
-  }  
-}   
+  }
+}
 </script>
 
 <template>
@@ -44,4 +47,4 @@ export default {
       </div>
     </UForm>
   </UDashboardCard>
-</template> 
+</template>
