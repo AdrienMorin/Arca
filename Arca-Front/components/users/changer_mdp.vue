@@ -69,11 +69,16 @@ export default {
 
     const handleSubmit = async () => {
       try {
+        if (oldPassword.value === '' || newPassword1.value === '' || newPassword2.value === '') {
+          alert("Veuillez remplir tous les champs");
+          return;
+        }
         if (newPassword1.value !== newPassword2.value) {
           alert("Les mots de passe ne correspondent pas");
           return;
         }
         console.log("submit password")
+        console.log(oldPassword.value, newPassword1.value, newPassword2.value);
         // const response = await axios.post("https://127.0.0.1:3333/api/changePassword", {
         //   oldPassword: oldPassword.value,
         //   newPassword: newPassword1.value,

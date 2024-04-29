@@ -27,7 +27,8 @@ export default {
   
   methods: {
   goToIndex() {
-    //this.$router.push('/UserPage');
+    location.reload();
+    //this.$router.push("/login");
   }
 }
 }
