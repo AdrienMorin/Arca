@@ -15,25 +15,23 @@ export default class AuthController {
       await bouncer.with('UserPolicy').authorize('createAdmin')
       await User.create(payload)
     } else {
-        return response.status(400).json({message: 'Role invalide'})
+      return response.status(400).json({message: 'Rôle invalide'})
     }
-    return response.status(200).json({message: 'Utilisateur créé avec succès'})
+    return response.status(200).json({message: 'Nouvel utilisateur créé avec succès'})
   }
 
   public async login({auth, request, response}: HttpContextContract){
     const {email, password} = await request.validate(LoginUserValidator)
     try {
       const authentication = await auth.use('web').attempt(email, password)
-      //console.log(authentication)
 
       if (authentication) {
         return response.status(200).json({isAuthenticated: true})
       } else {
-        return response.badRequest('Invalid credentials')
+        return response.badRequest('Informations d\'authentification incorrectes')
       }
     } catch (error) {
-      //console.error(error)
-      return response.badRequest('An error occurred during authentication')
+      return response.badRequest('Une erreur est survenue pendant l\'authentification')
     }
   }
 

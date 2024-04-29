@@ -1,7 +1,6 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import CreateDocumentValidator from "App/Validators/CreateDocumentValidator";
+import CreateDocumentValidator from "App/Validators/Document/CreateDocumentValidator";
 import UpdateDocumentValidator from "App/Validators/UpdateDocumentValidator";
-import AwsFileUploadValidator from 'App/Validators/AwsFileUploadValidator';
 import Document from "App/Models/Document";
 import Drive from '@ioc:Adonis/Core/Drive';
 import fs from 'fs';
@@ -31,14 +30,13 @@ export default class DocumentsController {
             console.log(payload.file.tmpPath)
             const buffer = fs.readFileSync(payload.file.tmpPath);
             await Drive.put(fileName ,buffer)
-            return response.status(200).json({message: 'Document created successfully'})
+            return response.status(200).json({message: 'Document créé avec succès'})
         } else {
-            console.log('File has not been moved to a temporary path');
+            console.log('Le fichier n\'a pas été déplacé à un emplacement temporaire');
         }
 
         await doc.related('persons').attach(payload.persons)
-
-        return response.status(200).json({message: 'Document created successfully'})
+        return response.status(200).json({message: 'Document créé avec succès'})
 
     }
 
@@ -66,11 +64,7 @@ export default class DocumentsController {
             }
         ).save()
         await updatedDoc.related('persons').sync(payload.persons)
-
-        return response.status(200).json({message:'Document updated'})
-
-        
-
+        return response.status(200).json({message:'Document mis à jour avec succès'})
     }
 
     public async fetchDocuments({auth, bouncer, response}: HttpContextContract){
@@ -95,8 +89,6 @@ export default class DocumentsController {
         return response.status(200).json(user)
     }
 
-
-
     public async deleteDocumentById({auth, bouncer, request, response}: HttpContextContract) {
         await auth.use('web').authenticate()
         await bouncer.with('DocumentPolicy').authorize('delete')
@@ -119,7 +111,4 @@ export default class DocumentsController {
         const text=content.toString()
         return response.status(200).json(text)
     }
-
-
-
 }

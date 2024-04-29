@@ -10,7 +10,7 @@ export default class PeopleController {
         await bouncer.with('PersonPolicy').authorize('create')
         const payload = await request.validate(CreatePersonValidator)
         await Person.create(payload)
-        return response.status(200).json({message: 'Personne créé avec succès'})
+        return response.status(200).json({message: 'Personne créée avec succès'})
     }
 
     public async updatePerson({auth, bouncer, request, response}:HttpContextContract){
@@ -19,8 +19,7 @@ export default class PeopleController {
         const payload = await request.validate(UpdatePersonValidator)
         const document=await Person.findOrFail(request.param("id"))
         await document.merge(payload).save()
-
-        return response.status(200).json({message:'Person updated'})
+        return response.status(200).json({message:'Personne mise à jour avec succès'})
 
     }
 
@@ -46,8 +45,6 @@ export default class PeopleController {
         return response.status(200).json(user)
     }
 
-
-
     public async deletePersonById({auth, bouncer, request, response}: HttpContextContract) {
         await auth.use('web').authenticate()
         await bouncer.with('PersonPolicy').authorize('delete')
@@ -55,7 +52,7 @@ export default class PeopleController {
             const documentId = request.body().id
             const document = await Person.findOrFail(documentId)
             await document.delete()
-            return response.status(200).json({message: 'Personne supprimé avec succès'})
+            return response.status(200).json({message: 'Personne supprimée avec succès'})
         } catch (error) {
             return response.status(400).json({message: 'Une erreur est survenue lors de la suppression de la personne'})
         }
