@@ -126,7 +126,7 @@ Route.group( () => {
     //Mongo DB routes, ici juste le temps que les évolutions du back soient terminées
     Route.get('/run','MongoDbsController.run')
     Route.get('/listDatabases','MongoDbsController.listDatabases')
-    Route.get('/createDocument','MongoDbsController.createDocument')
+    Route.post('/createDocument','MongoDbsController.createDocument')
 
 
 }).prefix("/api")

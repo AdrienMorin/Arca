@@ -36,18 +36,14 @@ export default class MongoDbsController {
     }
 
 
-    public async createDocument({ response}:HttpContextContract){
+    public async createDocument({ response,request}:HttpContextContract){
         
         await client.connect();
         await client.db("admin").command({ ping: 1 });
-        // const payload = await request.validate(MongoDbValidator)
-        // console.log(payload.category)
-        // const result = await client.db("arca-metadata").collection("arca").insertOne(payload.content);
 
-        const result = await client.db("arca-metadata").collection("arca").insertOne({
-            name: "Jean",
-            age: 30
-        });
+        const payload = await request.validate(MongoDbValidator)
+        const result = await client.db("arca-metadata").collection("arca").insertOne(payload);
+        
         console.log(`Nouveau document créé avec l\'id suivant ${result.insertedId}`);
         return response.status(200).json({message: 'Document créé avec succès'})
     }
