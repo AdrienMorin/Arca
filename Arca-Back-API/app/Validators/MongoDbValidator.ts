@@ -25,29 +25,21 @@ export default class MongoDbValidator {
       rules.minLength(3),
       rules.maxLength(255)
     ]),
-    date: schema.string.optional({}, [
-      rules.minLength(3),
-      rules.maxLength(255)
+    date: schema.date.optional({}, [
     ]),
-    dateDeFin: schema.string.optional({}, [
-      rules.minLength(3),
-      rules.maxLength(255)
+    dateDeFin: schema.date.optional({}, [
     ]),
     createur: schema.string({}, [
       rules.minLength(3),
       rules.maxLength(255)
     ]),
-    dateDeCreation: schema.string({}, [
-      rules.minLength(3),
-      rules.maxLength(255)
+    dateDeCreation: schema.date({}, [
     ]),
     derniereModifPar: schema.string({}, [
       rules.minLength(3),
       rules.maxLength(255)
     ]),
-    dateDeDerniereModfi: schema.string({}, [
-      rules.minLength(3),
-      rules.maxLength(255)
+    dateDeDerniereModfi: schema.date({}, [
     ]),
     personnes: schema.string.optional({}, [
       rules.minLength(3),

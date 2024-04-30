@@ -45,7 +45,7 @@
         },
         {
             "name": "dateDeCreation",
-            "type": "String",
+            "type": "Date",
             "required": true
         },
         {
