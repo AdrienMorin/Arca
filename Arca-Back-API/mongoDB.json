@@ -1,0 +1,78 @@
+{
+"collection": [
+    {
+      "name": "document",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "ObjectId",
+          "primary_key": true
+        },
+        {
+            "name": "titre",
+            "type": "String",
+            "required": true
+        },
+        {
+            "name": "description",
+            "type": "String",
+            "required": false
+        },
+        {
+            "name": "retranscription",
+            "type": "String",
+            "required": false
+        },
+        {
+            "name": "s3_id",
+            "type": "String",
+            "required": true
+        },
+        {
+            "name": "date",
+            "type": "Date",
+            "required": false
+        },
+        {
+            "name": "dateDeFin",
+            "type": "Date",
+            "required": false
+        },
+        {
+            "name": "createur",
+            "type": "String",
+            "required": true
+        },
+        {
+            "name": "dateDeCreation",
+            "type": "String",
+            "required": true
+        },
+        {
+            "name": "derniereModifPar",
+            "type": "String",
+            "required": true
+        },
+        {
+            "name": "dateDeDerniereModif",
+            "type": "Date",
+            "required": true
+        },
+        {
+            "name": "personnes",
+            "type": "Array",
+            "required": false
+        },
+        {
+            "name": "catégories",
+            "type": "Array",
+            "required": false
+        },
+        {
+            "name": "villes",
+            "type": "Array",
+            "required": false
+        }
+    ]
+    }   
+}
