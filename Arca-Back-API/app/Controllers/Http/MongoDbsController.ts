@@ -2,7 +2,7 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import MongoDbGetValidator from 'App/Validators/MongoDbGetValidator';
 import MongoDbValidator from 'App/Validators/MongoDbValidator';
 const { MongoClient, ServerApiVersion } = require("mongodb");
-const uri = "mongodb+srv://hexanomedufutur:LCQbwYjD0LLaTxRW@arca-metadata-storage.qp6278d.mongodb.net/";
+const uri = process.env.MONGO_KEY;
 
 const client = new MongoClient(uri,  {
         serverApi: {
