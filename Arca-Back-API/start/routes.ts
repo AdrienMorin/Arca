@@ -127,6 +127,7 @@ Route.group( () => {
     Route.get('/run','MongoDbsController.run')
     Route.get('/listDatabases','MongoDbsController.listDatabases')
     Route.post('/createDocument','MongoDbsController.createDocument')
+    Route.post( '/findOneListingById','MongoDbsController.findOneListingById')
 
 
 }).prefix("/api")
