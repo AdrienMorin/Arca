@@ -39,6 +39,7 @@
 import { ref } from 'vue';
 import ConfpopupMdp from '~/components/users/popup_ConfChangeMdp.vue';
 import axios from "axios";    
+import UserController from '~/services/userController';
 
 export default {
   props: ['TogglePopup'],
@@ -78,16 +79,13 @@ export default {
           return;
         }
         console.log("submit password")
-        console.log(oldPassword.value, newPassword1.value, newPassword2.value);
-        // const response = await axios.post("https://127.0.0.1:3333/api/changePassword", {
-        //   oldPassword: oldPassword.value,
-        //   newPassword: newPassword1.value,
-        // });
-        // console.log(response);
-        // if (response.status === 200){
-        //   //ferme la pop up 
-        //   TogglePopup();
-        // }
+        
+        const response = await UserController.getInstance().changePassword(oldPassword.value, newPassword1.value);
+        console.log(response);
+        if (response.status === 200){
+          //ferme la pop up 
+          TogglePopup();
+        }
         //ferme cette fenêtre 
         TogglePopup1('buttonTrigger1');
         //closePopup();
