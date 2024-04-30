@@ -3,9 +3,35 @@
     <Navbar class="flex-none h-auto"/>
     <div class="flex-grow w-full">
         <Popup 
-          v-if="popupTriggers.buttonTrigger" 
-          :TogglePopup="() => TogglePopup('buttonTrigger')">
+          ref="popupSupprimer"
+          :title="'Supprimer'"
+          :description1="'Etes-vous sûr de vouloir supprimer le document suivant'"
+          :titreDoc="'Complainte du'"
+          :color="0" 
+          :annuler="0">
         </Popup>
+
+        <Popup 
+          ref="popupModif"
+          :title="'Modifier'"
+          :description1="'Votre Document'"
+          :titreDoc="'Complainte du'"
+          :description2="'a bien été Modifié.'"
+          :color="1" 
+          :annuler="0">
+        </Popup>
+
+        <Popup
+          ref="popupAnnul"
+          :title="'Annuler Modifications'"
+          :description1="'Etes-vous sûr de vouloir supprimer les modifications effectuées sur le document suivant'"
+          :titreDoc="'Complainte du'"
+          :annuler="1" >
+
+        </Popup>
+
+        
+
     
       <!-- component -->
       <div class="flex-col flex-grow h-full">
@@ -70,7 +96,7 @@
                 <div class="row-span-5"></div>
     
                 <div class="flex justify-center items-center h-min space-y-3 relative md:w-2/2 lg:w-3/4  ">
-               <button @click="refreshPage" type="button" class="relative top-1 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-base px-6 py-3 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+               <button @click="flipAnnuler()" type="button" class="relative top-1 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-base px-6 py-3 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                 <p class="text-xl">Annuler</p>
               </button>
                 </div>
@@ -92,7 +118,7 @@
               <div class="flex-row place-content-between	flex  w-5/6 mx-auto">
     
                 <div class=" place-content-start items-start flex w-2/4 ">
-                  <button @click="() => TogglePopup('buttonTrigger')" type="button" class="relative top-1 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-base px-10 py-3 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800">
+                  <button @click="flipSupprimer()" type="button" class="relative top-1 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-base px-10 py-3 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800">
                     <p class="text-xl">Supprimer le  Document</p>
                   </button>
                 </div>
@@ -100,7 +126,7 @@
     
                 <div class="place-content-end	flex w-2/4 ">
                   <div>
-                    <button @click="refreshPage" type="button" class="relative top-1  w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-base px-10 py-3 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                    <button @click="flipModifier()" type="button" class="relative top-1  w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-base px-10 py-3 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                       <p class="text-xl">Modifier le  Document</p>
                     </button>
                   </div>
@@ -119,29 +145,12 @@ import Navbar from '~/components/users/Navbar.vue';
 import doctype from '~/components/users/Document-type-dropdown.vue';
 import personne_menu from '~/components/users/personne_menu.vue';
 import description from '~/components/users/description_box.vue';
-import Popup from '~/components/users/popup_supressionDoc.vue';
+import Popup from '~/components/users/popup.vue';
+import PopupAnnuler from '~/components/users/popup_sup.vue';
 import {ref} from 'vue';
 
 export default {
-  setup () {
-		const popupTriggers = ref({
-			buttonTrigger: false,
-		});
-
-		const TogglePopup = (trigger) => {
-      setTimeout(() => {
-        popupTriggers.value[trigger] = !popupTriggers.value[trigger]
-      }, 500); // you choose the timout you want 
-		}
-
-		return {
-			Popup,
-			popupTriggers,
-			TogglePopup
-		}
-	},
-
-  components: {
+  	  components: {
     doctype,
     personne_menu,
     description,
@@ -153,6 +162,9 @@ export default {
   data() {
     return {
       nom: '', // Initialize with an empty string
+      popupAnnuler: false,
+  
+      
     };
   },
 
@@ -165,6 +177,15 @@ export default {
 
       refreshPage() {
         location.reload();
+      },
+      flipSupprimer() {
+        this.$refs.popupSupprimer.mainshow = !this.$refs.popupSupprimer.mainshow;
+      },
+      flipModifier() {
+        this.$refs.popupModif.mainshow = !this.$refs.popupModif.mainshow;
+      },
+      flipAnnuler() {
+        this.$refs.popupAnnul.mainshow = !this.$refs.popupAnnul.mainshow;
       },
 
     }
