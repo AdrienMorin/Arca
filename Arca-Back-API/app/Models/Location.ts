@@ -6,7 +6,16 @@ export default class Location extends BaseModel {
   public id: number
 
   @column()
-  public name: string
+  public displayname: string
+
+  @column()
+  public cityname: string
+
+  @column()
+  public regionname: string
+
+  @column()
+  public zipcode: string
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

@@ -34,6 +34,6 @@ export default class AuthController {
 
   public async logout({auth, response}){
     await auth.use('api').revoke()
-    response.redirect('/api/')
+    return response.status(200).json({message: 'Vous êtes déconnecté'})
   }
 }
