@@ -1,5 +1,4 @@
 <script>
-import axios from 'axios'
 import UserController from '~/services/userController'
 
 export default {
@@ -22,7 +21,7 @@ export default {
       // redirect to homepage if user is authenticated
       if (response.status === 200) {
         console.log('Vous êtes connecté')
-        this.$router.push('/accueil');
+        this.$router.push('/rechercher');
       }
 
     },

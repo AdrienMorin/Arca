@@ -1,5 +1,4 @@
 <script>
-import Header from '@nuxt/ui-pro/components/header/Header.vue';
 import doctype from '~/components/users/Document-type-dropdown.vue';
 import personne_menu from '~/components/users/personne_menu.vue';
 import description from '~/components/users/description_box.vue';
@@ -9,6 +8,7 @@ export default {
     doctype,
     personne_menu,
     description,
+    Navbar
     
   },
   data() {
@@ -30,23 +30,15 @@ export default {
 
   }
 }
+definePageMeta({
+  middleware:'auth',
+});
 
 </script>
 
 
 <template>
-
-  <!-- component -->
 	<div class="flex-col w-full">
-      
-    
-      
-      
-
-
-
-
-
     <div class="flex flex-row h-full">
 
       <div class="flex-none xl:w-1/3 lg:w-1/4  bg-[#027BCE] bg-opacity-10 h-screen p-20% ">
@@ -114,7 +106,7 @@ export default {
 
       </div>
 
-             <div class="flex-grow md:w-1/2 space-y-8">
+        <div class="flex-grow md:w-1/2 space-y-8">
           <description/>
 
           <div class=" flex justify-end w-5/6 mx-auto space-y-3 relative  bottom-0 right-0 absolute">
@@ -127,11 +119,6 @@ export default {
         </div>
 
       </div>
-
-    
-
-
-
-</div>
+  </div>
 </template>
 

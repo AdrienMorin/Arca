@@ -3,8 +3,11 @@ import LoginForm from "~/components/users/LoginForm.vue";
 export default {
   components: {
     LoginForm
-  }
+  },
 };
+definePageMeta({
+  layout: 'loginLayout'
+})
 </script>
 
 <template>

@@ -24,7 +24,7 @@ export default class AuthController {
     const {email, password} = await request.validate(LoginUserValidator)
     try {
       const token = await auth.use('api').attempt(email, password,{
-        expiresIn: '10 mins'
+        expiresIn: '30 mins'
       })
       return token
     } catch {
