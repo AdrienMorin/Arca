@@ -58,9 +58,6 @@ Route.group(() => {
 
   Route.get('/document/download/:id', 'DocumentsController.downloadDocumentById')
 
-  //AWS routes
-
-  Route.post('/uploadDocument','AwsController.uploadDocument')
 
   // Person routes
 
@@ -104,6 +101,10 @@ Route.group(() => {
 
   Route.put('/category/update/:id', 'CategoriesController.updateCategory')
 
+  //AI routes
+
+  Route.post('/ai/create', 'AisController.createDocument')
+
 }).prefix("/api").middleware('auth')
 
 // Unprotected routes
@@ -111,8 +112,8 @@ Route.group( () => {
   // Index route
   Route.get('/', async ({auth}: HttpContextContract) => {
     try {
-      await auth.use('web').authenticate()
-      if(auth.use('web').isLoggedIn){
+      await auth.use('api').authenticate()
+      if(auth.use('api').isLoggedIn){
         return "Vous êtes connecté"
       } else {
         return "Veuillez vous connecter pour pouvoir accéder à l'application"
@@ -125,6 +126,14 @@ Route.group( () => {
 
   // Login route
   Route.post("/auth/login", 'AuthController.login')
+
+    //Mongo DB routes, ici juste le temps que les évolutions du back soient terminées
+    Route.get('/run','MongoDbsController.run')
+    Route.get('/listDatabases','MongoDbsController.listDatabases')
+    Route.post('/createDocument','MongoDbsController.createDocument')
+    Route.post( '/findOneListingById','MongoDbsController.findOneListingById')
+
+
 }).prefix("/api")
 
 

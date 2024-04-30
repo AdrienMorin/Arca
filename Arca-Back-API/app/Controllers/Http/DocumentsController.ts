@@ -8,7 +8,7 @@ import fs from 'fs';
 export default class DocumentsController {
 
     public async createDocument({auth, bouncer, request, response}: HttpContextContract){
-        await auth.use('web').authenticate()
+        await auth.use('api').authenticate()
         await bouncer.with('DocumentPolicy').authorize('create')
         const payload = await request.validate(CreateDocumentValidator)
         
@@ -41,7 +41,7 @@ export default class DocumentsController {
     }
 
     public async updateDocument({auth, bouncer, request, response}:HttpContextContract){
-        await auth.use('web').authenticate()
+        await auth.use('api').authenticate()
         await bouncer.with('DocumentPolicy').authorize('update')
         const payload = await request.validate(UpdateDocumentValidator)
         const document=await Document.findOrFail(request.param("id"))
@@ -68,14 +68,14 @@ export default class DocumentsController {
     }
 
     public async fetchDocuments({auth, bouncer, response}: HttpContextContract){
-        await auth.use('web').authenticate()
+        await auth.use('api').authenticate()
         await bouncer.with('DocumentPolicy').authorize('viewList')
         const allDocuments = await Document.query()
         return response.status(200).json(allDocuments)
     }
 
     public async getByName({auth, bouncer, request, response}: HttpContextContract){
-        await auth.use('web').authenticate()
+        await auth.use('api').authenticate()
         await bouncer.with('DocumentPolicy').authorize('viewList')
         const nameParam=request.param("name")
         const allDocuments = await Document.query().where('name', 'like', `%${nameParam}%`);
@@ -83,14 +83,14 @@ export default class DocumentsController {
     }
 
     public async getDocumentById({auth, bouncer, request, response}: HttpContextContract) {
-        await auth.use('web').authenticate()
+        await auth.use('api').authenticate()
         await bouncer.with('DocumentPolicy').authorize('view')
         const user = await Document.findOrFail(request.param("id"))
         return response.status(200).json(user)
     }
 
     public async deleteDocumentById({auth, bouncer, request, response}: HttpContextContract) {
-        await auth.use('web').authenticate()
+        await auth.use('api').authenticate()
         await bouncer.with('DocumentPolicy').authorize('delete')
         try {
             const documentId = request.body().id
@@ -104,7 +104,7 @@ export default class DocumentsController {
     }
 
     public async downloadDocumentById({auth, bouncer, request, response}: HttpContextContract) {
-        await auth.use('web').authenticate()
+        await auth.use('api').authenticate()
         await bouncer.with('DocumentPolicy').authorize('download')
         const document = await Document.findOrFail(request.param("id"))
         const content= await Drive.get(document.filename)
