@@ -17,8 +17,8 @@
         <div class="flex-none lg:h-1/9 "> 
             <p class="text-2xl">Description</p>
         </div>
-        <div class="relative h-full border-2  border-black rounded-md">
-            <textarea class="border text-lg relative h-full w-full text-justify"></textarea>
+        <div class="relative h-full border-2 border-black rounded-md">
+            <textarea class="border text-lg relative h-full w-full text-justify resize-none"></textarea>
         </div>
     </div>
 </div>

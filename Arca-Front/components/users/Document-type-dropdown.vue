@@ -4,7 +4,7 @@
       <MenuButton class="inline-flex justify-right gap-x-1 rounded-md bg-white px-4 py-1 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-50">
         <div class="flex flex-row justify-center space-x-3">
           <div class="basis-1/9  content-center ">
-            <img src="~/assets/folder.png" alt="folder" class="w-4 h-4 ">
+            <FolderIcon class="w-6 h-6 "/>
           </div>
           <div class="flex justify-left lg:text-base md:text-xs ">{{ selectedOption }}</div>
         </div>
@@ -29,8 +29,8 @@
 </template>
 
 <script setup>
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
-import { ChevronDownIcon } from '@heroicons/vue/20/solid'
+import { Menu, MenuButton, MenuItem, MenuItems} from '@headlessui/vue';
+import { ChevronDownIcon, FolderIcon} from '@heroicons/vue/20/solid';
 import { ref } from 'vue';
 
 let selectedOption = ref('Choisir type de document');
