@@ -12,8 +12,7 @@ export default {
 
   methods: {
     async handleSubmit() {
-
-      const response = await axios.post('https://127.0.0.1:3333/api/auth/login', {
+      const response = await axios.post(this.$config.public.API_URL + '/auth/login', {
         email: this.email,
         password: this.password
       })
@@ -23,10 +22,11 @@ export default {
 
       // redirect to homepage if user is authenticated
       if (response.status === 200) {
+        console.log('Vous êtes connecté')
         this.$router.push('/accueil');
       }
 
-    }
+    },
   }
 }
 </script>

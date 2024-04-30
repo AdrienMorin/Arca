@@ -27,21 +27,59 @@
         </div>
       </div>
     </div>
-    <div class="flex items-center">
-      <div class="md:flex md:items-center">
+    <div class="flex items-center relative hover:shadow-lg hover:rounded-lg" @click="toggleDropdown">
+      <div class="flex items-center cursor-pointer">
         <span class="text-white px-3 py-2 font-medium">Christiane</span>
+        <img src="~/public/avatar-login.png" alt="Avatar" class="h-8 w-8">
       </div>
-      <a href="#">
-        <div class="">
-          <img src="~/public/avatar-login.png" alt="Archive" class="h-8 w-8">
-        </div>
-      </a>
+      <!-- Menu -->
+      <div v-if="showDropdown" @click.away="showDropdown = false" class="absolute top-12 right-0 bg-white shadow-md rounded-md mt-1">
+        <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">View Profile</a>
+        <button @click="handleLogout" class="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left">Logout</button>
+      </div>
     </div>
   </nav>
 </template>
 
 <script>
+import axios from 'axios'
 export default {
-  name: 'Navbar'
+  data() {
+    return {
+      showDropdown: false
+    };
+  },
+  name: 'Navbar',
+
+  methods:{
+    toggleDropdown() {
+      this.showDropdown = !this.showDropdown;
+    },
+    async handleLogout() {
+    try {
+      const tokenCookie = useCookie('token')
+      const token = tokenCookie.value
+
+      const response = await axios.post(this.$config.public.API_URL + '/auth/logout', {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+
+      console.log(response)
+
+      if (response.status === 200) {
+        console.log('Vous êtes déconnecté')
+        this.$router.push('/login');
+      } else {
+        console.error('Failed to logout:', response.data)
+      }
+    } catch (error) {
+      console.error('Error logging out:', error)
+    }
+  }
+  }
 }
 </script>
