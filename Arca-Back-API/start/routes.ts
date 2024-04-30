@@ -101,6 +101,10 @@ Route.group(() => {
 
   Route.put('/category/update/:id', 'CategoriesController.updateCategory')
 
+  //AI routes
+
+  Route.post('/ai/create', 'AisController.createDocument')
+
 }).prefix("/api").middleware('auth')
 
 // Unprotected routes
