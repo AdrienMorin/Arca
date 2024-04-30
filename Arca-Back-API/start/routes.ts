@@ -58,9 +58,6 @@ Route.group(() => {
 
   Route.get('/document/download/:id', 'DocumentsController.downloadDocumentById')
 
-  //AWS routes
-
-  Route.post('/uploadDocument','AwsController.uploadDocument')
 
   // Person routes
 
@@ -125,6 +122,14 @@ Route.group( () => {
 
   // Login route
   Route.post("/auth/login", 'AuthController.login')
+
+    //Mongo DB routes, ici juste le temps que les évolutions du back soient terminées
+    Route.get('/run','MongoDbsController.run')
+    Route.get('/listDatabases','MongoDbsController.listDatabases')
+    Route.post('/createDocument','MongoDbsController.createDocument')
+    Route.post( '/findOneListingById','MongoDbsController.findOneListingById')
+
+
 }).prefix("/api")
 
 

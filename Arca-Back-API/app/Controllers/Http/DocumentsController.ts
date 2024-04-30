@@ -104,7 +104,7 @@ export default class DocumentsController {
     }
 
     public async downloadDocumentById({auth, bouncer, request, response}: HttpContextContract) {
-        await auth.use('web').authenticate()
+        await auth.use('api').authenticate()
         await bouncer.with('DocumentPolicy').authorize('download')
         const document = await Document.findOrFail(request.param("id"))
         const content= await Drive.get(document.filename)

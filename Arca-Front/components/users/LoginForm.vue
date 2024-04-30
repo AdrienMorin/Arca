@@ -1,5 +1,6 @@
 <script>
 import axios from 'axios'
+import UserController from '~/services/userController'
 
 export default {
   name: 'Login',
@@ -12,10 +13,8 @@ export default {
 
   methods: {
     async handleSubmit() {
-      const response = await axios.post(this.$config.public.API_URL + '/auth/login', {
-        email: this.email,
-        password: this.password
-      })
+      
+      const response = await UserController.getInstance().login(this.email, this.password)
 
       const tokenCookie = useCookie('token')
       tokenCookie.value = response.data.token
