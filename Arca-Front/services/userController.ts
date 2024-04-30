@@ -3,22 +3,17 @@ import axios from "axios";
 //constant for the base url
 const baseUrl = "https://127.0.0.1:3333/api";
 
-//pour appeler l'api (exemple login)
-// const response = Api.getInstance().login(email, password);
+//pour appeler l'UserController (exemple login)
+// const response = await UserController.getInstance().login(email, password);
 
-class Api {
-  private static instance: Api;
-  private baseUrl: string;
+class UserController {
+  private static instance: UserController;
 
-  private constructor() {
-    this.baseUrl = "https://127.0.0.1:3333/api";
-  }
-
-  public static getInstance(): Api {
-    if (!Api.instance) {
-      Api.instance = new Api();
+  public static getInstance(): UserController {
+    if (!UserController.instance) {
+      UserController.instance = new UserController();
     }
-    return Api.instance;
+    return UserController.instance;
   }
 
   public async login(email: string, password: string): Promise<any> {
@@ -58,4 +53,4 @@ class Api {
   }
 }
 
-export default Api;
+export default UserController;
