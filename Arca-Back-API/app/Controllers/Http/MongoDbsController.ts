@@ -1,4 +1,5 @@
-// import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import MongoDbValidator from 'App/Validators/MongoDbValidator';
 const { MongoClient, ServerApiVersion } = require("mongodb");
 const uri = "mongodb+srv://hexanomedufutur:LCQbwYjD0LLaTxRW@arca-metadata-storage.qp6278d.mongodb.net/";
 const client = new MongoClient(uri,  {
@@ -17,11 +18,7 @@ export default class MongoDbsController {
         try {
             await client.connect();
             await client.db("admin").command({ ping: 1 });
-            console.log("Pinged your deployment. You successfully connected to MongoDB!");
-            await this.createDocument(client,{
-                name: "Jean",
-                age: 30
-            })
+            console.log("Votre déploiement a été pingé. Vous vous êtes connecté avec succès à MongoDB");
         } finally {
             await client.close();
         }
@@ -38,8 +35,20 @@ export default class MongoDbsController {
         }
     }
 
-    public async createDocument(client, newDocument){
-        const result = await client.db("arca-metadata").collection("arca").insertOne(newDocument);
-        console.log(`New document created with the following id: ${result.insertedId}`);
+
+    public async createDocument({ response}:HttpContextContract){
+        
+        await client.connect();
+        await client.db("admin").command({ ping: 1 });
+        // const payload = await request.validate(MongoDbValidator)
+        // console.log(payload.category)
+        // const result = await client.db("arca-metadata").collection("arca").insertOne(payload.content);
+
+        const result = await client.db("arca-metadata").collection("arca").insertOne({
+            name: "Jean",
+            age: 30
+        });
+        console.log(`Nouveau document créé avec l\'id suivant ${result.insertedId}`);
+        return response.status(200).json({message: 'Document créé avec succès'})
     }
 }
