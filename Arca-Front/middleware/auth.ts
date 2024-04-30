@@ -1,15 +1,27 @@
-import axios from "~/node_modules/axios/index";
+import axios from '~/node_modules/axios/index'
+
 export default defineNuxtRouteMiddleware(async(to, from)=> {
-    try {
-        const response = await axios.get(this.$config.public.API_URL);
-        if (response.data.isAuthenticated) {
-            return navigateTo(to.fullPath);
-        }
-        
-        if (to.path !== '/login') {
-            return navigateTo('/login');
-        }
-    } catch (error) {
-        console.error('Error checking session cookie:', error);
+  console.log('auth middleware')
+  try {
+    let tokenCookie = useCookie( 'token')
+    console.log(tokenCookie)
+    const token = tokenCookie.value
+
+    const response = await axios.get('https://127.0.0.1:3333/api/', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+
+    console.log('response:', response.data)
+    if (response.data !== 'Vous êtes connecté') {
+      console.log('Vous êtes connecté')
+      return navigateTo('/login')
     }
+
+
+  } catch (error) {
+      console.error('Error checking auth:', error)
+  }
+
 });
