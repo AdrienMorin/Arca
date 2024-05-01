@@ -32,32 +32,15 @@ Route.group(() => {
   Route.post('/deleteUser', 'UsersController.deleteUserById')
 
   // User routes
-  Route.get('/getUser', 'UsersController.getLoggedUser')
+  Route.get('/user/getUser', 'UsersController.getLoggedUser')
 
-  Route.get('/getUser/:id', 'UsersController.getUserById')
+  Route.get('/user/getUser/:id', 'UsersController.getUserById')
 
-  Route.get("/fetchUsers", 'UsersController.fetchUsers')
+  Route.get("/user/fetchUsers", 'UsersController.fetchUsers')
 
-  Route.post('/changePassword', 'UsersController.changeUserPassword')
+  Route.post('/user/changePassword', 'UsersController.changeUserPassword')
 
-  Route.post('/changePasswordById', 'UsersController.changeUserPasswordById')
-
-  // Document routes
-
-  Route.post('/document/create', 'DocumentsController.createDocument')
-
-  Route.post('/document/delete', 'DocumentsController.deleteDocumentById')
-
-  Route.get('/document/fetchDocuments', 'DocumentsController.fetchDocuments')
-
-  Route.get('/document/getDocument/:id', 'DocumentsController.getDocumentById')
-
-  Route.get('/document/getByName/:name','DocumentsController.getByName')
-
-  Route.put('/document/update/:id', 'DocumentsController.updateDocument')
-
-  Route.get('/document/download/:id', 'DocumentsController.downloadDocumentById')
-
+  Route.post('/user/changePasswordById', 'UsersController.changeUserPasswordById')
 
   // Person routes
 
@@ -103,7 +86,11 @@ Route.group(() => {
 
   //AI routes
 
-  Route.post('/ai/create', 'AisController.createDocument')
+  Route.post('/ai/upload', 'AisController.uploadDoc')
+
+  //Upload routes
+
+  Route.post('/basic/upload','BasicUploadPipelinesController.uploadDoc')
 
 }).prefix("/api").middleware('auth')
 
@@ -126,14 +113,6 @@ Route.group( () => {
 
   // Login route
   Route.post("/auth/login", 'AuthController.login')
-
-    //Mongo DB routes, ici juste le temps que les évolutions du back soient terminées
-    Route.get('/run','MongoDbsController.run')
-    Route.get('/listDatabases','MongoDbsController.listDatabases')
-    Route.post('/createDocument','MongoDbsController.createDocument')
-    Route.post( '/findOneListingById','MongoDbsController.findOneListingById')
-    Route.post('/uploadDoc','BasicUploadPipelinesController.uploadDoc')
-
 
 }).prefix("/api")
 
