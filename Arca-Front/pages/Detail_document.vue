@@ -22,7 +22,7 @@ export default {
       location.reload();
       },
       modifyDocument() {
-        this.$router.push('/modifDocument');
+        this.$router.push('/Modif_document');
       }
 
   }
