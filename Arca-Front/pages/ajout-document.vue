@@ -19,6 +19,13 @@
       return {
         nom: '', // Initialize with an empty string
         liste: ['Paris', 'Marseille','prague', 'pipi', 'popo','papa', 'papi'], // import the list of people from the database
+        File: '',
+        titre: '',
+        description: '',
+        date: '',
+        lieu: '',
+        type: '',
+        personnes: [],
       };
     },
 
@@ -42,12 +49,23 @@
       flipEnregistrer() {
         this.$refs.popupEnregistrer.mainshow = !this.$refs.popupEnregistrer.mainshow;
       },
-    uploadDocument() {
-        // Handle the document upload
-        const fileInput = document.getElementById('file-input');
-        const file = fileInput.files[0]; //simulate 
-        // Perform the upload logic here
-    }
+    async uploadDocument() {
+
+        const tokenCookie = useCookie('token')
+        tokenCookie.value = response.data.token
+
+      const response = await UserController.getInstance().uploadDocument(
+        this.File, this.titre, this.description, this.date, this.lieu, this.type, this.personnes, tokenCookie);
+
+      
+      // redirect to homepage if user is authenticated
+      if (response.status === 200) {
+        console.log('Vous êtes connecté')
+        this.$router.push('/rechercher');
+      }
+    },
+        
+    
 
 
 
