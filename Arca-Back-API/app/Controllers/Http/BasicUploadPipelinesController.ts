@@ -3,7 +3,7 @@ const { MongoClient, ServerApiVersion } = require("mongodb");
 const uri = "mongodb+srv://hexanomedufutur:LCQbwYjD0LLaTxRW@arca-metadata-storage.qp6278d.mongodb.net/";
 import Drive from '@ioc:Adonis/Core/Drive';
 import fs from 'fs';
-import BasicUploadPipelineValidator from 'App/Validators/BasicUploadPipelineValidator';
+import BasicUploadPipelineValidator from 'App/Validators/Pipelines/BasicUploadPipelineValidator';
 
 const client = new MongoClient(uri,  {
     serverApi: {
