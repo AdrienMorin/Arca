@@ -44,6 +44,8 @@ class UserController {
     return response;
   }
 
+  public async addDocument()
+
   public async register(
     email: string,
     password: string,
