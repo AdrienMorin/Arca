@@ -2,7 +2,7 @@
   
     <div class="fixed inset-0 bg-black bg-opacity-10 backdrop-blur-md z-50 place-content-center "  >
       <div class="rounded-lg bg-white p-8 shadow-2xl lg:w-1/2 md:w-3/4 mx-auto  ">
-        <h2 class="text-2xl font-bold">Supprimer</h2>
+        <h2 class="text-2xl font-bold">test</h2>
        
     
         <div class=" text-xl ">
@@ -10,7 +10,7 @@
             Votre document “
           </p>
           <p class="inline-block">La complainte du partisan</p>
-          <p class="inline-block">” a bien été supprimé.</p>
+          <p class="inline-block">” a bien été ajouté.</p>
         </div>
         <div class="mt-4 flex gap-2 place-content-center">
          

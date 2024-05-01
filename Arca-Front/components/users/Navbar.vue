@@ -1,7 +1,7 @@
 <template>
   <nav class="bg-blue-600 h-16 py-3.5 px-6 md:flex justify-between items-center">
     <div class="flex items-center">
-      <NuxtLink to="/accueil">
+      <NuxtLink to="/rechercher">
         <img src="~/public/logo-thel.png" alt="Logo" class="h-10 w-9">
       </NuxtLink>
     </div>
@@ -27,21 +27,63 @@
         </div>
       </div>
     </div>
-    <div class="flex items-center">
-      <div class="md:flex md:items-center">
-        <span class="text-white px-3 py-2 font-medium">Christiane</span>
+    <div class="flex items-center relative hover:shadow-xl hover:rounded-lg" @click="toggleDropdown">
+      <div class="flex items-center cursor-pointer">
+        <span class="text-white px-3 py-2 font-medium">{{ userName }}</span>
+        <img src="~/public/avatar-login.png" alt="Avatar" class="h-8 w-8">
       </div>
-      <a href="#">
-        <div class="">
-          <img src="~/public/avatar-login.png" alt="Archive" class="h-8 w-8">
-        </div>
-      </a>
+      <!-- Menu -->
+      <div v-if="showDropdown" @click.away="showDropdown = false" class="absolute top-12 right-0 bg-white shadow-md rounded-md mt-1 w-[150px]">
+        <NuxtLink to="/user-page" class="block px-4 py-3 text-gray-800 hover:bg-gray-200">Mon profil</NuxtLink>
+        <button @click="handleLogout" class="block px-4 py-3 text-gray-800 hover:bg-gray-200 w-full text-left">Se déconnecter</button>
+      </div>
     </div>
   </nav>
 </template>
 
 <script>
+import UserController from '~/services/userController'
 export default {
-  name: 'Navbar'
+  data() {
+    return {
+      showDropdown: false,
+      userName: ''
+    };
+  },
+
+  async mounted() {
+    this.userName = await this.getName();
+  },
+
+  methods:{
+    toggleDropdown() {
+      this.showDropdown = !this.showDropdown;
+    },
+
+    async handleLogout() {
+      try {
+        const tokenCookie = useCookie('token')
+        const token = tokenCookie.value
+        const response = await UserController.getInstance().logout(token);
+        console.log(response)
+
+        if (response.status === 200) {
+          console.log('Vous êtes déconnecté')
+          this.$router.push('/login');
+        } else {
+          console.error('Failed to logout:', response.data)
+        }
+      } catch (error) {
+        console.error('Error logging out:', error)
+      }
+    },
+
+    async getName(){
+      const tokenCookie = useCookie('token')
+      const token = tokenCookie.value
+      const response = await UserController.getInstance().getUser(token);
+      return response.data.firstname;
+    }
+  }
 }
 </script>

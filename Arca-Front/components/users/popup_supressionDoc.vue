@@ -2,10 +2,14 @@
   
     <div class="fixed inset-0 bg-black bg-opacity-10 backdrop-blur-md z-50 place-content-center "  >
 
-      <Confpopup
-			v-if="popupTriggers1.buttonTrigger1" 
-			:TogglePopup1="() => TogglePopup1('buttonTrigger1')">
-		</Confpopup>
+          <Confpopup
+            v-if="popupTriggers1.buttonTrigger1" 
+            :TogglePopup1="() => TogglePopup1('buttonTrigger1')"
+            :title="'Supprimer'"
+            :description="'a bien été supprimé.'"
+            :titreDoc="'La complainte du Partisan'" 
+            :color="0">
+          </Confpopup>
   
       <div class="rounded-lg bg-white p-8 shadow-2xl lg:w-1/2 md:w-3/4 mx-auto  ">
         <h2 class="text-2xl font-bold">Supprimer</h2>

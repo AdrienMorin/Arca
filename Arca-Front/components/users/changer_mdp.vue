@@ -8,11 +8,11 @@
 
       <UForm :validate="validate" :validate-on="['submit']" :state="state" class="space-y-5 mx-auto max-w-lg my-5" @submit="handleSubmit">
         <UFormGroup label="Ancien Mot de passe" name="modDePasse">
-          <UInput v-model="oldPassword" type="password" placeholder="Entrez ancien mot de passe" class="text-gray-400 font-light" />
+          <UInput v-model="oldPassword" type="password" placeholder="Entrez votre ancien mot de passe" class="text-gray-400 font-light" />
         </UFormGroup>
 
         <UFormGroup label="Nouveau mot de passe" name="motDePasse">
-          <UInput v-model="newPassword1" @input="updatePasswords" placeholder="Entrez votre mot de passe" class="text-gray-400 font-light" type="password" autofocus />
+          <UInput v-model="newPassword1" @input="updatePasswords" placeholder="Entrez votre nouveau mot de passe" class="text-gray-400 font-light" type="password" autofocus />
         </UFormGroup>
 
         <UFormGroup label="Confirmez votre nouveau mot de passe" name="motDePasse">
@@ -21,13 +21,13 @@
       </UForm>
 
       <div class="mt-4 flex gap-2 place-content-end">
-        <button @click="closePopup" type="button" class="rounded px-4 py-2 text-blue-600">
-          <p class="text-xl font-medium">Annuler</p>
+        <button @click="closePopup" type="button" class="rounded px-4 py-2 text-blue-600 bg-gray-200 hover:bg-gray-300">
+          <p class="text-md font-medium">Annuler</p>
         </button>
 
         <div class="place-content-start items-start flex">
-          <button @click="handleSubmit" type="button" class="text-white bg-blue-500 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-base px-3 py-2 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-            <p class="text-xl font-medium">Valider</p>
+          <button @click="handleSubmit" type="button" class="rounded px-4 py-2 text-white bg-blue-500 hover:bg-blue-800">
+            <p class="text-md font-medium">Valider</p>
           </button>
         </div>
       </div>

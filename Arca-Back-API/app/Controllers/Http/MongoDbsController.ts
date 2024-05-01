@@ -4,8 +4,7 @@ import MongoDbValidator from 'App/Validators/MongoDbValidator';
 import * as querystring from "node:querystring";
 import SearchValidator from "App/Validators/SearchValidator";
 const { MongoClient, ServerApiVersion } = require("mongodb");
-
-const uri = "mongodb+srv://hexanomedufutur:LCQbwYjD0LLaTxRW@arca-metadata-storage.qp6278d.mongodb.net/";
+const uri = process.env.MONGO_KEY;
 
 const client = new MongoClient(uri,  {
         serverApi: {

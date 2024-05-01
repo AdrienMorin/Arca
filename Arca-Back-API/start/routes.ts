@@ -42,6 +42,9 @@ Route.group(() => {
 
   Route.post('/changePasswordById', 'UsersController.changeUserPasswordById')
 
+  //Upload routes
+  Route.post('/uploadDoc','BasicUploadPipelinesController.uploadDoc')
+
   // Document routes
 
   Route.post('/document/create', 'DocumentsController.createDocument')
@@ -101,6 +104,10 @@ Route.group(() => {
 
   Route.put('/category/update/:id', 'CategoriesController.updateCategory')
 
+  //AI routes
+
+  Route.post('/ai/create', 'AisController.createDocument')
+
 }).prefix("/api").middleware('auth')
 
 // Unprotected routes
@@ -122,13 +129,6 @@ Route.group( () => {
 
   // Login route
   Route.post("/auth/login", 'AuthController.login')
-
-  //Mongo DB routes, ici juste le temps que les évolutions du back soient terminées
-  Route.get('/run','MongoDbsController.run')
-  Route.get('/listDatabases','MongoDbsController.listDatabases')
-  Route.post('/createDocument','MongoDbsController.createDocument')
-  Route.post( '/findOneListingById','MongoDbsController.findOneListingById')
-  Route.post('/advancedSearch','MongoDbsController.advancedSearch')
 
 }).prefix("/api")
 

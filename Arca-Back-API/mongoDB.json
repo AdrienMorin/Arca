@@ -24,11 +24,6 @@
             "required": false
         },
         {
-            "name": "s3_id",
-            "type": "String",
-            "required": true
-        },
-        {
             "name": "date",
             "type": "Date",
             "required": false
@@ -45,7 +40,7 @@
         },
         {
             "name": "dateDeCreation",
-            "type": "String",
+            "type": "Date",
             "required": true
         },
         {

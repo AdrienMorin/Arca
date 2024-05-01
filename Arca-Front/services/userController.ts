@@ -1,7 +1,7 @@
 import axios from "axios";
 
 //constant for the base url
-const baseUrl = "https://127.0.0.1:3333/api";
+const baseUrl = 'https://127.0.0.1:3333/api';
 
 //pour appeler l'UserController (exemple login)
 // const response = await UserController.getInstance().login(email, password);
@@ -20,6 +20,26 @@ class UserController {
     const response = await axios.post(`${baseUrl}/auth/login`, {
       email,
       password,
+    });
+    return response;
+  }
+
+  public async logout(token: string): Promise<any> {
+    const response = await axios.post(`${baseUrl}/auth/logout`, {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+    return response;
+  }
+
+  public async getUser(token: string):Promise<any>{
+    const response = await axios.get(`${baseUrl}/getUser`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
     });
     return response;
   }
