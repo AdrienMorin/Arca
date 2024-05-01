@@ -9,7 +9,7 @@ export default class extends BaseSchema {
       table.string('displayname').notNullable()
       table.string('lastname').notNullable()
       table.string('firstname').notNullable()
-      table.string('category').notNullable()
+      table.string('role').notNullable()
       table.integer('location').references('id').inTable('locations').onUpdate('CASCADE').onDelete('CASCADE')
 
 
