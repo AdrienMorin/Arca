@@ -132,6 +132,7 @@ Route.group( () => {
     Route.get('/listDatabases','MongoDbsController.listDatabases')
     Route.post('/createDocument','MongoDbsController.createDocument')
     Route.post( '/findOneListingById','MongoDbsController.findOneListingById')
+    Route.post('/uploadDoc','BasicUploadPipelinesController.uploadDoc')
 
 
 }).prefix("/api")
