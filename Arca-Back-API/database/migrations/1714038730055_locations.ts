@@ -9,7 +9,8 @@ export default class extends BaseSchema {
       table.string('displayname').notNullable()
       table.string('regionname').notNullable()
       table.string('cityname').notNullable()
-      table.string('zipcode').notNullable()
+      table.string('zipcode')
+      table.string('country').notNullable()
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
