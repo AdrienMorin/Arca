@@ -5,6 +5,8 @@
 /Arca-Back-API/.vscode
 /Arca-Back-API/.DS_STORE
 /Arca-Back-API/.env
+/Arca-Back-API/.env.example
+/Arca-Back-API/.env.test
 /Arca-Back-API/tmp
 /Arca-Back-API/npm-debug.log*
 /Arca-Back-API/yarn-debug.log*
@@ -21,7 +23,11 @@
 /Arca-Back-API/.yarn-integrity
 
 # Arca Front End ignore
+/Arca-Front/node_modules
 /nuxt-ui-pro-dashboard/node_modules
+/helloworld/node_modules
+node_modules
+/Arca-Front/assets
 
 # IDE
 .idea

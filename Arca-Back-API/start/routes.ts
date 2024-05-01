@@ -42,6 +42,9 @@ Route.group(() => {
 
   Route.post('/changePasswordById', 'UsersController.changeUserPasswordById')
 
+  //Upload routes
+  Route.post('/uploadDoc','BasicUploadPipelinesController.uploadDoc')
+
   // Document routes
 
   Route.post('/document/create', 'DocumentsController.createDocument')
@@ -55,6 +58,9 @@ Route.group(() => {
   Route.get('/document/getByName/:name','DocumentsController.getByName')
 
   Route.put('/document/update/:id', 'DocumentsController.updateDocument')
+
+  Route.get('/document/download/:id', 'DocumentsController.downloadDocumentById')
+
 
   // Person routes
 
@@ -98,6 +104,10 @@ Route.group(() => {
 
   Route.put('/category/update/:id', 'CategoriesController.updateCategory')
 
+  //AI routes
+
+  Route.post('/ai/create', 'AisController.createDocument')
+
 }).prefix("/api").middleware('auth')
 
 // Unprotected routes
@@ -105,8 +115,8 @@ Route.group( () => {
   // Index route
   Route.get('/', async ({auth}: HttpContextContract) => {
     try {
-      await auth.use('web').authenticate()
-      if(auth.use('web').isLoggedIn){
+      await auth.use('api').authenticate()
+      if(auth.use('api').isLoggedIn){
         return "Vous êtes connecté"
       } else {
         return "Veuillez vous connecter pour pouvoir accéder à l'application"
@@ -119,6 +129,7 @@ Route.group( () => {
 
   // Login route
   Route.post("/auth/login", 'AuthController.login')
+
 }).prefix("/api")
 
 
