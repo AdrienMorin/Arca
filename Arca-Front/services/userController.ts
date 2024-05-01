@@ -44,7 +44,25 @@ class UserController {
     return response;
   }
 
-  public async addDocument()
+  public async uploadDocument(
+    file: File,
+    titre: string,
+    description: string,
+    retranscription: string,
+    date: string,
+    personnes: string
+  ): Promise<any> {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('titre', titre);
+    formData.append('description', description);
+    formData.append('retranscription', retranscription);
+    formData.append('date', date);
+    formData.append('personnes', personnes);
+
+    const response = await axios.post(`${baseUrl}/api/uploadDocument`, formData);
+    return response;
+  }
 
   public async register(
     email: string,
