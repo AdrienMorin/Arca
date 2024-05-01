@@ -9,17 +9,22 @@ export default class BasicUploadPipelineValidator {
       size: '10mb',
       extnames: ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx','jpg','png','jpeg','webp','mp3','wav','aac']
     }),
-    fileName: schema.string({
+    titre: schema.string({
     }),
-    createdBy: schema.string({
-    }),    
-    createdAt: schema.date({
+    description: schema.string.optional({
     }),
-    updatedAt: schema.date({
+    retranscription: schema.string.optional({
     }),
-    updatedBy: schema.string({
+    date: schema.date({
     }),
-    
+    dateDeFin: schema.date.optional({
+    }),
+    personnes: schema.string.optional({
+    }),
+    categories: schema.string.optional({
+    }),
+    villes: schema.string.optional({
+    })
   })
 
   public messages: CustomMessages = {}
