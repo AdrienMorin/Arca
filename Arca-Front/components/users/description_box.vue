@@ -15,7 +15,7 @@
     </div>
     <div class=" flex-col h-4/5 space-y-2">
         <div class="flex-none lg:h-1/9 "> 
-            <p class="text-2xl">Description</p>
+            <p class="text-2xl" v-model="description">Description</p>
         </div>
         <div class="relative h-full border-2 border-black rounded-md">
             <textarea class="border text-lg relative h-full w-full text-justify resize-none"></textarea>
@@ -30,9 +30,18 @@
 
 <script setup>
 defineProps(['isVisible'])
-</script>
 
-<script>
+export default {
+    data(){
+        return{
+            description: ''
+        }
+    }
+    methods: {
+        
+    }
+}
+
 
 
 </script>

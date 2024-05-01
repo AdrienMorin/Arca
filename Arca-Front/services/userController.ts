@@ -64,7 +64,7 @@ class UserController {
     return response;
   }
 
-  public async register(
+    public async register(
     email: string,
     password: string,
     firstname: string,

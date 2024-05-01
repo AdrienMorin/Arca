@@ -38,4 +38,7 @@ let selectedOption = ref('Choisir type de document');
 const handleSelect = (value) => {
   selectedOption.value = value;
 };
+const getValue = () => {
+  return selectedOption.value;
+};
 </script>

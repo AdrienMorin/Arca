@@ -4,7 +4,6 @@
   import doctype from '~/components/users/Document-type-dropdown.vue';
   import personne_menu from '~/components/users/personne_menu.vue';
   import description from '~/components/users/description_box.vue';
-  import Navbar from '~/components/users/Navbar.vue';
   import personne_liste from '~/components/users/personne_liste.vue';
   import Popup from '~/components/users/popup.vue';
   export default {
@@ -12,7 +11,6 @@
       doctype,
       personne_menu,
       description,
-      Navbar,
       personne_liste,
       Popup
       
@@ -44,6 +42,14 @@
       flipEnregistrer() {
         this.$refs.popupEnregistrer.mainshow = !this.$refs.popupEnregistrer.mainshow;
       },
+    uploadDocument() {
+        // Handle the document upload
+        const fileInput = document.getElementById('file-input');
+        const file = fileInput.files[0]; //simulate 
+        // Perform the upload logic here
+    }
+
+
 
     }
   }
@@ -86,7 +92,6 @@
 
   <!--popup --> 
 
-    <Navbar />
     <!-- component -->
       <div class="flex-col w-full">
     
@@ -102,21 +107,21 @@
             <div class=" flex-5/6 relative lg:left-24 lg:top-12 md:top-6 md:left-6 w-3/4 grid grid-rows-auto   grid-flow-row gap-2 ">
               <div class="flex-col justify-left items-center h-max space-y-4 lg:w-5/6 md:w-2/2">
                 <div class="lg:text-2xl md:text-xl ">Titre</div>
-                <div><input class="rounded-md w-full" value=""></div>
+                <div><input class="rounded-md w-full" v-model="titre"></div>
               </div>
               <div class="flex-col justify-left items-center h-max space-y-3 lg:w-2/3 md:w-3/">
                 <div class="lg:text-2xl md:text-xl ">Date</div>
-                <div class="object-cover w-full"><input class="rounded-md w-full" value=""></div>
+                <div class="object-cover w-full"><input class="rounded-md w-full" v-model="date"></div>
                 </div>
                 
     
               <div class="flex-col justify-left items-center h-max space-y-3 lg:w-3/5  md:w-3/4 ">
                 <div class="lg:text-2xl md:text-xl ">Lieu</div>
-                <div class="object-cover w-full"><input class="rounded-md w-full" value=""></div>
+                <div class="object-cover w-full"><input class="rounded-md w-full" v-model="lieu" value=""></div>
               </div>
               <div class="flex-col justify-left items-center h-max space-y-3  ">
                 <div class="lg:text-2xl md:text-xl ">Type de document</div>
-                <doctype />
+                <doctype ref="docType"/>
               </div>
               <div class="row-span-3"></div>
     
