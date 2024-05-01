@@ -62,12 +62,16 @@ class UserController {
   }
 
   public async changePassword(
+    token: string,
     oldPassword: string,
     newPassword: string
   ): Promise<any> {
-    const response = await axios.post(`${baseUrl}/changePassword`, {
-      oldPassword,
-      newPassword,
+    const response = await axios.post(`${baseUrl}/changePassword`, 
+    {oldPassword, newPassword},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
     });
     return response;
   }
