@@ -5,7 +5,34 @@ export default class CreateLocationValidator {
   constructor(protected ctx: HttpContextContract) {}
 
   public schema = schema.create({
-    name : schema.string({}, [
+    displayname : schema.string({}, [
+      rules.required(),
+      rules.trim(),
+      rules.escape(),
+      rules.minLength(3),
+      rules.maxLength(255)
+    ]),
+    cityname : schema.string({}, [
+      rules.required(),
+      rules.trim(),
+      rules.escape(),
+      rules.minLength(3),
+      rules.maxLength(255)
+    ]),
+    regionname : schema.string({}, [
+      rules.required(),
+      rules.trim(),
+      rules.escape(),
+      rules.minLength(3),
+      rules.maxLength(255)
+    ]),
+    zipcode : schema.string.optional({}, [
+      rules.trim(),
+      rules.escape(),
+      rules.minLength(3),
+      rules.maxLength(255)
+    ]),
+    country : schema.string({}, [
       rules.required(),
       rules.trim(),
       rules.escape(),

@@ -3,7 +3,7 @@ const { MongoClient, ServerApiVersion } = require("mongodb");
 const uri = "mongodb+srv://hexanomedufutur:LCQbwYjD0LLaTxRW@arca-metadata-storage.qp6278d.mongodb.net/";
 import Drive from '@ioc:Adonis/Core/Drive';
 import fs from 'fs';
-import BasicUploadPipelineValidator from 'App/Validators/BasicUploadPipelineValidator';
+import BasicUploadPipelineValidator from 'App/Validators/Pipelines/BasicUploadPipelineValidator';
 
 const client = new MongoClient(uri,  {
     serverApi: {
@@ -30,11 +30,19 @@ export default class BasicUploadPipelinesController {
 
         const doc={
             _id: _id,
-            filename: payload.fileName,
-            createdBy: payload.createdBy,
-            createdAt: payload.createdAt,
-            updatedAt: payload.updatedAt,
-            updatedBy: payload.updatedBy,
+            createur: auth.user?.id,
+            dateDeCreation: new Date(),
+            dateDeDerniereModif: new Date(),
+            derniereModifPar: auth.user?.id,
+            
+            titre: payload.titre,
+            description: payload.description,
+            retranscription: payload.retranscription,
+            date: payload.date,
+            dateDeFin: payload.dateDeFin,
+            personnes: payload.personnes,
+            categories: payload.categories,
+            villes: payload.villes
         }
         await client.db("arca-metadata").collection("arca").insertOne(doc);
 

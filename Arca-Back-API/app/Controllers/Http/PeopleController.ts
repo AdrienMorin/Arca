@@ -9,7 +9,13 @@ export default class PeopleController {
         await auth.use('api').authenticate()
         await bouncer.with('PersonPolicy').authorize('create')
         const payload = await request.validate(CreatePersonValidator)
-        await Person.create(payload)
+        await Person.create({
+            displayname: payload.displayname,
+            firstname: payload.firstname,
+            lastname: payload.lastname,
+            category: payload.category,
+            location: payload.location
+        })
         return response.status(200).json({message: 'Personne créée avec succès'})
     }
 

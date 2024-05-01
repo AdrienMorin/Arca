@@ -6,7 +6,12 @@ export default class extends BaseSchema {
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-      table.string('name').notNullable()
+      table.string('displayname').notNullable()
+      table.string('lastname').notNullable()
+      table.string('firstname').notNullable()
+      table.string('category').notNullable()
+      table.integer('location').references('id').inTable('locations').onUpdate('CASCADE').onDelete('CASCADE')
+
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
