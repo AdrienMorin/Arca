@@ -36,7 +36,7 @@ class UserController {
   }
 
   public async getUser(token: string):Promise<any>{
-    const response = await axios.get(`${baseUrl}/getUser`, {
+    const response = await axios.get(`${baseUrl}/user/getUser`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -92,7 +92,7 @@ class UserController {
     oldPassword: string,
     newPassword: string
   ): Promise<any> {
-    const response = await axios.post(`${baseUrl}/changePassword`, 
+    const response = await axios.post(`${baseUrl}/user/changePassword`, 
     {oldPassword, newPassword},
     {
       headers: {
