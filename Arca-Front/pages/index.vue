@@ -1,5 +1,7 @@
 <script>
-
+  definePageMeta({
+  layout: 'loginLayout'
+})
 </script>
 
 <template>
@@ -16,4 +18,6 @@
       </NuxtLink>
     </div>
   </div>
+
+  
 </template>

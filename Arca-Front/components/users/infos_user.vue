@@ -11,15 +11,15 @@ export default {
 
   data(){
     return {
-        role: "",
-        id: 0,
-        firstname: "",
-        lastname: "",
-        email: "",
-        remember_me_token: "",
-        created_at: "",
-        updated_at: "",
-        showDialog: false,
+      role: "",
+      id: 0,
+      firstname: "",
+      lastname: "",
+      email: "",
+      remember_me_token: "",
+      created_at: "",
+      updated_at: "",
+      showDialog: false,
     }
   },
 
@@ -71,7 +71,7 @@ export default {
 
 <template>
     <ChangerMdp v-if="showDialog" @closeDialog="closeDialog"  />
-    <UDashboardCard title="Profil Utilsateur" class="mx-auto max-w-3xl mt-20 border-2 border-blue-600 flex flex-col justify-center items-center text-2xl font-bold">
+    <UDashboardCard title="Profil Utilsateur" class="mx-auto max-w-3xl p-6 mt-24 border-2 border-blue-600 flex flex-col justify-center items-center text-2xl font-bold">
     <UForm class="space-y-6 mx-auto max-w-4xl m-6">
         <div class="w-full flex flex-col md:flex-row md:space-x-20">
         <div class="md:w-1/2 h-15">
@@ -112,7 +112,7 @@ export default {
     </div>
     
     </UForm>
-    <div class="flex justify-center mt-50 h-50">
+    <div class="flex justify-center mt-20 h-50">
         <UButton label="Changer de mot de passe" @click="openDialog" class="bg-blue-600 hover:bg-blue-500 mt-0 w-60 h-11 flex items-center justify-center rounded-2xl" />
     </div>
   </UDashboardCard>
