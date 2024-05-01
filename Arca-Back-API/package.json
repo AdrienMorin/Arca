@@ -30,6 +30,7 @@
     "@adonisjs/redis": "7.3.4",
     "@adonisjs/repl": "^3.1.11",
     "@adonisjs/session": "6.4.0",
+    "axios": "^1.6.8",
     "luxon": "^3.4.4",
     "mongodb": "^6.5.0",
     "pg": "^8.11.5",
