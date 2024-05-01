@@ -47,6 +47,9 @@
 
     }
   }
+  definePageMeta({
+    middleware:'auth',
+  });
 
 </script>
 
