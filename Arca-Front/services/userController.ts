@@ -41,12 +41,13 @@ class UserController {
         Authorization: `Bearer ${token}`
       }
     });
+    console.log(response);
     return response;
   }
 
   public async uploadDocument(
     token: string,
-    file: File,
+    file: string,
     titre: string,
     description: string,
     retranscription: string,
@@ -65,7 +66,7 @@ class UserController {
 
     console.log(formData);
 
-    const response = await axios.post(`${baseUrl}/api/uploadDocument`, formData);
+    const response = await axios.post(`${baseUrl}/basic/upload`, formData);
     return response;
   }
 

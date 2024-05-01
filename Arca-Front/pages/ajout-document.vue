@@ -6,6 +6,10 @@
   import description from '~/components/users/description_box.vue';
   import personne_liste from '~/components/users/personne_liste.vue';
   import Popup from '~/components/users/popup.vue';
+  import UserController from '~/services/userController.ts';
+  import fs from 'fs';
+  import fileContent from '~/assets/complainteDuPartisan.png'; // Adjust the path as needed
+
   export default {
     components: {
       doctype,
@@ -25,7 +29,7 @@
         date: '',
         lieu: '',
         type: '',
-        personnes: [],
+        personnes:'',
       };
     },
 
@@ -49,13 +53,17 @@
       flipEnregistrer() {
         this.$refs.popupEnregistrer.mainshow = !this.$refs.popupEnregistrer.mainshow;
       },
-    async uploadDocument() {
+    
+      async uploadDocument() {
+        console.log('Uploading document...')
 
         const tokenCookie = useCookie('token')
-        tokenCookie.value = response.data.token
+        const token= tokenCookie.value;
 
-      const response = await UserController.getInstance().uploadDocument(
-        this.File, this.titre, this.description, this.date, this.lieu, this.type, this.personnes, tokenCookie);
+        const doc = fileContent;
+        console.log(doc);
+       const response = await UserController.getInstance().uploadDocument(tokenCookie,
+      "socument","egfd", "hfd","ee","1945-06-06T15:23:22.711+00:00","hgdd");
 
       
       // redirect to homepage if user is authenticated
@@ -64,8 +72,7 @@
         this.$router.push('/rechercher');
       }
     },
-        
-    
+ 
 
 
 
@@ -135,7 +142,7 @@
     
               <div class="flex-col justify-left items-center h-max space-y-3 lg:w-3/5  md:w-3/4 ">
                 <div class="lg:text-2xl md:text-xl ">Lieu</div>
-                <div class="object-cover w-full"><input class="rounded-md w-full" v-model="lieu" value=""></div>
+                <div class="object-cover w-full"><input class="rounded-md w-full" v-model="lieu" ></div>
               </div>
               <div class="flex-col justify-left items-center h-max space-y-3  ">
                 <div class="lg:text-2xl md:text-xl ">Type de document</div>
@@ -182,21 +189,16 @@
                 </button>
               </div>
 
-
               <div class="place-content-end	flex w-2/4 ">
                 <div>
-                  <button @click="flipAjouter()" type="button" class="relative top-1  w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-base px-10 py-3 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                  <button @click="uploadDocument()" type="button" class="relative top-1  w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-base px-10 py-3 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                     <p class="text-xl">Ajouter le  Document</p>
                   </button>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      
-    
-    
-    
+        </div>   
     </div>
   </div>
 </template>

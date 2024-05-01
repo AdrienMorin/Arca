@@ -39,6 +39,6 @@ const handleSelect = (value) => {
   selectedOption.value = value;
 };
 const getValue = () => {
-  return selectedOption.value;
+  return selectedOption;
 };
 </script>
