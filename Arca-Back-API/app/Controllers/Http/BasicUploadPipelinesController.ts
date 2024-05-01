@@ -30,7 +30,7 @@ export default class BasicUploadPipelinesController {
 
         const doc={
             _id: _id,
-            createur: auth.user?.id,
+            createur: auth.user?.lastname + ' ' + auth.user?.firstname,
             dateDeCreation: new Date(),
             dateDeDerniereModif: new Date(),
             derniereModifPar: auth.user?.id,
