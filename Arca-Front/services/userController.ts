@@ -45,20 +45,25 @@ class UserController {
   }
 
   public async uploadDocument(
+    token: string,
     file: File,
     titre: string,
     description: string,
     retranscription: string,
     date: string,
     personnes: string
+
   ): Promise<any> {
     const formData = new FormData();
+    formData.append('Authorization', `Bearer ${token}`);
     formData.append('file', file);
     formData.append('titre', titre);
     formData.append('description', description);
     formData.append('retranscription', retranscription);
     formData.append('date', date);
     formData.append('personnes', personnes);
+
+    console.log(formData);
 
     const response = await axios.post(`${baseUrl}/api/uploadDocument`, formData);
     return response;
