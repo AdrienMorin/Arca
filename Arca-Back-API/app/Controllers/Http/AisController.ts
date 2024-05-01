@@ -5,6 +5,7 @@ const uri = "mongodb+srv://hexanomedufutur:LCQbwYjD0LLaTxRW@arca-metadata-storag
 import Drive from '@ioc:Adonis/Core/Drive';
 import fs from 'fs';
 import axios from 'axios';
+import Env from '@ioc:Adonis/Core/Env';
 
 const client = new MongoClient(uri,  {
     serverApi: {
@@ -52,7 +53,15 @@ export default class AisController {
         axios.post('http://127.0.0.1:5000/create_metadata', {
             id: _id,
             filename: fileName
-        })
+        }, {
+            headers: {
+                'x-api-key': Env.get('API_KEY')
+            }
+        }).then(response => {
+            console.log('Response:', response.data);
+        }).catch(error => {
+            console.error('Error:', error);
+        });
         
 
 
