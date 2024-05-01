@@ -7,7 +7,7 @@ export default class extends BaseSeeder {
       "firstname": "john",
       "lastname": "doe",
       "displayname": "John Doe",
-      "category": "user",
+      "role": "user",
     })
   }
 }
