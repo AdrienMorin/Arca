@@ -42,6 +42,9 @@ Route.group(() => {
 
   Route.post('/changePasswordById', 'UsersController.changeUserPasswordById')
 
+  //Upload routes
+  Route.post('/uploadDoc','BasicUploadPipelinesController.uploadDoc')
+
   // Document routes
 
   Route.post('/document/create', 'DocumentsController.createDocument')
@@ -126,14 +129,6 @@ Route.group( () => {
 
   // Login route
   Route.post("/auth/login", 'AuthController.login')
-
-    //Mongo DB routes, ici juste le temps que les évolutions du back soient terminées
-    Route.get('/run','MongoDbsController.run')
-    Route.get('/listDatabases','MongoDbsController.listDatabases')
-    Route.post('/createDocument','MongoDbsController.createDocument')
-    Route.post( '/findOneListingById','MongoDbsController.findOneListingById')
-    Route.post('/uploadDoc','BasicUploadPipelinesController.uploadDoc')
-
 
 }).prefix("/api")
 
