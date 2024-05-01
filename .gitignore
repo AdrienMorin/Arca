@@ -27,6 +27,7 @@
 /nuxt-ui-pro-dashboard/node_modules
 /helloworld/node_modules
 node_modules
+/Arca-Front/assets
 
 # IDE
 .idea
