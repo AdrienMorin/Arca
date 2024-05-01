@@ -22,7 +22,7 @@ export default {
       location.reload();
       },
       modifyDocument() {
-        this.$router.push('/Modif_document');
+        this.$router.push('/modifDocument');
       }
 
   }
@@ -113,7 +113,7 @@ export default {
         </div>
   
         <div class="flex-col flex-grow md:w-1/3 lg:3/4">
-            <display_files filePath="/_nuxt/assets/manifesto.pdf" class="border" />
+            <display_files filePath="/_nuxt/assets/DATA BASES 2.xlsx" class="border" />
         </div>
   
   

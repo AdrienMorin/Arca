@@ -42,7 +42,14 @@
         clickSuggestion(value) {
             this.search = value;
             this.isOpen = false;
-        }
-    },
+        },
+        getSearch() {
+            return this.search;
+        },
+        SetSearch(value) {
+            this.search = value;
+        },
+  
   }
+}
   </script>

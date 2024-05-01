@@ -76,11 +76,13 @@
     
                 <div class="flex-col justify-left items-center h-min space-y-3 lg:w-5/6 md:w-2/2">
                   <div class="lg:text-2xl md:text-xl ">Personnes</div>
-                  <div class="object-cover w-full"><input class="rounded-md w-full" v-model="nom"></div>
+                  <div class="object-cover w-full">
+                  <personne_liste :items="listeSuggestion"  ref="personneAajoute"/>
+                </div>
                 </div>
                 <div class="row-span-1"></div>
                 <div class=" flex-row">
-                  <button type="button" @click="Ajouter_personne" class="onclick relative top-1  text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-base px-6 py-3 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
+                  <button type="button" @click="Ajouter_personne()" class="onclick relative top-1  text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-base px-6 py-3 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
                     <p class="text-xl">Ajouter</p>
                   </button>
                 </div>
@@ -147,6 +149,7 @@ import personne_menu from '~/components/users/personne_menu.vue';
 import description from '~/components/users/description_box.vue';
 import Popup from '~/components/users/popup.vue';
 import PopupAnnuler from '~/components/users/popup_sup.vue';
+import personne_liste from '~/components/users/personne_liste.vue';
 import {ref} from 'vue';
 
 export default {
@@ -156,6 +159,7 @@ export default {
     description,
     Popup,
     Navbar,
+    personne_liste,
     
   },
 
@@ -163,17 +167,30 @@ export default {
     return {
       nom: '', // Initialize with an empty string
       popupAnnuler: false,
+      listeSuggestion: ['Paris', 'Marseille','prague', 'pipi', 'popo','papa', 'papi'], // import the list of people from the database
+      listePersonne: ['riri', 'fifi', 'loulou', 'papa', 'maman', 'papi'], // import the list of people already added to the document
   
       
     };
   },
-
+  mounted() {
+    this.initialiser_personne();
+  },
   methods: {
+    initialiser_personne(){
+      for (let i = 0; i < this.listePersonne.length; i++) {
+        this.$refs.menu_personne.addPersonne(this.listePersonne[i]);
+      }
+    },
     Ajouter_personne(){
-      if(this.nom != '')
-      this.$refs.menu_personne.addPersonne(this.nom);
-      this.nom = '';
-      },
+      let text=this.$ref.personneAajoute.getSearch() 
+      if(text != ''){
+        console.log(text);
+        this.$refs.menu_personne.addPersonne(text);
+        this.$ref.personneAajoute.setSearch('');
+        }
+        
+    },
 
       refreshPage() {
         location.reload();

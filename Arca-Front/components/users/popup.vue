@@ -25,7 +25,7 @@
               <div v-if="!annuler">
                 <div class="mt-4 flex gap-2 place-content-center" v-if="color">
                   <div class=" place-content-start items-start flex " >
-                        <button @click="goToIndex" type="button" class=" text-white bg-blue-500 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-base px-12 py-3 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                        <button @click="goToArchiver" type="button" class=" text-white bg-blue-500 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-base px-12 py-3 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                           <p class="text-xl font-medium">Retour à l'écran d'acceuil</p>
                         </button>
                       </div>
@@ -52,7 +52,7 @@
                         </button>
                     </div>
                     <div class=" place-content-start items-start flex ">
-                          <button @click="goToIndex()" type="button" class=" text-white bg-blue-500 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-base px-3 py-2 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                          <button @click="goToArchiver()" type="button" class=" text-white bg-blue-500 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-base px-3 py-2 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                             <p class="text-xl font-medium">Annuler Les Modifications</p>
                           </button>
                         </div>
@@ -109,8 +109,8 @@ export default {
 
       
     methods: {
-    goToIndex() {
-      this.$router.push('/'); 
+    goToArchiver() {
+      this.$router.push('/dropDocument'); 
     }, 
     flipAnnuler() {
       this.mainshow = !this.mainshow;

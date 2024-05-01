@@ -24,14 +24,15 @@ export default {
 
   methods: {
     addPersonne(text){
-      console.log(text);
       const newPersonne = {
         nom: text,
       };
-
       // Push the new blog post to the array
       this.personnes.push(newPersonne);
-    }
+    },
+    getPersonne(){
+      return this.personnes;
+    },
   }
 }
  
