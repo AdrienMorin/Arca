@@ -7,11 +7,6 @@ export default {
     Navbar,
     UsersComponent,
   },
-  beforeMount() {
-    definePageMeta({
-      middleware:'auth-admin'
-    });
-  },
   data() {
     return {
       adminLinks: [
@@ -20,7 +15,7 @@ export default {
         {name: 'Gestion des villes', component: 'VillesComponent'},
         {name: 'Gestion de la liste de personnes',  component: 'PersonnesComponent'}
       ],
-      activeLink: 'UsersComponent'
+      activeLink: 'UsersComponent',
     }
   }
 }

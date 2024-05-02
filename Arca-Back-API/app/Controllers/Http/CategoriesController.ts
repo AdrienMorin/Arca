@@ -16,8 +16,10 @@ export default class CategoriesController {
         await auth.use('api').authenticate()
         await bouncer.with('CategoryPolicy').authorize('update')
         const payload = await request.validate(UpdateCategoryValidator)
-        const document=await Category.findOrFail(request.param("id"))
-        await document.merge(payload).save()
+        const document= await Category.findByOrFail('name', payload.oldName)
+        await document.merge({
+            name: payload.newName
+        }).save()
         return response.status(200).json({message:'Catégorie mise à jour avec succès'})
     }
 

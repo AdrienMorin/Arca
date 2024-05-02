@@ -17,8 +17,13 @@ export default class UserPolicy extends BasePolicy {
 	public async update(user: User) {
 		return user.role === 'admin' || user.role === 'superuser'
 	}
-	public async delete(user: User) {
+
+	public async deleteUser(user: User) {
 		return user.role === 'admin' || user.role === 'superuser'
+	}
+	public async deleteAdmin(user: User) {
+		return user.role === 'superuser'
+
 	}
 	public async changePasswordById(user: User) {
 		return user.role === 'superuser'

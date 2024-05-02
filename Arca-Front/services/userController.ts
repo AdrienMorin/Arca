@@ -35,6 +35,36 @@ class UserController {
     return response;
   }
 
+  public async createUser(firstname: string, lastname: string, email: string, password: string, token: string): Promise<any> {
+    const response = await axios.post(`${baseUrl}/auth/register`,
+    {
+      firstname,
+      lastname,
+      email,
+      password,
+      role: 'user'
+    }, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+    });
+
+    return response;
+  }
+
+  public async deleteUser(id: number, token: string): Promise<any> {
+    const response = await axios.post(`${baseUrl}/deleteUser`,
+      {
+        id
+      }, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+    return response;
+  }
+
   public async getUser(token: string):Promise<any>{
     const response = await axios.get(`${baseUrl}/user/getUser`, {
       headers: {
@@ -43,6 +73,16 @@ class UserController {
     });
     return response;
   }
+
+  public async fetchUsers(token: string):Promise<any>{
+    const response = await axios.get(`${baseUrl}/user/fetchUsers`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return response;
+  }
+
 
   public async register(
     email: string,
@@ -66,7 +106,7 @@ class UserController {
     oldPassword: string,
     newPassword: string
   ): Promise<any> {
-    const response = await axios.post(`${baseUrl}/user/changePassword`, 
+    const response = await axios.post(`${baseUrl}/user/changePassword`,
     {oldPassword, newPassword},
     {
       headers: {
