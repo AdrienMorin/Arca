@@ -13,14 +13,6 @@ export default class LocationsController {
         return response.status(200).json({message: 'Lieu créé avec succès'})
     }
 
-    public async updateLocation({auth, bouncer, request, response}:HttpContextContract){
-        await auth.use('api').authenticate()
-        await bouncer.with('LocationPolicy').authorize('update')
-        const payload = await request.validate(UpdateLocationValidator)
-        const document=await Location.findOrFail(request.param("id"))
-        await document.merge(payload).save()
-        return response.status(200).json({message:'Lieu mis à jour avec succès'})
-    }
 
     public async fetchLocations({auth, bouncer, response}: HttpContextContract){
         await auth.use('api').authenticate()
@@ -40,9 +32,16 @@ export default class LocationsController {
     public async getLocationById({auth, bouncer, request, response}: HttpContextContract) {
         await auth.use('api').authenticate()
         await bouncer.with('LocationPolicy').authorize('view')
-        const user = await Location.findOrFail(request.param("id"))
-        return response.status(200).json(user)
+        const location = await Location.findOrFail(request.param("id"))
+        return response.status(200).json(location)
     }
 
-
+    public async deleteLocation({auth, bouncer, request, response}: HttpContextContract){
+        await auth.use('api').authenticate()
+        await bouncer.with('LocationPolicy').authorize('delete')
+        const id=request.body().id
+        const location=await Location.findOrFail(id)
+        await location.delete()
+        return response.status(200).json({message:'Lieu supprimé avec succès'})
+    }
 }

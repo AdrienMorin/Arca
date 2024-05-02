@@ -64,7 +64,7 @@ Route.group(() => {
 
   Route.get('/location/getByName/:name','LocationsController.getByName')
 
-  Route.put('/location/update/:id', 'LocationsController.updateLocation')
+  Route.post('/location/delete', 'LocationsController.deleteLocation')
 
   // Category routes
 
