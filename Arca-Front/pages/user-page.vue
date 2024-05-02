@@ -7,6 +7,9 @@ export default {
     ChangerMdp,
     }
 };
+definePageMeta({
+  middleware:'auth',
+});
 
 </script>
 

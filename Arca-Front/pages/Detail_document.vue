@@ -27,6 +27,9 @@ export default {
 
   }
 }
+definePageMeta({
+  middleware:'auth',
+});
 
 </script>
 

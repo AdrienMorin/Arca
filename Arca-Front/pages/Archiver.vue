@@ -18,29 +18,32 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
 
-const fileInput = ref<HTMLInputElement | null>(null);
+  import { ref } from 'vue';
 
-function handleDragOver(event: DragEvent) {
-  event.preventDefault();
-}
+  const fileInput = ref<HTMLInputElement | null>(null);
 
-function handleFileDrop(event: DragEvent) {
-  if (event.dataTransfer?.files) {
-    const file = event.dataTransfer.files[0];
-    console.log("File dropped:", file.name);
+  function handleDragOver(event: DragEvent) {
+    event.preventDefault();
   }
-}
 
-function handleFileSelect(event: Event) {
-  const files = (event.target as HTMLInputElement).files;
-  if (files) {
-    console.log("File selected:", files[0].name);
+  function handleFileDrop(event: DragEvent) {
+    if (event.dataTransfer?.files) {
+      const file = event.dataTransfer.files[0];
+      console.log("File dropped:", file.name);
+    }
   }
-}
 
-function triggerFileInput() {
-  fileInput.value?.click();
-}
+  function handleFileSelect(event: Event) {
+    const files = (event.target as HTMLInputElement).files;
+    if (files) {
+      console.log("File selected:", files[0].name);
+    }
+  }
+
+  function triggerFileInput() {
+    fileInput.value?.click();
+  }
+
+
 </script>
