@@ -45,5 +45,6 @@
     fileInput.value?.click();
   }
 
+  document.documentElement.classList.remove('dark')
 
 </script>

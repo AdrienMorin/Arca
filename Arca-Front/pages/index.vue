@@ -1,7 +1,9 @@
 <script>
   definePageMeta({
   layout: 'loginLayout'
-})
+});
+document.documentElement.classList.remove('dark')
+
 </script>
 
 <template>
