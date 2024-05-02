@@ -45,13 +45,13 @@
             <div class="w-12"></div>
           </li>
           <!-- User rows -->
-          <li v-for="user in users" :key="user.email" class="px-10 py-4 flex">
-            <div class="w-1/5 text-sm text-gray-900">{{ user.name }}</div>
-            <div class="w-1/5 text-sm text-gray-900">{{ user.surname }}</div>
+          <li v-for="user in users" :key="user.id" class="px-10 py-4 flex">
+            <div class="w-1/5 text-sm text-gray-900">{{ user.firstname }}</div>
+            <div class="w-1/5 text-sm text-gray-900">{{ user.lastname }}</div>
             <div class="w-2/5 text-sm text-gray-500">{{ user.email }}</div>
             <div class="w-1/5 text-sm text-gray-900">{{ user.role }}</div>
             <div class="w-12">
-              <button @click="removeUser(user.email)" class="text-red-500 hover:text-red-700">
+              <button @click="$event => deleteUser($event, user.id)" class="text-red-500 hover:text-red-700">
                 &times;
               </button>
             </div>
@@ -59,51 +59,61 @@
         </ul>
       </div>
     </div>
+
   </div>
 </template>
 
 <script>
+import UserController from '~/services/userController'
+
 export default {
   data() {
     return {
-      users: [
-        { name: 'Christiane', surname: 'Coste', email: 'christiane11@gmail.com', role: 'admin'},
-        { name: 'Jean-Marc', surname: 'Sarnin' , email: 'jm0987@gmail.com', role: 'admin'},
-        { name: 'Adrien', surname: 'Morin' , email: 'a.morin@gmail.com', role: 'utilisateur'}
-      ],
+      users: [],
       newUser: {
-        name: '',
-        surname: '',
+        firstname: '',
+        lastname: '',
         email: '',
         password: ''
       },
-      categories: [
-        'Article de journal',
-        'Extrait de livre',
-        'PV de gendarmerie'
-      ],
-      newCategory: ''
     };
   },
+  async created() {
+    const fetchedUsers = await this.fetchUsers()
+    this.users = fetchedUsers.data
+  },
   methods: {
-    addUser() {
+    async fetchUsers() {
+      const tokenCookie = useCookie('token')
+      const token = tokenCookie.value
+      return await UserController.getInstance().fetchUsers(token)
+    },
+    async addUser() {
       // Here you would normally integrate with your backend
       console.log('Adding user:', this.newUser);
-      this.users.push({ ...this.newUser });
-      this.newUser = { name: '', email: '', password: '' }; // Reset form
+      const tokenCookie = useCookie('token')
+      const token = tokenCookie.value
+      const response = await UserController.getInstance().createUser(this.newUser.firstname, this.newUser.lastname, this.newUser.email, this.newUser.password, token)
+      if (response.status === 200){
+        this.newUser.role = 'user'
+        this.users.push(this.newUser) // Push user to the list
+        this.newUser = { firstname: '', lastname: '',  email: '', password: '' }; // Reset form
+      }
     },
-    removeUser(email) {
-      this.users = this.users.filter(user => user.email !== email);
+    async deleteUser(event, id) {
+      if(confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action est irréversible.')) {
+        console.log('Deleting user:', id)
+        const tokenCookie = useCookie('token')
+        const token = tokenCookie.value
+        const response = await UserController.getInstance().deleteUser(id, token)
+        if (response.status === 200){
+          const index = this.users.findIndex(user => user.id === id);
+          if (index !== -1) {
+            this.users.splice(index, 1);
+          }
+        }
+      }
     },
-    addCategory() {
-      // Same here for backend integration
-      console.log('Adding category:', this.newCategory);
-      this.categories.push(this.newCategory);
-      this.newCategory = ''; // Reset input
-    },
-    removeCategory(category) {
-      this.categories = this.categories.filter(c => c !== category);
-    }
   }
 };
 
