@@ -13,10 +13,11 @@ export default defineNuxtRouteMiddleware(async(to, from)=> {
 
     console.log('response:', response.data)
     if (response.data.message !== "Vous êtes connecté en tant qu'administrateur") {
-      return navigateTo('/login')
+      return abortNavigation()
     }
 
   } catch (error) {
-      console.error('Error checking auth:', error)
+    console.error('Error checking auth:', error)
+    return abortNavigation()
   }
 });
