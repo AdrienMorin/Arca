@@ -134,12 +134,12 @@ class UserController {
     return response;
   }
 
-  public async changeCategory(
+  public async updateCategory(
     token: string,
     oldCategory: string,
     newCategory: string
   ): Promise<any> {
-    const response = await axios.post(`${baseUrl}/category/update/`, 
+    const response = await axios.post(`${baseUrl}/category/update`, 
     {oldCategory, newCategory},
     {
       headers: {

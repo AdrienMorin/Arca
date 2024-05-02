@@ -50,10 +50,12 @@ import UserController from '~/services/userController'
 export default {
     data() {
         return {
+            showEditForm: false,
             categories: [],
             newCategory: {
                 name:''
             },
+            oldCategory,
             updatedCategory,
         };
     },
@@ -80,16 +82,14 @@ export default {
                 this.newCategory = '' // Reset input
             }
         },
-        // updateCategory(category) {
-        //     const tokenCookie = useCookie('token')
-        //     const token = tokenCookie.value
-        //     const response = await UserController.getInstance().modifyCategory(this.updatedCategory.name, token)
-        //     if (response.status === 200){
-        //         this.categories.push(this.updatedCategory) // Push category to the list
-        //     }
-        //     this.categories = this.categories.filter(c => c !== category); //???
-        // },
-
+        async updateCategory(category) { //à revoir
+            const tokenCookie = useCookie('token')
+            const token = tokenCookie.value
+            const response = await UserController.getInstance().updateCategory(this.oldCategory, this.updatedCategory, token)
+            if (response.status === 200){
+                this.categories.push(this.updatedCategory) // Push category to the list
+            }
+        },
     }
 };
 
