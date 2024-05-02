@@ -52,6 +52,18 @@ class UserController {
     return response;
   }
 
+  public async createCategory(name: string, token: string): Promise<any> {
+    const response = await axios.post(`${baseUrl}/category/create`,
+    {name},
+    {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    return response;
+  }
+
   public async isAdmin(token: string): Promise<any> {
     const response = await axios.get('https://127.0.0.1:3333/api/auth/isLoggedInAsAdmin', {
       headers: {
@@ -146,6 +158,7 @@ class UserController {
         Authorization: `Bearer ${token}`
       }
     });
+    console.log(response);
     return response;
   }
 
