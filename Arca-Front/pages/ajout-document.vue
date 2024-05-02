@@ -68,7 +68,7 @@
 
           console.log(this.File);
         const response = await UserController.getInstance().uploadDocument(token,
-        this.File,this.titre,this.description,this.lieu,time,"personne");
+        this.File,this.titre,this.description,'restra',time,"personne");
        
         
         // redirect to homepage if user is authenticated
