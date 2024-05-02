@@ -59,7 +59,9 @@ class UserController {
       {file, titre, description, retranscription, date, personnes},
       {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+
         }
       });
     console.log(response);

@@ -26,7 +26,7 @@
                 <div class="mt-4 flex gap-2 place-content-center" v-if="color">
                   <div class=" place-content-start items-start flex " >
                         <button @click="goToArchiver" type="button" class=" text-white bg-blue-500 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-base px-12 py-3 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                          <p class="text-xl font-medium">Retour à l'écran d'acceuil</p>
+                          <p class="text-xl font-medium">Retourner à la Recherche</p>
                         </button>
                       </div>
                 </div>
@@ -110,7 +110,7 @@ export default {
       
     methods: {
     goToArchiver() {
-      this.$router.push('/dropDocument'); 
+      this.$router.push('/Archiver'); 
     }, 
     flipAnnuler() {
       this.mainshow = !this.mainshow;

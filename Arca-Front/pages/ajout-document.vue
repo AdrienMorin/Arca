@@ -4,20 +4,20 @@
   import doctype from '~/components/users/Document-type-dropdown.vue';
   import personne_menu from '~/components/users/personne_menu.vue';
   import description from '~/components/users/description_box.vue';
-  import personne_liste from '~/components/users/personne_liste.vue';
+  import autocomplete_liste from '~/components/users/autocomplete_liste.vue';
   import Popup from '~/components/users/popup.vue';
   import UserController from '~/services/userController.ts';
   import { useFileStore } from '~/fileTransfer.js';
-
-
-
+  import Datepicker from 'vue3-datepicker'
+ 
   export default {
     components: {
+      Popup, 
+      Datepicker,
       doctype,
       personne_menu,
       description,
-      personne_liste,
-      Popup
+      autocomplete_liste,
       
     },
     mounted() {
@@ -31,7 +31,7 @@
         titre: '',
         description: '',
         date: '',
-        lieu: '',
+        lieu: ['Paris', 'Marseille','prague', 'pipi', 'popo','papa', 'papi'],
         type: '',
         personnes:'',
         titreDoc: '',
@@ -61,20 +61,21 @@
       async uploadDocument() {
         this.personnes=this.$refs.menu_personne.getPersonne();
           console.log('Uploading document...')
+          const time=new Date(this.date).toISOString();
 
           const tokenCookie = useCookie('token')
           const token= tokenCookie.value;
 
           console.log(this.File);
         const response = await UserController.getInstance().uploadDocument(token,
-        this.File,this.titre,this.description,this.lieu,"1945-06-06T15:23:22.711+00:00","personne");
-       //"1945-06-06T15:23:22.711+00:00"
-
+        this.File,this.titre,this.description,this.lieu,time,"personne");
+       
         
         // redirect to homepage if user is authenticated
         if (response.status === 200) {
           console.log('Vous êtes connecté')
-          this.$router.push('/rechercher');
+          this.flipAjouter();
+          //this.$router.push('/rechercher');
         }
       },
       getDocument() {
@@ -135,11 +136,7 @@
 
     <!-- component -->
       <div class="flex-col w-full">
-    
-    
-    
-    
-      <div class="flex flex-row h-full">
+        <div class="flex flex-row h-full">
         <div class="flex-none xl:w-1/3 lg:w-1/4  bg-[#027BCE] bg-opacity-10 h-screen p-20% ">
           <div class=" flex items-stretch	 flex-col h-full lg:space-y-4 md:space-y-2">
             <div class="flex-1/6 justify-left items-center relative md:top-5 lg:left-12 md:left-3">
@@ -152,40 +149,37 @@
               </div>
               <div class="flex-col justify-left items-center h-max space-y-3 lg:w-2/3 md:w-3/">
                 <div class="lg:text-2xl md:text-xl ">Date</div>
-                <div class="object-cover w-full"><input class="rounded-md w-full" v-model="date"></div>
+                <div class="object-cover w-full"><datepicker v-model="date" placeholder="Date"/></div>
                 </div>
                 
     
               <div class="flex-col justify-left items-center h-max space-y-3 lg:w-3/5  md:w-3/4 ">
                 <div class="lg:text-2xl md:text-xl ">Lieu</div>
-                <div class="object-cover w-full"><input class="rounded-md w-full" v-model="lieu" ></div>
+                <div class="object-cover w-full"><autocomplete_liste :items="lieu"  ref="lieuAajoute"/></div>
               </div>
+              
+              <div class="row-span-5 border-5 lg:w-3/5  md:w-3/4 ">
+                <personne_menu ref="menu_personne"/> 
+              </div>
+            
               <div class="flex-col justify-left items-center h-max space-y-3  ">
                 <div class="lg:text-2xl md:text-xl ">Type de document</div>
                 <doctype ref="docType"/>
               </div>
-              <div class="row-span-3"></div>
-    
+   
               <div class="flex-col justify-left items-center h-min space-y-3 lg:w-5/6 md:w-2/2">
                 <div class="lg:text-2xl md:text-xl ">Personnes</div>
                 <div class="object-cover w-full">
-                  <personne_liste :items="liste"  ref="personneAajoute"/>
+                  <autocomplete_liste :items="liste"  ref="personneAajoute"/>
                 </div>
               </div>
-              <div class="row-span-1"></div>
-              <div class=" flex-row">
-                <button type="button" @click="Ajouter_personne" class="onclick relative top-1  text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-base px-6 py-3 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
-                  <p class="text-xl">Ajouter</p>
-                </button>
-              </div>
-    
-              <div class="row-span-1"></div>
               <div class="row-span-5 border-5 lg:w-5/6 md:w-2/2">
                 <personne_menu ref="menu_personne"/> 
               </div>
+              
+             
     
     
-              <div class="row-span-5"></div>
               <div class="flex justify-center items-center h-min space-y-3 relative md:w-2/2 lg:w-3/4  ">
              <button @click="flipAnnuler()" type="button" class="relative top-1 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-base px-6 py-3 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
               <p class="text-xl">Annuler</p>
