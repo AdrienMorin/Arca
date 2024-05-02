@@ -52,6 +52,15 @@ class UserController {
     return response;
   }
 
+  public async isAdmin(token: string): Promise<any> {
+    const response = await axios.get('https://127.0.0.1:3333/api/auth/isLoggedInAsAdmin', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    return response.data.message !== "Vous êtes connecté en tant qu'administrateur";
+  }
+
   public async deleteUser(id: number, token: string): Promise<any> {
     const response = await axios.post(`${baseUrl}/deleteUser`,
       {

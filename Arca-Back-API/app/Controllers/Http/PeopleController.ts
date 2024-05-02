@@ -63,17 +63,4 @@ export default class PeopleController {
         return response.status(200).json(user)
     }
 
-    public async deletePersonById({auth, bouncer, request, response}: HttpContextContract) {
-        await auth.use('api').authenticate()
-        await bouncer.with('PersonPolicy').authorize('delete')
-        try {
-            const documentId = request.body().id
-            const document = await Person.findOrFail(documentId)
-            await document.delete()
-            return response.status(200).json({message: 'Personne supprimée avec succès'})
-        } catch (error) {
-            return response.status(400).json({message: 'Une erreur est survenue lors de la suppression de la personne'})
-        }
-
-    }
 }
