@@ -137,4 +137,6 @@ export default {
     }
   }
 };
+document.documentElement.classList.remove('dark')
+
 </script>

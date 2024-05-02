@@ -50,4 +50,5 @@ export default {
 definePageMeta({
   middleware:'auth-admin',
 });
+document.documentElement.classList.remove('dark')
 </script>
