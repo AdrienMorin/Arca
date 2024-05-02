@@ -82,7 +82,7 @@ Route.group(() => {
 
   Route.get('/category/getByName/:name','CategoriesController.getByName')
 
-  Route.put('/category/update/:id', 'CategoriesController.updateCategory')
+  Route.post('/category/update', 'CategoriesController.updateCategory')
 
   //AI routes
 
