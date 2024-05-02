@@ -28,8 +28,6 @@ Route.group(() => {
 
   Route.post('/auth/logout', 'AuthController.logout')
 
-  Route.get('/auth/isLoggedInAsAdmin', 'AuthController.isLoggedInAsAdmin')
-
   // Admin routes
   Route.post('/deleteUser', 'UsersController.deleteUserById')
 
@@ -115,6 +113,9 @@ Route.group( () => {
 
   // Login route
   Route.post("/auth/login", 'AuthController.login')
+
+  Route.get('/auth/isLoggedInAsAdmin', 'AuthController.isLoggedInAsAdmin')
+
 
 }).prefix("/api")
 
