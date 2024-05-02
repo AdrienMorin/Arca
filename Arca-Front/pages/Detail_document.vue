@@ -40,10 +40,6 @@ export default {
       
 <div class="h-screen overflow-hidden">
   
-  
-  <Navbar />
-  
-  
       <div class="flex flex-row relative w-full h-screen">
   
         <div class="flex-none xl:w-1/3 lg:w-1/4  bg-[#027BCE] bg-opacity-10 h-full p-20% ">

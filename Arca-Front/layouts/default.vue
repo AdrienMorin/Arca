@@ -4,6 +4,6 @@ import Navbar from "~/components/users/Navbar.vue";
 
 <template>
   <Navbar />
-  <slot />
+  <slot/>
 
 </template>

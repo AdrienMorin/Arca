@@ -90,6 +90,9 @@ Route.group(() => {
 
   //Upload routes
 
+  Route.post('/basic/upload','BasicUploadPipelinesController.uploadDoc')
+
+
 }).prefix("/api").middleware('auth')
 
 // Unprotected routes
@@ -111,9 +114,6 @@ Route.group( () => {
 
   // Login route
   Route.post("/auth/login", 'AuthController.login')
-
-  Route.post('/basic/upload','BasicUploadPipelinesController.uploadDoc')
-
 
 }).prefix("/api")
 

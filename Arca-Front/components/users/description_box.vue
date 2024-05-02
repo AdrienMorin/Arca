@@ -3,11 +3,11 @@
     <div class="  h-1/6 content-center">
         <div class="">
             <p class="inline-block font-bold text-2xl">Document:</p>
-            <p class="inline-block text-xl indent-2">LaComplainteDuPartisan.pdf</p>
+            <p class="inline-block text-xl indent-2">{{titreFichier}}</p>
         </div>
         <div v-if=isVisible>
             <p class="inline-block font-semibold text-lg">Ajouté par:</p>
-            <p class="inline-block text-lg indent-2 ">Mr cena</p>
+            <p class="inline-block text-lg indent-2 ">{{ajoutePar}}</p>
         </div>
         
         
@@ -28,8 +28,24 @@
 
 </template>
 
-<script setup>
-defineProps(['isVisible'])
+<script>
+export default {
+    props: {
+        isVisible: {
+            type: Boolean,
+            default: false
+        },
+        titreFichier: {
+            type: String,
+            default: ''
+        },
+        ajoutePar: {
+            type: String,
+            default: ''
+        }
+    }
+    
+}
 
 
 </script>

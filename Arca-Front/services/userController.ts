@@ -47,7 +47,7 @@ class UserController {
 
   public async uploadDocument(
     token: string,
-    file: string,
+    file: File,
     titre: string,
     description: string,
     retranscription: string,
@@ -55,18 +55,14 @@ class UserController {
     personnes: string
 
   ): Promise<any> {
-    const formData = new FormData();
-    formData.append('Authorization', `Bearer ${token}`);
-    formData.append('file', file);
-    formData.append('titre', titre);
-    formData.append('description', description);
-    formData.append('retranscription', retranscription);
-    formData.append('date', date);
-    formData.append('personnes', personnes);
-
-    console.log(formData);
-
-    const response = await axios.post(`${baseUrl}/basic/upload`, formData);
+    const response = await axios.post(`${baseUrl}/basic/upload`, 
+      {file, titre, description, retranscription, date, personnes},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+    console.log(response);
     return response;
   }
 

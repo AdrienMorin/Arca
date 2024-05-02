@@ -17,7 +17,6 @@ const client = new MongoClient(uri,  {
 export default class BasicUploadPipelinesController {
 
     public async uploadDoc({ auth,bouncer,response,request}:HttpContextContract){
-            
         await auth.use('api').authenticate()
         await bouncer.with('AiPolicy').authorize('create')
     

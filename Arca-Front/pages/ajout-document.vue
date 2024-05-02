@@ -7,8 +7,9 @@
   import personne_liste from '~/components/users/personne_liste.vue';
   import Popup from '~/components/users/popup.vue';
   import UserController from '~/services/userController.ts';
-  import fs from 'fs';
-  import fileContent from '~/assets/complainteDuPartisan.png'; // Adjust the path as needed
+  import { useFileStore } from '~/fileTransfer.js';
+
+
 
   export default {
     components: {
@@ -18,6 +19,9 @@
       personne_liste,
       Popup
       
+    },
+    mounted() {
+      this.getDocument();
     },
      data() {
       return {
@@ -30,9 +34,9 @@
         lieu: '',
         type: '',
         personnes:'',
+        titreDoc: '',
       };
     },
-
     methods: {
       Ajouter_personne(){
         if(this.$refs.personneAajoute.search != ''){
@@ -55,23 +59,35 @@
       },
     
       async uploadDocument() {
-        console.log('Uploading document...')
+        this.personnes=this.$refs.menu_personne.getPersonne();
+          console.log('Uploading document...')
 
-        const tokenCookie = useCookie('token')
-        const token= tokenCookie.value;
+          const tokenCookie = useCookie('token')
+          const token= tokenCookie.value;
 
-        const doc = fileContent;
-        console.log(doc);
-       const response = await UserController.getInstance().uploadDocument(tokenCookie,
-      "socument","egfd", "hfd","ee","1945-06-06T15:23:22.711+00:00","hgdd");
+          console.log(this.File);
+        const response = await UserController.getInstance().uploadDocument(token,
+        this.File,this.titre,this.description,this.lieu,"1945-06-06T15:23:22.711+00:00","personne");
+       //"1945-06-06T15:23:22.711+00:00"
+
+        
+        // redirect to homepage if user is authenticated
+        if (response.status === 200) {
+          console.log('Vous êtes connecté')
+          this.$router.push('/rechercher');
+        }
+      },
+      getDocument() {
+        console.log('Checking document...')
+        const fileStore = useFileStore();
+        const test=fileStore.getFile;
+        this.File=test.content;
+        this.titreDoc=test.name;
+        console.log("ee",this.File);
+
+      },
 
       
-      // redirect to homepage if user is authenticated
-      if (response.status === 200) {
-        console.log('Vous êtes connecté')
-        this.$router.push('/rechercher');
-      }
-    },
  
 
 
@@ -90,7 +106,7 @@
           :title="'Annuler Modifications'"
           :description1="'Etes-vous sûr de vouloir annuler l`ajout du document suivant'"
           :titreDoc="'Complainte du'"
-          :annuler="1" >
+          :annuler="true" >
 
         </Popup>
 
@@ -100,8 +116,8 @@
           :description1="'Votre Document'"
           :titreDoc="'Complainte du'"
           :description2="'a bien été Ajouté à la base de donnée.'"
-          :color="1" 
-          :annuler="0">
+          :color="true" 
+          :annuler="false">
         </Popup>
 
         <Popup 
@@ -110,8 +126,8 @@
           :description1="'Votre Document'"
           :titreDoc="'Complainte du'"
           :description2="'a bien été Enregistrée à la base de donnée et devrait être Vérifier par la suite.'"
-          :color="1" 
-          :annuler="0">
+          :color="true" 
+          :annuler="false">
         </Popup>
 
 
@@ -179,12 +195,12 @@
           </div>
         </div>
                <div class="flex-grow md:w-1/2 space-y-8">
-            <description/>
+            <description :titreFichier="titreDoc" />
            
             <div class="flex-row place-content-between	flex  w-5/6 mx-auto">
               
               <div class=" place-content-start items-start flex w-2/4 ">
-                <button @click="flipEnregistrer()" type="button" class="relative top-1 text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-100 font-medium rounded-lg text-base px-10 py-3 me-2 mb-2 dark:bg-blue-400 dark:hover:bg-blue-500 focus:outline-none dark:focus:ring-blue-600">
+                <button @click="getDocument()" type="button" class="relative top-1 text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-100 font-medium rounded-lg text-base px-10 py-3 me-2 mb-2 dark:bg-blue-400 dark:hover:bg-blue-500 focus:outline-none dark:focus:ring-blue-600">
                    <p class="text-xl">Enregistrer et ajouter "à Verfier"</p>
                 </button>
               </div>

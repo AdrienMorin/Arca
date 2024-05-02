@@ -5,11 +5,9 @@ export default class BasicUploadPipelineValidator {
   constructor(protected ctx: HttpContextContract) {}
 
   public schema = schema.create({
-    //file: schema.file({
-      //size: '10mb',
-      //extnames: ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx','jpg','png','jpeg','webp','mp3','wav','aac']
-    //}),
-    file: schema.string({
+    file: schema.file({
+      size: '10mb',
+      extnames: ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx','jpg','png','jpeg','webp','mp3','wav','aac']
     }),
     titre: schema.string({
     }),
