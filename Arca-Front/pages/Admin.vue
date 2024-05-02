@@ -1,20 +1,18 @@
 <script>
 import UsersComponent from '@/components/admin/UsersComponent'
 import UserController from '~/services/userController'
+definePageMeta({
+  middleware:'auth-admin',
+  layout: 'default'
+});
 
 export default {
-  layout: 'default',
   components: {
     UsersComponent,
   },
   async mounted() {
     const tokenCookie = useCookie('token')
     const token = tokenCookie.value
-    this.isAdmin = await UserController.getInstance().isAdmin(token)
-    definePageMeta({
-      middleware:'auth-admin',
-      layout: 'admin'
-    });
   },
   data() {
     return {
@@ -24,8 +22,7 @@ export default {
         {name: 'Gestion des villes', component: 'VillesComponent'},
         {name: 'Gestion de la liste de personnes',  component: 'PersonnesComponent'}
       ],
-      activeLink: 'UsersComponent',
-      isAdmin: false
+      activeLink: 'UsersComponent'
     }
   }
 }
@@ -33,7 +30,7 @@ export default {
 </script>
 
 <template>
-  <div v-if="isAdmin">
+  <div>
     <nav class="bg-gray-1200 mt-10">
       <div class="max-w-14xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex">

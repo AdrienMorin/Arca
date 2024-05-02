@@ -18,6 +18,5 @@ export default defineNuxtRouteMiddleware(async(to, from)=> {
 
   } catch (error) {
     console.error('Error checking auth:', error)
-    return abortNavigation()
   }
 });
