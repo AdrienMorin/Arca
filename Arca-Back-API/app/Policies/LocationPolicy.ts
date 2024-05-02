@@ -11,7 +11,7 @@ export default class LocationPolicy extends BasePolicy {
 	public async create(user: User) {
 		return (user.role === 'admin'||user.role === 'superuser')
 	}
-	public async update(user: User) {
+	public async delete(user: User) {
 		return (user.role === 'admin'||user.role === 'superuser')
 	}
 
