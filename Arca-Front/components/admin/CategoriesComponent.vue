@@ -45,35 +45,51 @@
 </template>
 
 <script>
+import UserController from '~/services/userController'
+
 export default {
     data() {
         return {
-        name: '',
-        newCategory: ''
+            categories: [],
+            newCategory: {
+                name:''
+            },
+            updatedCategory,
         };
     },
 
-    async mounted() {
-        this.name = await this.getName();
+    async created() {
+        const fetchedCategories = await this.fetchCategories()
+        this.categories = fetchedCategories.data
     },
 
     methods: {
-        addCategory() {
-        // Same here for backend integration
-        console.log('Adding category:', this.newCategory);
-        this.categories.push(this.newCategory);
-        this.newCategory = ''; // Reset input
-        },
-        updateCategory(category) {
-        this.categories = this.categories.filter(c => c !== category);
-        },
-        async getName(){
+        async fetchCategories() {
             const tokenCookie = useCookie('token')
             const token = tokenCookie.value
-            const response = await UserController.getInstance().getCategory(token);
-            console.log(response);
-            return response.data.name;
-        }
+            return await UserController.getInstance().fetchCategories(token)
+        },
+        async addCategory() {
+            // Here you would normally integrate with your backend
+            console.log('Adding category:', this.newCategory);
+            const tokenCookie = useCookie('token')
+            const token = tokenCookie.value
+            const response = await UserController.getInstance().createCategory(this.newCategory.name, token)
+            if (response.status === 200){
+                this.categories.push(this.newCategory) // Push category to the list
+                this.newCategory = '' // Reset input
+            }
+        },
+        // updateCategory(category) {
+        //     const tokenCookie = useCookie('token')
+        //     const token = tokenCookie.value
+        //     const response = await UserController.getInstance().modifyCategory(this.updatedCategory.name, token)
+        //     if (response.status === 200){
+        //         this.categories.push(this.updatedCategory) // Push category to the list
+        //     }
+        //     this.categories = this.categories.filter(c => c !== category); //???
+        // },
+
     }
 };
 

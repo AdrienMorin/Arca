@@ -83,6 +83,15 @@ class UserController {
     return response;
   }
 
+  public async fetchCategories(token: string):Promise<any>{
+    const response = await axios.get(`${baseUrl}/category/fetchCategories`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return response;
+  }
+
 
   public async register(
     email: string,
