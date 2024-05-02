@@ -6,13 +6,18 @@
                 <button @click="clickSuggestion(result)" class="border relative w-full">{{ result }}</button>
             </div>
         </div>
+        <menu>fff</menu>
     </div>
     
   </template>
   
   <script>
+  import menu from '~/components/users/personne_menu.vue'
   export default {
     name: 'SearchAutocomplete',
+    components: {
+      menu,
+    },
     props: {
       items: {
         type: Array,

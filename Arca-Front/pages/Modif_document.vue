@@ -1,6 +1,5 @@
 <template>
   <div class=" flex-col h-screen border overflow-hidden">
-    <Navbar class="flex-none h-auto"/>
     <div class="flex-grow w-full">
         <Popup 
           ref="popupSupprimer"
