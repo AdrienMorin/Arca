@@ -107,6 +107,7 @@ export default class UsersController {
         ChangePasswordByIdValidator
       );
       const user = await User.findOrFail(id);
+      
       user.password = newPassword;
       await user.save();
       return response

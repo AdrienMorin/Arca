@@ -19,7 +19,6 @@ export default class CategoriesController {
         const document=await Category.findOrFail(request.param("id"))
         await document.merge(payload).save()
         return response.status(200).json({message:'Catégorie mise à jour avec succès'})
-
     }
 
     public async fetchCategories({auth, bouncer, response}: HttpContextContract){
