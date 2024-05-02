@@ -9,14 +9,11 @@ export default class PeopleController {
         await auth.use('api').authenticate()
         await bouncer.with('PersonPolicy').authorize('create')
         const payload = await request.validate(CreatePersonValidator)
-        const displayname = payload.firstname + ' ' + payload.lastname
-        const first = payload.firstname.replace(/-/g, " ").toLowerCase();
-        const lastname = payload.lastname.replace(/-/g, " ").toLowerCase()
         await Person.create({
-            displayname: displayname,
-            firstname: first,
-            lastname: lastname,
-            role: payload.role,
+            displayname: payload.displayname,
+            firstname: payload.firstname,
+            lastname: payload.lastname,
+            category: payload.category,
             location: payload.location
         })
         return response.status(200).json({message: 'Personne créée avec succès'})
@@ -26,17 +23,8 @@ export default class PeopleController {
         await auth.use('api').authenticate()
         await bouncer.with('PersonPolicy').authorize('update')
         const payload = await request.validate(UpdatePersonValidator)
-        const displayname = payload.firstname + ' ' + payload.lastname
-        const firstname = payload.firstname.toLowerCase().replace("-", " ")
-        const lastname = payload.lastname.toLowerCase()
         const document=await Person.findOrFail(request.param("id"))
-        await document.merge({
-            displayname: displayname,
-            firstname: firstname,
-            lastname: lastname,
-            role: payload.role,
-            location: payload.location
-        }).save()
+        await document.merge(payload).save()
         return response.status(200).json({message:'Personne mise à jour avec succès'})
 
     }

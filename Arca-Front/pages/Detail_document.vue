@@ -27,9 +27,6 @@ export default {
 
   }
 }
-definePageMeta({
-  middleware:'auth',
-});
 
 document.documentElement.classList.remove('dark')
 

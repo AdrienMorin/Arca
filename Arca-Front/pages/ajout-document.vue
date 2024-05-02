@@ -47,10 +47,7 @@
 
     }
   }
-  definePageMeta({
-    middleware:'auth',
-  });
-  document.documentElement.classList.remove('dark')
+
 </script>
 
 

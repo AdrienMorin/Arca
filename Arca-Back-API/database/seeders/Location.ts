@@ -5,7 +5,7 @@ import fs from 'fs';
 export default class extends BaseSeeder {
   public async run () {
     // Read the JSON file
-    const dataBuffer = fs.readFileSync('app/data/cities.json');
+    const dataBuffer = fs.readFileSync('App/data/cities.json');
     
     // Convert the buffer to a string and parse it to a JSON object
     const data = JSON.parse(dataBuffer.toString());

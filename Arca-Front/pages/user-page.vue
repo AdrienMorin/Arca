@@ -7,11 +7,6 @@ export default {
     ChangerMdp,
     }
 };
-definePageMeta({
-  middleware:'auth',
-});
-document.documentElement.classList.remove('dark')
-
 
 </script>
 

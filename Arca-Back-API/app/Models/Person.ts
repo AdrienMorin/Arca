@@ -15,7 +15,7 @@ export default class Person extends BaseModel {
   public lastname: string
 
   @column()
-  public role: string
+  public category: string
 
   @column()
   public location: number

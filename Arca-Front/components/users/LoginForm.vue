@@ -30,22 +30,19 @@ export default {
 </script>
 
 <template>
-  <div class="md:p-20 mx-auto max-w-lg my-12 mt-36 border-2 rounded-lg bg-white border-blue-600 flex flex-col justify-center items-center text-md font-bold">
-    <form @submit.prevent="handleSubmit" class="space-y-4 mx-auto max-w-lg">
-      <div class="text-center p-4 text-xl">Connexion</div>
-      <div class="flex flex-col">
-        <label for="email" class="text-black font-light">Email</label>
-        <input v-model="email" id="email" type="email" placeholder="Entrez votre email" class="text-gray-600 font-light border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
-      </div>
+  <UDashboardCard title="Connexion" class="md:p-20 mx-auto max-w-lg my-12 mt-36 border-2 border-blue-600 flex flex-col justify-center items-center text-2xl font-bold">
+    <UForm :validate="validate" :validate-on="['submit']" :state="state" class="space-y-4 mx-auto max-w-lg" @submit="handleSubmit">
+      <UFormGroup label="Email" name="email">
+        <UInput v-model="email" type="email" placeholder="Entrez votre email" class="text-gray-400 font-light" />
+      </UFormGroup>
 
-      <div class="flex flex-col">
-        <label for="password" class="text-black font-light">Mot de passe</label>
-        <input v-model="password" id="password" placeholder="Entrez votre mot de passe" class="text-gray-600 font-light border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" type="password" autofocus />
-      </div>
+      <UFormGroup label="Mot de passe" name="motDePasse">
+        <UInput v-model="password" placeholder="Entrez votre mot de passe" class="text-gray-400 font-light" type="password" autofocus />
+      </UFormGroup>
 
       <div class="flex justify-center">
-        <button type="submit" class="bg-blue-600 hover:bg-blue-500 mt-10 w-72 rounded-2xl justify-center text-white py-2 px-4 font-medium">Se connecter</button>
+        <UButton type="submit" label="Se connecter" class="bg-blue-600 hover:bg-blue-500 mt-10 w-72 rounded-2xl justify-center" />
       </div>
-    </form>
-  </div>
+    </UForm>
+  </UDashboardCard>
 </template>

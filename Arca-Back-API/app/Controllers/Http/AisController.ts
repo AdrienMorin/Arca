@@ -6,14 +6,6 @@ import Drive from '@ioc:Adonis/Core/Drive';
 import fs from 'fs';
 import axios from 'axios';
 import Env from '@ioc:Adonis/Core/Env';
-const https = require('https');
-
-// Create an instance of Axios with custom HTTPS agent
-const instance = axios.create({
-    httpsAgent: new https.Agent({
-        rejectUnauthorized: false // Ignore certificate verification errors
-    })
-});
 
 
 const client = new MongoClient(uri,  {
@@ -59,7 +51,7 @@ export default class AisController {
         }
 
         //appel à une api, parametre :  _id et filename
-        instance.post('https://127.0.0.1:5000/create_metadata', {
+        axios.post('http://127.0.0.1:5000/create_metadata', {
             id: _id,
             filename: fileName
         }, {
