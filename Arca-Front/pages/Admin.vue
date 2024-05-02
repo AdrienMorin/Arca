@@ -10,10 +10,6 @@ export default {
   components: {
     UsersComponent,
   },
-  async mounted() {
-    const tokenCookie = useCookie('token')
-    const token = tokenCookie.value
-  },
   data() {
     return {
       adminLinks: [
