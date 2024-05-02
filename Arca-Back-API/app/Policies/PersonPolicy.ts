@@ -9,12 +9,10 @@ export default class PersonPolicy extends BasePolicy {
 		return (user.role === 'admin'||user.role === 'user'||user.role === 'superuser')
 	}
 	public async create(user: User) {
-		return (user.role === 'admin'||user.role === 'user'||user.role === 'superuser')
+		return (user.role === 'admin'||user.role === 'superuser')
 	}
 	public async update(user: User) {
-		return (user.role === 'admin'||user.role === 'user'||user.role === 'superuser')
+		return (user.role === 'admin'||user.role === 'superuser')
 	}
-	public async delete(user: User) {
-		return (user.role === 'admin'||user.role === 'user'||user.role === 'superuser')
-	}
+
 }

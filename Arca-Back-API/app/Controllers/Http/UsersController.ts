@@ -43,10 +43,18 @@ export default class UsersController {
     response,
   }: HttpContextContract) {
     await auth.use("api").authenticate();
-    await bouncer.with("UserPolicy").authorize("delete");
     try {
       const userId = request.body().id;
       const user = await User.findOrFail(userId);
+      if (user.role === "superuser") {
+        return response
+          .status(400)
+          .json({ message: "Vous ne pouvez pas supprimer ce compte" });
+      } else if (user.role === "admin") {
+        await bouncer.with("UserPolicy").authorize("deleteAdmin");
+      } else {
+        await bouncer.with("UserPolicy").authorize("deleteUser");
+      }
       await user.delete();
       return response
         .status(200)
@@ -107,6 +115,7 @@ export default class UsersController {
         ChangePasswordByIdValidator
       );
       const user = await User.findOrFail(id);
+      
       user.password = newPassword;
       await user.save();
       return response

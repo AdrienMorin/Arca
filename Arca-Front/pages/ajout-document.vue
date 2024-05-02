@@ -95,6 +95,9 @@
 
     }
   }
+  definePageMeta({
+    middleware:'auth',
+  });
 
 </script>
 

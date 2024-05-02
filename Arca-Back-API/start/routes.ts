@@ -46,8 +46,6 @@ Route.group(() => {
 
   Route.post('/person/create', 'PeopleController.createPerson')
 
-  Route.post('/person/delete', 'PeopleController.deletePersonById')
-
   Route.get('/person/fetchPeople', 'PeopleController.fetchPeople')
 
   Route.get('/person/getPerson/:id', 'PeopleController.getPersonById')
@@ -60,21 +58,17 @@ Route.group(() => {
 
   Route.post('/location/create', 'LocationsController.createLocation')
 
-  Route.post('/location/delete', 'LocationsController.deleteLocationById')
-
   Route.get('/location/fetchLocations', 'LocationsController.fetchLocations')
 
   Route.get('/location/getLocation/:id', 'LocationsController.getLocationById')
 
   Route.get('/location/getByName/:name','LocationsController.getByName')
 
-  Route.put('/location/update/:id', 'LocationsController.updateLocation')
+  Route.post('/location/delete', 'LocationsController.deleteLocation')
 
   // Category routes
 
   Route.post('/category/create', 'CategoriesController.createCategory')
-
-  Route.post('/category/delete', 'CategoriesController.deleteCategoryById')
 
   Route.get('/category/fetchCategories', 'CategoriesController.fetchCategories')
 
@@ -82,7 +76,7 @@ Route.group(() => {
 
   Route.get('/category/getByName/:name','CategoriesController.getByName')
 
-  Route.put('/category/update/:id', 'CategoriesController.updateCategory')
+  Route.post('/category/update', 'CategoriesController.updateCategory')
 
   //AI routes
 
@@ -114,6 +108,9 @@ Route.group( () => {
 
   // Login route
   Route.post("/auth/login", 'AuthController.login')
+
+  Route.get('/auth/isLoggedInAsAdmin', 'AuthController.isLoggedInAsAdmin')
+
 
 }).prefix("/api")
 

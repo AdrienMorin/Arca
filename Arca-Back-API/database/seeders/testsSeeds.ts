@@ -12,16 +12,16 @@ export default class extends BaseSeeder {
     });
 
     await User.create({
-      firstname: "rafael",
-      lastname: "folgoas",
+      firstname: "Rafael",
+      lastname: "Folgoas",
       email: "raffolgo@gmail.com",
       password: "raffolgo",
       role: "admin",
     });
 
     await User.create({
-      firstname: "ad",
-      lastname: "laurent",
+      firstname: "Ad",
+      lastname: "Laurent",
       email: "adLaurent@gmail.com",
       password: "adLaurent",
       role: "user",

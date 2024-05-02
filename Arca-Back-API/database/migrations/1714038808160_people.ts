@@ -5,11 +5,11 @@ export default class extends BaseSchema {
 
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
-      table.increments('id')
+      table.increments('id').primary()
       table.string('displayname').notNullable()
       table.string('lastname').notNullable()
       table.string('firstname').notNullable()
-      table.string('category').notNullable()
+      table.string('role').notNullable()
       table.integer('location').references('id').inTable('locations').onUpdate('CASCADE').onDelete('CASCADE')
 
 
