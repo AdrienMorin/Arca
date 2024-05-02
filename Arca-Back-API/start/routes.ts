@@ -46,8 +46,6 @@ Route.group(() => {
 
   Route.post('/person/create', 'PeopleController.createPerson')
 
-  Route.post('/person/delete', 'PeopleController.deletePersonById')
-
   Route.get('/person/fetchPeople', 'PeopleController.fetchPeople')
 
   Route.get('/person/getPerson/:id', 'PeopleController.getPersonById')
@@ -60,8 +58,6 @@ Route.group(() => {
 
   Route.post('/location/create', 'LocationsController.createLocation')
 
-  Route.post('/location/delete', 'LocationsController.deleteLocationById')
-
   Route.get('/location/fetchLocations', 'LocationsController.fetchLocations')
 
   Route.get('/location/getLocation/:id', 'LocationsController.getLocationById')
@@ -73,8 +69,6 @@ Route.group(() => {
   // Category routes
 
   Route.post('/category/create', 'CategoriesController.createCategory')
-
-  Route.post('/category/delete', 'CategoriesController.deleteCategoryById')
 
   Route.get('/category/fetchCategories', 'CategoriesController.fetchCategories')
 

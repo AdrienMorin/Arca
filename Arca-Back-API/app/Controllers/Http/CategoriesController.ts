@@ -45,17 +45,4 @@ export default class CategoriesController {
         return response.status(200).json(user)
     }
 
-    public async deleteCategoryById({auth, bouncer, request, response}: HttpContextContract) {
-        await auth.use('api').authenticate()
-        await bouncer.with('CategoryPolicy').authorize('delete')
-        try {
-            const documentId = request.body().id
-            const document = await Category.findOrFail(documentId)
-            await document.delete()
-            return response.status(200).json({message: 'Catégorie supprimée avec succès'})
-        } catch (error) {
-            return response.status(400).json({message: 'Une erreur est survenue lors de la suppression de la catégorie'})
-        }
-
-    }
 }

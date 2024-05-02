@@ -14,7 +14,5 @@ export default class CategoryPolicy extends BasePolicy {
 	public async update(user: User) {
 		return (user.role === 'admin' || user.role === 'superuser')
 	}
-	public async delete(user: User) {
-		return (user.role === 'admin' || user.role === 'superuser')
-	}
+
 }
