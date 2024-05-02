@@ -13,6 +13,7 @@ export default {
       to: new Date(),
       from: new Date('2016-01-01'),
       dateMode: 'simple'
+      
     }
   }
 }

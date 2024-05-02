@@ -75,6 +75,22 @@ class UserController {
     });
     return response;
   }
+
+  public async changeCategory(
+    token: string,
+    oldCategory: string,
+    newCategory: string
+  ): Promise<any> {
+    const response = await axios.post(`${baseUrl}/category/update/`, 
+    {oldCategory, newCategory},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return response;
+  }
+
 }
 
 export default UserController;

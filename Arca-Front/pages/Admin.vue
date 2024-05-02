@@ -30,10 +30,12 @@
 
 <script>
 import UsersComponent from '@/components/admin/UsersComponent'
+import CategoriesComponent from '../components/admin/CategoriesComponent.vue'
 
 export default {
   components: {
     UsersComponent,
+    CategoriesComponent
   },
   data() {
     return {
