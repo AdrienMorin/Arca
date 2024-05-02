@@ -60,7 +60,7 @@ definePageMeta({
             </div>
           </div>
           <div class="flex flex-col mt-4 w-full">
-            <label class="block mb-2 font-bold w-120">Lieu</label>
+            <label class="block mb-2 font-bold w-120">Lieux</label>
             <input type="text" class="form-input max-w-[464px] px-8 py-2 border rounded-lg" placeholder="Rentrer un lieu">
           </div>
         </div>
@@ -69,15 +69,13 @@ definePageMeta({
           <select class="form-select w-full px-6 py-2 appearance-none bg-white rounded-lg border text-gray-500">
             <option class="rounded-lg">Choisir le type de document</option>
           </select>
-          <label class="block mb-2 mt-4 font-bold">Personne</label>
+          <label class="block mb-2 mt-4 font-bold">Personnes</label>
           <input type="text" class="form-input w-full px-8 py-2 border rounded-lg" placeholder="Rentrer une personne">
         </div>
       </div>
       <div class="text-center mt-12">
-        <button class="bg-blue-600 text-white border-none rounded-[20px] px-[20px] py-[10px] text-[16px] cursor-pointer outline-none hover:bg-[#0056b3]">Lancer la recherche</button>
+        <nuxt-link to="/ListeRecherche" class="bg-[#007BFF] text-white border-none rounded-[20px] px-[20px] py-[10px] text-[16px] cursor-pointer outline-none hover:bg-[#0056b3]">Lancer la recherche</nuxt-link>
       </div>
     </div>
   </div>
 </template>
-
-

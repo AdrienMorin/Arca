@@ -3,10 +3,10 @@ import User from 'App/Models/User'
 
 export default class UserPolicy extends BasePolicy {
 	public async viewList(user: User) {
-		return user.role === 'admin'
+		return user.role === 'admin'|| user.role === 'superuser'
 	}
 	public async view(user: User) {
-		return user.role === 'admin'
+		return user.role === 'admin' || user.role === 'superuser'
 	}
 	public async createUser(user: User) {
 		return user.role === 'admin' || user.role === 'superuser'
@@ -15,10 +15,15 @@ export default class UserPolicy extends BasePolicy {
 		return user.role === 'superuser'
 	}
 	public async update(user: User) {
-		return user.role === 'admin'
+		return user.role === 'admin' || user.role === 'superuser'
 	}
-	public async delete(user: User) {
-		return user.role === 'admin'
+
+	public async deleteUser(user: User) {
+		return user.role === 'admin' || user.role === 'superuser'
+	}
+	public async deleteAdmin(user: User) {
+		return user.role === 'superuser'
+
 	}
 	public async changePasswordById(user: User) {
 		return user.role === 'superuser'

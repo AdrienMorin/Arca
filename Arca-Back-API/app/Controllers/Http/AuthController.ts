@@ -38,11 +38,16 @@ export default class AuthController {
   }
 
   public async isLoggedInAsAdmin({auth, response}) {
-    await auth.use('api').authenticate()
-    if (auth.user?.role === 'admin') {
-      return response.status(200).json({message: 'Vous êtes connecté en tant qu\'administrateur'})
-    } else {
-      return response.status(200).json({message: 'Vous n\'êtes pas autorisé à accéder à cette ressource'})
+    try{
+      await auth.use('api').authenticate()
+      if (auth.user?.role === 'admin') {
+        return response.status(200).json({message: 'Vous êtes connecté en tant qu\'administrateur'})
+      } else {
+        return response.status(200).json({message: 'Vous n\'êtes pas autorisé à accéder à cette ressource'})
+      }
+    } catch (error) {
+      return response.status(200).json({message: 'Vous n\'êtes pas connecté'})
     }
+
   }
 }
