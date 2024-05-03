@@ -37,7 +37,7 @@
       <div class="bg-gray-50 shadow overflow-hidden rounded-md" style="max-height: 250px; overflow-y: auto;">
         <ul class="divide-y divide-gray-200">
           <!-- Header row -->
-          <li class="px-10 py-4 flex justify-between bg-gray-200">
+          <li class="px-10 py-4 flex justify-between">
             <div class="w-1/5 text-sm font-medium text-gray-900">Id</div>
             <div class="w-1/5 text-sm font-medium text-gray-900">Nom complet</div>
             <div class="w-1/5 text-sm font-medium text-gray-900">Code postal</div>
@@ -96,11 +96,8 @@ export default {
         this.newVille.cityname,
         this.newVille.zipcode,
         this.newVille.country, token)
-        console.log("resp adding ville contr",response)
       if (response.status === 200){
-        const id=this.newVille.id
-        const displayname = this.newVille.cityname + ', ' + this.newVille.regionname + ', ' + this.newVille.country
-        this.villes.push({"id": id, "displayname": displayname, "zipcode": `${this.newVille.zipcode}`}) // Push Ville to the list
+        this.villes.push(this.newVille) // Push Ville to the list
         this.newVille = {
         regionname: '',
         cityname: '',
