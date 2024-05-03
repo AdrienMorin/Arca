@@ -39,15 +39,15 @@
             <!-- Category modification block -->
             <div class="w-1/2 mr-10 ml-10 mt-8 text-center">
                 <div class="rounded-lg bg-white p-4 shadow-xl">
-                    <h2 class="text-xl font-bold">Changer nom de catégorie</h2>
+                    <h2 class="text-lg font-bold">Changer nom de catégorie</h2>
                     <form class="space-y-5 mx-auto max-w-lg my-5 text-md">
                         <div class="flex flex-col">
                             <label for="oldCategory" class="text-gray-600">Ancien nom</label>
-                            <input v-model="oldCategory" id="oldCategory" type="text" class="text-gray-500 font-light bg-gray-100 border border-gray-300 p-2 rounded text-sm" autofocus />
+                            <input v-model="oldCategory.name" id="oldCategory" type="text" class="text-gray-600 font-light bg-gray-100 border border-gray-300 p-2 rounded text-sm" autofocus />
                         </div>
                         <div class="flex flex-col">
-                            <label for="newCategory" class="text-gray-600">Nouveau nom</label>
-                            <input v-model="updatedCategory" id="updatedCategory" type="text" class="text-gray-500 font-light bg-gray-100 border border-gray-300 p-2 rounded text-sm" autofocus />
+                            <label for="updatedCategory" class="text-gray-600">Nouveau nom</label>
+                            <input v-model="updatedCategory.name" id="updatedCategory" type="text" class="text-gray-600 font-light bg-gray-100 border border-gray-300 p-2 rounded text-sm" autofocus />
                         </div>
                     </form>
                     <div class="mt-4 flex justify-center">
@@ -69,11 +69,9 @@
         data() {
             return {
                 categories: [],
-                newCategory: {
-                    name:''
-                },
-                oldCategory: null,
-                updatedCategory: '',
+                newCategory: {name:''},
+                oldCategory: {name:''},
+                updatedCategory: {name:''},
             };
         },
 
@@ -89,30 +87,27 @@
                 return await UserController.getInstance().fetchCategories(token)
             },
             async addCategory() {
-                // Here you would normally integrate with your backend
                 console.log('Adding category:', this.newCategory);
                 const tokenCookie = useCookie('token')
                 const token = tokenCookie.value
                 const response = await UserController.getInstance().createCategory(this.newCategory.name, token)
                 if (response.status === 200){
-                    this.categories.push(this.newCategory) // Push category to the list
-                    this.newCategory = '' // Reset input
+                    this.categories.push({"name": `${this.newCategory.name}`}) // Push category to the list
+                    this.newCategory.name = '';
                 }
             },
             async updateCategory() { 
                 const tokenCookie = useCookie('token')
                 const token = tokenCookie.value
-                const response = await UserController.getInstance().updateCategory(token, this.oldCategory, this.updatedCategory)
-                console.log(response);
+                
+                const response = await UserController.getInstance().updateCategory(token, this.oldCategory.name, this.updatedCategory.name)
 
                 if (response.status === 200){
-                    this.categories.push(this.updatedCategory)
-                    const index = this.categories.findIndex(category => category.name === this.oldCategory);
+                    const index = this.categories.findIndex(category => category.name === this.oldCategory.name);
                     if (index !== -1) {
                         this.categories.splice(index, 1);
                     }
-                    console.log('SUCCESS UPDATE')
-                     // Push category to the list
+                    this.categories.push({"name": `${this.updatedCategory.name}`})
                 }
             },
         }
