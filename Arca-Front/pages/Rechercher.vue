@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { sub, format, isSameDay, type Duration } from 'date-fns'
-import DatePicker from "~/components/users/DatePicker.vue";
-
 const selected = ref({ start: sub(new Date(), { days: 14 }), end: new Date() })
 
 function isRangeSelected (duration: Duration) {
@@ -58,7 +56,7 @@ function selectRange (duration: Duration) {
         </div>
       </div>
       <div class="text-center mt-12">
-        <NuxtLink to="/ListeRecherche" class="bg-blue-600 text-white border-none rounded-[20px] px-[20px] py-[10px] text-[16px] cursor-pointer outline-none hover:bg-[#0056b3]">Lancer la recherche</NuxtLink>
+        <button class="bg-blue-600 text-white border-none rounded-[20px] px-[20px] py-[10px] text-[16px] cursor-pointer outline-none hover:bg-[#0056b3]">Lancer la recherche</button>
       </div>
     </div>
   </div>
