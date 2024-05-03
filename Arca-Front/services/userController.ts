@@ -152,8 +152,15 @@ class UserController {
     token: string,
     file: File,
   ): Promise<any> {
-    const response = await axios.post(`${baseUrl}/ai/upload`,
+    const response = await axios.post(`${baseUrl}/basic/upload`,
       {file},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+
+        }
+      });
     console.log(response);
     return response;
   }
