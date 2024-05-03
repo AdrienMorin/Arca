@@ -1,6 +1,7 @@
 <script>
 import UsersComponent from '@/components/admin/UsersComponent'
 import CategoriesComponent from '../components/admin/CategoriesComponent.vue'
+import PersonnesComponent from "~/components/admin/PersonnesComponent.vue";
 import UserController from '~/services/userController'
 definePageMeta({
   middleware:'auth-admin',
@@ -15,6 +16,7 @@ export default {
   async mounted() {
     const tokenCookie = useCookie('token')
     const token = tokenCookie.value
+    PersonnesComponent
   },
   data() {
     return {

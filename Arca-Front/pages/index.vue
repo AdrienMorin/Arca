@@ -1,6 +1,6 @@
 <script>
   definePageMeta({
-  layout: 'loginLayout'
+  layout: 'login-layout'
 })
 </script>
 
@@ -19,5 +19,5 @@
     </div>
   </div>
 
-  
+
 </template>

@@ -70,7 +70,7 @@ class UserController {
         Authorization: `Bearer ${token}`
       }
     })
-    return response.data.message !== "Vous êtes connecté en tant qu'administrateur";
+    return response.data.message === "Vous êtes connecté en tant qu'administrateur";
   }
 
   public async deleteUser(id: number, token: string): Promise<any> {
@@ -101,6 +101,30 @@ class UserController {
         Authorization: `Bearer ${token}`
       }
     });
+    console.log(response);
+    return response;
+  }
+
+  public async uploadDocument(
+    token: string,
+    file: File,
+    titre: string,
+    description: string,
+    retranscription: string,
+    date: string,
+    personnes: string
+
+  ): Promise<any> {
+    const response = await axios.post(`${baseUrl}/basic/upload`,
+      {file, titre, description, retranscription, date, personnes},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+
+        }
+      });
+    console.log(response);
     return response;
   }
 
@@ -114,7 +138,7 @@ class UserController {
   }
 
 
-  public async register(
+    public async register(
     email: string,
     password: string,
     firstname: string,

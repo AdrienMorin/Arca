@@ -14,7 +14,7 @@
           </div>
           <div class="flex items-baseline">
             <NuxtLink to="/rechercher" class="text-white px-3 font-medium hover:underline">Rechercher</NuxtLink>
-            <span class="text-white px-4">|</span> 
+            <span class="text-white px-4">|</span>
           </div>
           <div class="flex items-center">
             <div class="ml-4">
@@ -22,6 +22,15 @@
             </div>
             <div>
               <NuxtLink to="/archiver" class="text-white px-3 font-medium hover:underline">Archiver</NuxtLink>
+            </div>
+          </div>
+          <div v-if="isAdmin" class="flex items-center">
+            <span class="text-white px-4">|</span>
+            <div class="ml-4">
+              <img src="~/public/parametres.png" alt="Archive" class="h-5 w-5">
+            </div>
+            <div>
+              <NuxtLink to="/admin" class="text-white px-3 font-medium hover:underline">Espace administrateur</NuxtLink>
             </div>
           </div>
         </div>
@@ -47,12 +56,16 @@ export default {
   data() {
     return {
       showDropdown: false,
-      userName: ''
+      userName: '',
+      isAdmin: false
     };
   },
 
   async mounted() {
     this.userName = await this.getName();
+    const tokenCookie = useCookie('token')
+    const token = tokenCookie.value
+    this.isAdmin = await UserController.getInstance().isAdmin(token);
   },
 
   methods:{
