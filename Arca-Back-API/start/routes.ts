@@ -88,16 +88,7 @@ Route.group(() => {
 
   Route.post('/basic/upload','BasicUploadPipelinesController.uploadDoc')
 
-  //Get routes
-
-  Route.post('/basic/get','GetPipelinesController.getDoc')
-
-
-  // A passer en admin
-
-  Route.post('/deleteArca','GetPipelinesController.deleteDocumentArca')
-  
-  Route.post('/deleteReview','GetPipelinesController.deleteDocumentReview')
+  Route.post('/search','BasicUploadPipelinesController.advancedSearch')
 
 }).prefix("/api").middleware('auth')
 
