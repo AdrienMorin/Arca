@@ -60,7 +60,7 @@ export default class AisController {
         }
 
         //appel à une api, parametre :  _id et filename
-        instance.post('https://127.0.0.1:5000/create_metadata', {
+        instance.post('https://51.20.109.232:5000/create_metadata', {
             id: _id,
             filename: fileName
         }, {
