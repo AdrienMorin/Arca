@@ -88,10 +88,9 @@ Route.group(() => {
 
   Route.post('/basic/upload','BasicUploadPipelinesController.uploadDoc')
 
-  //Get routes
-
   Route.post('/basic/get','GetPipelinesController.getDoc')
 
+  Route.post('/search','BasicUploadPipelinesController.advancedSearch')
 
 }).prefix("/api").middleware('auth')
 

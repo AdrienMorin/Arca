@@ -13,6 +13,8 @@ export default class extends BaseSeeder {
       await this.runSeeder(await import("../Category"));
       await this.runSeeder(await import("../Location"));
       await this.runSeeder(await import("../Person"));
+      
+      
     }
   }
 }
