@@ -4,9 +4,9 @@ import Person from "App/Models/Person";
 export default class extends BaseSeeder {
   public async run () {
     await Person.create({
-      "firstname": "john",
-      "lastname": "doe",
-      "displayname": "John Doe",
+      "firstname": "victor",
+      "lastname": "le saint",
+      "displayname": "Victor Le Saint",
       "role": "user",
     })
   }
