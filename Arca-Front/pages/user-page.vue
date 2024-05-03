@@ -5,11 +5,13 @@ export default {
   components: {
     UserInfos,
     ChangerMdp,
-    }
+    },
+  beforeMount(){
+    definePageMeta({
+      middleware:'auth'
+    });
+  }
 };
-definePageMeta({
-  middleware:'auth',
-});
 
 </script>
 
