@@ -60,7 +60,8 @@ export default class AisController {
         }
 
         //appel à une api, parametre :  _id et filename
-        instance.post('https://51.20.109.232:5000/create_metadata', {
+        let worked=0
+        await instance.post('https://51.20.109.232:5000/create_metadata', {
             id: _id,
             filename: fileName
         }, {
@@ -68,13 +69,19 @@ export default class AisController {
                 'x-api-key': Env.get('API_KEY')
             }
         }).then(response => {
-            console.log('Response:', response.data);
+            //console.log('Response:', response.data);
+            if(response.status==200){
+                worked=1
+            }
         }).catch(error => {
             console.error('Error:', error);
         });
-        
-
-
+        console.log(worked)
+        if(worked==0){
+            await Drive.delete(fileName)
+            await client.db("reviewDB").collection("review").deleteOne({_id: _id})
+            return response.status(500).json({message: 'Erreur lors de la création du document'})
+        }
         return response.status(200).json({message: 'Document créé avec succès'})
         
         }
