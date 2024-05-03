@@ -37,17 +37,40 @@ export default class GetPipelinesController {
         const contents = await Drive.get(s3_name);
         fs.writeFileSync(tempFilePath, contents);
 
-        console.log("s3 done")
-
-        const id = s3_name.split('.')[0];
-        const result = await client.db("arca-metadata").collection("arca").findOne({ _id: id });
-
-        console.log(result);
-        console.log("mongo db done")
-
-        return response.status(200).json(result)
+        console.log("done")
+        return response.status(200).json({message: 'Document récupéré avec succès'})
         
     }
 
+    public async deleteDocumentArca({ request, response }: HttpContextContract) {
+        const filename = request.input('filename');
+        if (!filename) {
+            return response.status(400).json({ message: 'Filename is required' });
+        }
+
+        // S3 deletion
+        try {
+            await Drive.delete(filename);
+        } catch (error) {
+            console.error('S3 Deletion Error:', error);
+            return response.status(500).json({ message: 'Failed to delete the file from S3', error });
+        }
+
+        // MongoDB deletion
+        try {
+            await client.connect();
+            const dbResponse = await client.db("arca-metadata").collection("arca").deleteOne({ filename: filename });
+            if (dbResponse.deletedCount === 0) {
+                return response.status(404).json({ message: 'Document not found in MongoDB' });
+            }
+        } catch (error) {
+            console.error('MongoDB Deletion Error:', error);
+            return response.status(500).json({ message: 'Failed to delete the document from MongoDB', error });
+        } finally {
+            await client.close();
+        }
+
+        return response.json({ message: 'Document and file deleted successfully' });
+    }
 
 }
