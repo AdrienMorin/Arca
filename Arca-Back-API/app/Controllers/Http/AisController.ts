@@ -6,6 +6,7 @@ import Drive from '@ioc:Adonis/Core/Drive';
 import fs from 'fs';
 import axios from 'axios';
 import Env from '@ioc:Adonis/Core/Env';
+import Person from 'App/Models/Person';
 const https = require('https');
 
 // Create an instance of Axios with custom HTTPS agent
@@ -59,7 +60,7 @@ export default class AisController {
         }
 
         //appel à une api, parametre :  _id et filename
-        instance.post('https://127.0.0.1:5000/create_metadata', {
+        instance.post('https://51.20.109.232:5000/create_metadata', {
             id: _id,
             filename: fileName
         }, {
@@ -78,4 +79,43 @@ export default class AisController {
         
         }
 
+        public async getOldestDocuments({ response }: HttpContextContract) {
+            try {
+                await client.connect();
+        
+                const documents = await client.db("reviewDB").collection("review").find({})
+                    .sort({ dateDeCreation: 1 })
+                    .limit(30)
+                    .toArray();
+        
+                if (!documents.length) {
+                    return response.status(404).json({ message: "No documents found." });
+                }
+        
+                var personIds = documents.reduce((acc, doc) => {
+                    if (doc.personnes && doc.personnes.length) {
+                        acc.push(...doc.personnes.filter(id => !acc.includes(id)));
+                    }
+                    return acc;
+                }, []);
+        
+                const people = await Person.query().whereIn('id', personIds);
+                const peopleMap = new Map(people.map(person => [person.id.toString(), person.displayname]));
+                                
+                const result = documents.map(doc => ({
+                    extension: doc.filename?.split('.').pop(),
+                    name: doc.name,
+                    villes: doc.villes || [],
+                    personnes: (doc.personnes || []).map(id => peopleMap.get(id) || 'Unknown'),
+                    date: doc.createdAt
+                }));
+        
+                return response.json(result);
+            } catch (error) {
+                console.error("Error fetching oldest documents:", error);
+                return response.status(500).json({ message: "Internal server error" });
+            } finally {
+                await client.close();
+            }
+        }
 }
