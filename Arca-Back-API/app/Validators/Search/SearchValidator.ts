@@ -24,10 +24,10 @@ export default class SearchValidator {
    *    ```
    */
   public schema = schema.create({
-    intelligentSearch: schema.string({}, [
+    query: schema.string({}, [
       rules.escape(),
       rules.minLength(1),
-      rules.maxLength(120)
+      rules.maxLength(255)
     ]),
   })
 
