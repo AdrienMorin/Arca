@@ -8,12 +8,12 @@
   import Popup from '~/components/users/popup.vue';
   import UserController from '~/services/userController.ts';
   import { useFileStore } from '~/fileTransfer.js';
-  import Datepicker from 'vue3-datepicker'
+  //import Datepicker from 'vue3-datepicker'
  
   export default {
     components: {
       Popup, 
-      Datepicker,
+      //Datepicker,
       doctype,
       personne_menu,
       description,
@@ -31,7 +31,7 @@
         titre: '',
         description: '',
         date: '',
-        lieu: ['Paris', 'Marseille','prague', 'pipi', 'popo','papa', 'papi'],
+        lieu: ['Paris', 'Marseille','maman','prague', 'pipi', 'popo','papa', 'papi'],
         type: '',
         personnes:'',
         titreDoc: '',
@@ -152,7 +152,7 @@
               </div>
               <div class="flex-col justify-left items-center h-max space-y-3 lg:w-2/3 md:w-3/">
                 <div class="lg:text-2xl md:text-xl ">Date</div>
-                <div class="object-cover w-full"><datepicker v-model="date" placeholder="Date"/></div>
+                <div class="object-cover w-full"> <!--<datepicker v-model="date" placeholder="Date"/>--></div>
                 </div>
                 
     
@@ -161,10 +161,7 @@
                 <div class="object-cover w-full"><autocomplete_liste :items="lieu"  ref="lieuAajoute"/></div>
               </div>
               
-              <div class="row-span-5 border-5 lg:w-3/5  md:w-3/4 ">
-                <personne_menu ref="menu_personne"/> 
-              </div>
-            
+                       
               <div class="flex-col justify-left items-center h-max space-y-3  ">
                 <div class="lg:text-2xl md:text-xl ">Type de document</div>
                 <doctype ref="docType"/>
@@ -176,9 +173,7 @@
                   <autocomplete_liste :items="liste"  ref="personneAajoute"/>
                 </div>
               </div>
-              <div class="row-span-5 border-5 lg:w-5/6 md:w-2/2">
-                <personne_menu ref="menu_personne"/> 
-              </div>
+             
               
              
     
