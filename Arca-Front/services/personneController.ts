@@ -42,6 +42,17 @@ class PersonneController {
     return response;
   }
 
+  public async getPersonneById(id: number, token: string):Promise<any>{
+    const response = await axios.get(`${baseUrl}/person/getPerson/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    console.log(response);
+    return response;
+  }
+
+
 }
 
 export default PersonneController;
