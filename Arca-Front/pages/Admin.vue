@@ -11,12 +11,12 @@ definePageMeta({
 export default {
   components: {
     UsersComponent,
-    CategoriesComponent
+    CategoriesComponent,
+    PersonnesComponent
   },
   async mounted() {
     const tokenCookie = useCookie('token')
     const token = tokenCookie.value
-    PersonnesComponent
   },
   data() {
     return {
