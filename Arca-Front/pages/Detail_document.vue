@@ -3,6 +3,10 @@ import personne_menu from '~/components/users/personne_menu.vue';
 import display_files from '~/components/users/display_files.vue';
 import { MicrophoneIcon } from "@heroicons/vue/24/outline";
 import Navbar from '~/components/users/Navbar.vue';
+import UserController from '~/services/userController.ts';
+import fs from 'fs';
+import path from 'path'
+
 export default {
   components: {
     personne_menu,
@@ -11,9 +15,15 @@ export default {
     Navbar
  
   },
+  async mounted() {
+    await this.getDocument();
+  },
+  unmounted(){
+    console.log("ennnnnnnnnnnd")
+  },
   data() {
     return {
-      nom:  '9v0eowmjajblvqhjv9r.pdf', // Initialize with an empty string
+      nom:  '56k6g02ilhllvqddy9l.pdf', 
     };
   },
 
@@ -23,9 +33,15 @@ export default {
       },
       modifyDocument() {
         this.$router.push('/Modif_document');
-      }
+      },
+      async getDocument() {
+        console.log("------------")
+        const tokenCookie = useCookie('token');
+        const token= tokenCookie.value;
 
-  }
+        const response = await UserController.getInstance().getDocument(token,this.nom)
+      }
+      },
 }
 definePageMeta({
   middleware:'auth',
@@ -112,7 +128,7 @@ definePageMeta({
         </div>
   
         <div class="flex-col flex-grow md:w-1/3 lg:3/4">
-            <display_files filePath="_nuxt/temp/9v0eowmjajblvqhjv9r.pdf" class="border" />
+          <display_files :filePath="'_nuxt/temp/' + nom" class="border" />
         </div>
   
   
