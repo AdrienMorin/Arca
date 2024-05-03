@@ -52,20 +52,6 @@ class PersonneController {
     return response;
   }
 
-  public async updatePersonne(firstname: string, lastname: string, location: number, role: string, id: number, token: string):Promise<any>{
-    const response = await axios.post(`${baseUrl}/person/update/${id}`, {
-      firstname,
-      lastname,
-      location,
-      role
-    },{
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-    console.log(response);
-    return response;
-  }
 
 }
 
