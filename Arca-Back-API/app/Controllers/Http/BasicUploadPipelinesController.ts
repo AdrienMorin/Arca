@@ -4,11 +4,12 @@ const uri = "mongodb+srv://hexanomedufutur:LCQbwYjD0LLaTxRW@arca-metadata-storag
 import Drive from '@ioc:Adonis/Core/Drive';
 import fs from 'fs';
 import BasicUploadPipelineValidator from 'App/Validators/Pipelines/BasicUploadPipelineValidator';
+import SearchValidator from 'App/Validators/Search/SearchValidator';
 
 const client = new MongoClient(uri,  {
     serverApi: {
         version: ServerApiVersion.v1,
-        strict: true,
+        strict: false,
         deprecationErrors: true,
     }
 }
@@ -58,5 +59,67 @@ export default class BasicUploadPipelinesController {
         return response.status(200).json({message: 'Document créé avec succès'})
         
     }
+
+    async complexSearch(searchQuery) {
+        try {
+            if (client.db) {
+                await client.connect();
+            }
+
+            // Replace 'collection_name' with the actual name of your MongoDB collection
+            const collection = client.db("arca-metadata").collection('arca');
+
+            // Execute the search query
+            let cursor = await collection.aggregate(searchQuery);
+
+            return cursor;
+        } catch (err) {
+            console.error('Error executing complex search:', err);
+            throw err;
+        }
+    }
+
+    public async advancedSearch({ request, response }: HttpContextContract) {
+        // Define your complex search query
+        const payload = await request.validate(SearchValidator)
+
+        const agg = [
+            {
+                $search: {
+                    text: {
+                        query: `${payload.query}`,
+                        path: {
+                            wildcard: "*"
+                        }
+                    }
+                }
+            },
+            {
+                $project: {
+                    "name": 1,
+                    "categories": 1,
+                    "creator": 1,
+                    "description": 1,
+                    "retranscription": 1,
+                    "towns": 1,
+                    "people": 1,
+                    "updatedBy": 1,
+                    score: { $meta: "searchScore" }
+                }
+            }
+        ];
+
+        const cursor = await this.complexSearch(agg);
+
+        let results = [];
+
+        await cursor.forEach((doc) => {
+            console.log(doc)
+            results.push(doc);
+        });
+
+        return response.status(200).json(results)
+    }
+
 
 }
