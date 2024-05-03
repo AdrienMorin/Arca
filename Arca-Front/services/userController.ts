@@ -148,11 +148,11 @@ class UserController {
 
   public async updateCategory(
     token: string,
-    oldCategory: string,
-    newCategory: string
+    oldName: string,
+    newName: string
   ): Promise<any> {
     const response = await axios.post(`${baseUrl}/category/update`, 
-    {oldCategory, newCategory},
+    {oldName, newName},
     {
       headers: {
         Authorization: `Bearer ${token}`

@@ -20,53 +20,45 @@
             </div>
         </div>
 
+
         <div class="w-3/4 mr-10 ml-10 mt-16 text-center">
             <h2 class="font-medium text-xl mb-4 text-center">Catégories existantes</h2>
-            <div class="bg-gray-50 shadow overflow-hidden rounded-md w-full" style="max-height: 250px; overflow-y: auto;">
-                <ul class="divide-y divide-gray-200 h-full">
-                <!-- Header row -->
-                <li class="px-6 py-4 bg-gray-200 flex justify-center">
-                    <div class="w-1/5 text-sm font-medium text-gray-900 text-center">Nom de la catégorie</div>
-                </li>
-                <!-- User rows -->
-                <li v-for="category in categories" :key="category.name" class="px-10 py-4 flex justify-between">
-                    <div class="text-sm text-gray-900">{{ category.name }}</div>
-                    <div class="w-12 justify-right">
-                    <button @click="openChangeCategoryBlock" class="text-red-500 text-sm ml-4 hover:text-red-700 justify-end mr-4">
-                        Modifier
-                    </button>
-                    </div>
-                </li>
+            <div class="flex flex-row justify-center">
+            <div class="bg-gray-50 shadow overflow-hidden rounded-md w-1/2 mt-8 ml-6" style="max-height: 285px; overflow-y: auto;">
+                <ul class="divide-y divide-gray-200 justify-center items-center text-center">
+                    <!-- Header row -->
+                    <li class="p-2 bg-gray-200 flex justify-center h-16">
+                        <div class="w-3/5 text-sm font-medium text-gray-900 text-center mt-4">Nom de la catégorie</div>
+                    </li>
+                    <!-- Category rows -->
+                    <li v-for="category in categories" :key="category.name" class="px-10 py-4 flex justify-center">
+                        <div class="text-sm text-gray-900 text-center">{{ category.name }}</div>
+                    </li>
                 </ul>
             </div>
-        </div>
-
-        <!-- Category modification block -->
-        <div v-if="showChangeCategoryBlock" class="w-3/4 mr-10 ml-10 mt-8 text-center">
-            <div class="rounded-lg bg-white p-8 shadow-2xl lg:w-1/2 md:w-3/4 mx-auto">
-                <h2 class="text-2xl font-bold">Changer nom de catégorie</h2>
-
-                <form class="space-y-5 mx-auto max-w-lg my-5 text-md">
-                    <div class="flex flex-col">
-                        <label for="oldCategory" class="text-gray-600">Ancien nom</label>
-                        <input v-model="oldCategory" id="oldCategory" type="text" class="text-gray-500 font-light bg-gray-100 border border-gray-300 p-2 rounded text-sm" autofocus />
+            <!-- Category modification block -->
+            <div class="w-1/2 mr-10 ml-10 mt-8 text-center">
+                <div class="rounded-lg bg-white p-4 shadow-xl">
+                    <h2 class="text-xl font-bold">Changer nom de catégorie</h2>
+                    <form class="space-y-5 mx-auto max-w-lg my-5 text-md">
+                        <div class="flex flex-col">
+                            <label for="oldCategory" class="text-gray-600">Ancien nom</label>
+                            <input v-model="oldCategory" id="oldCategory" type="text" class="text-gray-500 font-light bg-gray-100 border border-gray-300 p-2 rounded text-sm" autofocus />
+                        </div>
+                        <div class="flex flex-col">
+                            <label for="newCategory" class="text-gray-600">Nouveau nom</label>
+                            <input v-model="updatedCategory" id="updatedCategory" type="text" class="text-gray-500 font-light bg-gray-100 border border-gray-300 p-2 rounded text-sm" autofocus />
+                        </div>
+                    </form>
+                    <div class="mt-4 flex justify-center">
+                    <button @click="updateCategory" type="button" class="rounded-lg px-4 py-2 text-white bg-blue-600 hover:bg-blue-800">
+                        Valider
+                    </button>
                     </div>
-                    <div class="flex flex-col">
-                        <label for="newCategory" class="text-gray-600">Nouveau nom</label>
-                        <input v-model="updatedCategory" id="updatedCategory" type="text" class="text-gray-500 font-light bg-gray-100 border border-gray-300 p-2 rounded text-sm" autofocus />
-                    </div>
-                </form>
-
-                <div class="mt-4 flex justify-end">
-                <button @click="closeChangeCategoryBlock" type="button" class="rounded px-4 py-2 text-blue-600 bg-gray-200 hover:bg-gray-300">
-                    Annuler
-                </button>
-                <button @click="updateCategory" type="button" class="rounded px-4 py-2 text-white bg-blue-500 hover:bg-blue-800">
-                    Valider
-                </button>
                 </div>
             </div>
-        </div>
+            </div>
+        </div> 
     </div>
 </template>
 
@@ -76,7 +68,6 @@
     export default {
         data() {
             return {
-                showChangeCategoryBlock: false,
                 categories: [],
                 newCategory: {
                     name:''
@@ -92,14 +83,6 @@
         },
 
         methods: {
-            openChangeCategoryBlock() {
-                this.showChangeCategoryBlock = true; // Show the block for changing category name
-            },
-            closeChangeCategoryBlock() {
-                this.oldCategory = null; // Reset selected category
-                this.updatedCategory = ''; // Reset updated category
-                this.showChangeCategoryBlock = false; // Hide the block for changing category name
-            },
             async fetchCategories() {
                 const tokenCookie = useCookie('token')
                 const token = tokenCookie.value
@@ -116,18 +99,21 @@
                     this.newCategory = '' // Reset input
                 }
             },
-            async updateCategory() { //à revoir
-
+            async updateCategory() { 
                 const tokenCookie = useCookie('token')
                 const token = tokenCookie.value
-
-                const response = await UserController.getInstance().updateCategory(this.oldCategory, this.updatedCategory, token)
+                const response = await UserController.getInstance().updateCategory(token, this.oldCategory, this.updatedCategory)
                 console.log(response);
+
                 if (response.status === 200){
+                    this.categories.push(this.updatedCategory)
+                    const index = this.categories.findIndex(category => category.name === this.oldCategory);
+                    if (index !== -1) {
+                        this.categories.splice(index, 1);
+                    }
                     console.log('SUCCESS UPDATE')
-                    this.categories.push(this.updatedCategory) // Push category to the list
+                     // Push category to the list
                 }
-                this.showChangeCategoryBlock = false;
             },
         }
     };
