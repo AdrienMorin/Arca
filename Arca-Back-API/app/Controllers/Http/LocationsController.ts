@@ -9,7 +9,14 @@ export default class LocationsController {
         await auth.use('api').authenticate()
         await bouncer.with('LocationPolicy').authorize('create')
         const payload = await request.validate(CreateLocationValidator)
-        await Location.create(payload)
+
+        await Location.create({
+            cityname: payload.cityname,
+            regionname: payload.regionname,
+            zipcode: payload.zipcode,
+            country: payload.country,
+            displayname: payload.cityname+ ', ' + payload.regionname + ', ' + payload.country
+        })
         return response.status(200).json({message: 'Lieu créé avec succès'})
     }false
 
