@@ -26,88 +26,16 @@ export default class GetPipelinesController {
 
         const payload = await request.validate(GetPipelineValidator)    
         const s3_name = payload.s3_name;
+        console.log("s3_name "+s3_name)
+        const contents = await Drive.get(s3_name);
 
         const tempFolderPath = '../Arca-Front/temp'; 
         const tempFilePath = `${tempFolderPath}/${s3_name}`;
-
-        fs.readdirSync(tempFolderPath).forEach((file) => {
-            const filePath = `${tempFolderPath}/${file}`;
-            fs.unlinkSync(filePath);
-        });
-        const contents = await Drive.get(s3_name);
         fs.writeFileSync(tempFilePath, contents);
-
-        console.log("done")
+        //console.log("contents "+contents)
+    
         return response.status(200).json({message: 'Document récupéré avec succès'})
         
-    }
-
-    public async deleteDocumentArca({ request, response }: HttpContextContract) {
-        const filename = request.input('filename');
-        var ok = true;
-        if (!filename) {
-            ok = false
-        }
-
-        // S3 deletion
-        try {
-            await Drive.delete(filename);
-        } catch (error) {
-            console.error('S3 Deletion Error:', error);
-            ok = false
-        }
-
-        // MongoDB deletion
-        try {
-            await client.connect();
-            const dbResponse = await client.db("arca-metadata").collection("arca").deleteOne({ filename: filename });
-            if (dbResponse.deletedCount === 0) {
-                ok = false
-            }
-        } catch (error) {
-            console.error('MongoDB Deletion Error:', error);
-            ok = false
-        } finally {
-            await client.close();
-        }
-
-        if(!ok)
-            return response.status(500).json({ message: 'Erreur' });
-        return response.json({ message: 'Document and file deleted successfully' });
-    }
-
-    public async deleteDocumentReview({ request, response }: HttpContextContract) {
-        const filename = request.input('filename');
-        var ok = true;
-        if (!filename) {
-            ok = false
-        }
-
-        // S3 deletion
-        try {
-            await Drive.delete(filename);
-        } catch (error) {
-            console.error('S3 Deletion Error:', error);
-            ok = false
-        }
-
-        // MongoDB deletion
-        try {
-            await client.connect();
-            const dbResponse = await client.db("reviewDB").collection("review").deleteOne({ filename: filename });
-            if (dbResponse.deletedCount === 0) {
-                ok = false
-            }
-        } catch (error) {
-            console.error('MongoDB Deletion Error:', error);
-            ok = false
-        } finally {
-            await client.close();
-        }
-
-        if(!ok)
-            return response.status(500).json({ message: 'Erreur' });
-        return response.json({ message: 'Document and file deleted successfully' });
     }
 
 }
