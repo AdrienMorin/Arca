@@ -2,7 +2,7 @@
   <!-- Category Section -->
     <div class="flex flex-col mb-10 justify-center">
         <div class="w-3/4 mr-10 ml-10">
-            <h2 class="font-bold text-2xl mb-4 text-center">Gestion des catégories</h2>
+            <h2 class="font-bold text-2xl mb-4 text-center">Ajouter une catégorie</h2>
             <div class="bg-white shadow overflow-hidden rounded-md p-2">
                 <form @submit.prevent="addCategory">
                     <div class="mb-4">
@@ -22,7 +22,7 @@
 
 
         <div class="w-3/4 mr-10 ml-10 mt-16 text-center">
-            <h2 class="font-medium text-xl mb-4 text-center">Catégories existantes</h2>
+            <h2 class="font-bold text-2xl mb-4 text-center">Catégories</h2>
             <div class="flex flex-row justify-center">
             <div class="bg-gray-50 shadow overflow-hidden rounded-md w-1/2 mt-8 ml-6" style="max-height: 285px; overflow-y: auto;">
                 <ul class="divide-y divide-gray-200 justify-center items-center text-center">
