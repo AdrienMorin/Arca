@@ -1,9 +1,9 @@
 <script>
 import Datepicker from 'vue3-datepicker'
 export default {
-  components: {
+  /* components: {
     Datepicker,
-  },
+  }, */
   data() {
     return {
       selected: new Date('1944-01-01'),
@@ -38,24 +38,24 @@ definePageMeta({
         <div class="flex flex-col w-1/2">
           <div class="flex items-center mb-2">
             <label class="px-4 font-bold -ml-4">Date</label>
-            <button @click="dateMode = 'simple'" 
-              :class="{'bg-blue-600 text-white': dateMode === 'simple', 'hover:shadow-lg': dateMode !== 'simple'}" 
+            <button @click="dateMode = 'simple'"
+              :class="{'bg-blue-600 text-white': dateMode === 'simple', 'hover:shadow-lg': dateMode !== 'simple'}"
               class="px-4 py-1 rounded-md border border-gray-200 ">Simple
             </button>
-            <button @click="dateMode = 'periode'" 
-              :class="{'bg-blue-600 text-white hover:shadow-lg': dateMode === 'periode', 'hover:shadow-lg': dateMode !== 'periode'}" 
+            <button @click="dateMode = 'periode'"
+              :class="{'bg-blue-600 text-white hover:shadow-lg': dateMode === 'periode', 'hover:shadow-lg': dateMode !== 'periode'}"
               class="px-4 py-1 rounded-md border border-gray-200">Période
             </button>
           </div>
           <div v-if="dateMode === 'simple'" class="mt-2 border rounded-[10px] px-4 py-2 border-gray-500">
-            <datepicker v-model="selected" placeholder="Date"/>
+            <!-- <datepicker v-model="selected" placeholder="Date"/> -->
           </div>
           <div class="flex gap-2" v-if="dateMode === 'periode'">
             <div class="mt-2 border border-gray-500 rounded-[10px] px-4 py-2">
-              <datepicker v-model="startDate" class="text-blue-800" placeholder="Date de début"/>
+              <!-- <datepicker v-model="startDate" class="text-blue-800" placeholder="Date de début"/> -->
             </div>
             <div class="mt-2 border border-gray-500 rounded-[10px] px-4 py-2">
-              <datepicker v-model="endDate" placeholder="Date de fin"/>
+              <!-- <datepicker v-model="endDate" placeholder="Date de fin"/> -->
             </div>
           </div>
           <div class="flex flex-col mt-4 w-full">

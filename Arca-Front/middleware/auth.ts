@@ -12,10 +12,13 @@ export default defineNuxtRouteMiddleware(async(to, from)=> {
       }
     })
 
-    console.log('response:', response.data)
+    //console.log('response:', response.data)
     if (response.data !== 'Vous êtes connecté') {
-      console.log('Vous êtes pas connecté')
+      //console.log('Vous êtes pas connecté')
       return navigateTo('/login')
+    } else {
+      //console.log('Vous êtes connecté')
+      return
     }
 
   } catch (error) {

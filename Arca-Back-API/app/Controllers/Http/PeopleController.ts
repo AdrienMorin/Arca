@@ -2,6 +2,8 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import CreatePersonValidator from "App/Validators/Person/CreatePersonValidator";
 import UpdatePersonValidator from "App/Validators/Person/UpdatePersonValidator";
 import Person from "App/Models/Person";
+import Database from '@ioc:Adonis/Lucid/Database'
+
 
 export default class PeopleController {
 
@@ -44,7 +46,12 @@ export default class PeopleController {
     public async fetchPeople({auth, bouncer, response}: HttpContextContract){
         await auth.use('api').authenticate()
         await bouncer.with('PersonPolicy').authorize('viewList')
-        const allDocuments = await Person.query()
+        const allDocuments = await Database
+            .from('people')
+            .join('locations', 'people.location', '=', 'locations.id')
+            .select('people.*')
+            .select('locations.displayname as location')
+
         return response.status(200).json(allDocuments)
     }
 
@@ -63,17 +70,4 @@ export default class PeopleController {
         return response.status(200).json(user)
     }
 
-    public async deletePersonById({auth, bouncer, request, response}: HttpContextContract) {
-        await auth.use('api').authenticate()
-        await bouncer.with('PersonPolicy').authorize('delete')
-        try {
-            const documentId = request.body().id
-            const document = await Person.findOrFail(documentId)
-            await document.delete()
-            return response.status(200).json({message: 'Personne supprimée avec succès'})
-        } catch (error) {
-            return response.status(400).json({message: 'Une erreur est survenue lors de la suppression de la personne'})
-        }
-
-    }
 }
