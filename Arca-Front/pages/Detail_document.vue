@@ -13,7 +13,7 @@ export default {
   },
   data() {
     return {
-      nom: '', // Initialize with an empty string
+      nom:  '9v0eowmjajblvqhjv9r.pdf', // Initialize with an empty string
     };
   },
 
@@ -48,7 +48,7 @@ definePageMeta({
         <div class="flex-none xl:w-1/3 lg:w-1/4  bg-[#027BCE] bg-opacity-10 h-full p-20% ">
           <div class=" flex items-stretch	 flex-col h-full lg:space-y-4 md:space-y-2">
             <div class="flex-1/6 justify-left items-center relative md:top-5 lg:left-12 md:left-3">
-              <div class="text-justify lg:text-3xl  md:text-2xl font-bold object-left-bottom relatvie">Titre Document</div>
+              <div class="text-justify lg:text-3xl  md:text-2xl font-bold object-left-bottom relatvie">Id Document {{ nom }} </div>
             </div>
   
   
@@ -112,7 +112,7 @@ definePageMeta({
         </div>
   
         <div class="flex-col flex-grow md:w-1/3 lg:3/4">
-            <display_files filePath="/_nuxt/assets/DATA BASES 2.xlsx" class="border" />
+            <display_files filePath="_nuxt/temp/9v0eowmjajblvqhjv9r.pdf" class="border" />
         </div>
   
   
