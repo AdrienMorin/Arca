@@ -52,7 +52,7 @@ Route.group(() => {
 
   Route.get('/person/getByName/:name','PeopleController.getByName')
 
-  Route.put('/person/update/:id', 'PeopleController.updatePerson')
+  Route.post('/person/update/:id', 'PeopleController.updatePerson')
 
   // Location routes
 
