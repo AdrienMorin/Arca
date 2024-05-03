@@ -203,7 +203,24 @@ class UserController {
     console.log(response);
     return response;
   }
+  public async getDocument(
+    token: string,
+    s3_name: string,
 
+  ): Promise<any> {
+    console.log("++++++++++++++++++++++++++++");
+    const response = await axios.post(`${baseUrl}/basic/get`,
+      {s3_name},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+
+        }
+      });
+    console.log("nom"+s3_name);
+    return response;
+  }
   public async fetchCategories(token: string):Promise<any>{
     const response = await axios.get(`${baseUrl}/category/fetchCategories`, {
       headers: {
