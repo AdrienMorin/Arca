@@ -36,7 +36,7 @@ dependencies:
     specifier: ^1.6.8
     version: 1.6.8
   date-fns:
-    specifier: ^3.6.0
+    specifier: ^3.3.1
     version: 3.6.0
   dotenv:
     specifier: ^16.4.5
@@ -44,9 +44,6 @@ dependencies:
   nuxt:
     specifier: ^3.10.3
     version: 3.11.2(@unocss/reset@0.59.4)(axios@1.6.8)(eslint@8.57.0)(floating-vue@5.2.2)(typescript@5.4.5)(unocss@0.59.4)(vite@5.2.11)(vue-tsc@2.0.16)
-  nuxt-snackbar:
-    specifier: ^1.0.4
-    version: 1.0.4(vue@3.4.26)
   pinia:
     specifier: ^2.1.7
     version: 2.1.7(typescript@5.4.5)(vue@3.4.26)
@@ -3606,7 +3603,6 @@ packages:
     engines: {node: '>=16.14.0'}
     dependencies:
       '@babel/parser': 7.24.5
-      '@babel/parser': 7.24.5
       pathe: 1.1.2
     dev: false
 
@@ -3614,7 +3610,6 @@ packages:
     resolution: {integrity: sha512-kbL7ERlqjXubdDd+szuwdlQ1xUxEz9mCz1+m07ftNVStgwRb2RWw+U6oKo08PAvOishMxiqz1mlJyLl8yQx2Qg==}
     engines: {node: '>=16.14.0'}
     dependencies:
-      '@babel/parser': 7.24.5
       '@babel/parser': 7.24.5
       '@rollup/pluginutils': 5.1.0(rollup@4.17.2)
       pathe: 1.1.2
@@ -3826,7 +3821,6 @@ packages:
       '@npmcli/fs': 3.1.0
       fs-minipass: 3.0.3
       glob: 10.3.12
-      lru-cache: 10.2.2
       lru-cache: 10.2.2
       minipass: 7.0.4
       minipass-collect: 2.0.1
@@ -6648,7 +6642,6 @@ packages:
         optional: true
     dependencies:
       '@cloudflare/kv-asset-handler': 0.3.2
-      '@cloudflare/kv-asset-handler': 0.3.2
       '@netlify/functions': 2.6.0
       '@rollup/plugin-alias': 5.1.0(rollup@4.17.2)
       '@rollup/plugin-commonjs': 25.0.7(rollup@4.17.2)
@@ -6939,18 +6932,6 @@ packages:
       - vue
     dev: false
 
-  /nuxt-snackbar@1.0.4(vue@3.4.26):
-    resolution: {integrity: sha512-7C8m7Kma60FYs1F0zw1bYSYj2lPtaTSIIXBdI1rc3mDMYngpnUTvZhoqBF5w/LyIggFpgNjpYKJLOpsW9wzcEA==}
-    dependencies:
-      '@nuxt/kit': 3.11.2
-      defu: 6.1.4
-      vue3-snackbar: 2.2.1(vue@3.4.26)
-    transitivePeerDependencies:
-      - rollup
-      - supports-color
-      - vue
-    dev: false
-
   /nuxt@3.11.2(@unocss/reset@0.59.4)(axios@1.6.8)(eslint@8.57.0)(floating-vue@5.2.2)(typescript@5.4.5)(unocss@0.59.4)(vite@5.2.11)(vue-tsc@2.0.16):
     resolution: {integrity: sha512-Be1d4oyFo60pdF+diBolYDcfNemoMYM3R8PDjhnGrs/w3xJoDH1YMUVWHXXY8WhSmYZI7dyBehx/6kTfGFliVA==}
     engines: {node: ^14.18.0 || >=16.10.0}
@@ -7016,7 +6997,6 @@ packages:
       unplugin-vue-router: 0.7.0(vue-router@4.3.2)(vue@3.4.26)
       unstorage: 1.10.2(ioredis@5.4.1)
       untyped: 1.4.2
-      vue: 3.4.26(typescript@5.4.5)
       vue: 3.4.26(typescript@5.4.5)
       vue-bundle-renderer: 2.0.0
       vue-devtools-stub: 0.1.0
@@ -7314,7 +7294,6 @@ packages:
     resolution: {integrity: sha512-7xTavNy5RQXnsjANvVvMkEjvloOinkAjv/Z6Ildz9v2RinZ4SBKTWFOVRbaF8p0vpHnyjV/UwNDdKuUv6M5qcA==}
     engines: {node: '>=16 || 14 >=14.17'}
     dependencies:
-      lru-cache: 10.2.2
       lru-cache: 10.2.2
       minipass: 7.0.4
     dev: false
@@ -8655,10 +8634,6 @@ packages:
     engines: {node: '>=12.22'}
     dev: false
 
-  /tiny-emitter@2.1.0:
-    resolution: {integrity: sha512-NB6Dk1A9xgQPMoGqC5CVXn123gWyte215ONT5Pp5a0yt4nlEoO1ZWeCwpncaekPHXO60i47ihFnZPiRPjRMq4Q==}
-    dev: false
-
   /tiny-inflate@1.0.3:
     resolution: {integrity: sha512-pkY1fj1cKHb2seWDy0B16HeWyczlJA9/WW3u3c4z/NiWDsO3DOU5D7nhTLE9CF0yXv/QZFY7sEJmj24dK+Rrqw==}
     dev: false
@@ -8943,7 +8918,6 @@ packages:
         optional: true
     dependencies:
       '@babel/types': 7.24.5
-      '@babel/types': 7.24.5
       '@rollup/pluginutils': 5.1.0(rollup@4.17.2)
       '@vue-macros/common': 1.10.2(vue@3.4.26)
       ast-walker-scope: 0.5.0
@@ -9023,7 +8997,6 @@ packages:
       ioredis: 5.4.1
       listhen: 1.7.2
       lru-cache: 10.2.2
-      lru-cache: 10.2.2
       mri: 1.2.0
       node-fetch-native: 1.6.4
       ofetch: 1.3.4
@@ -9046,8 +9019,6 @@ packages:
     hasBin: true
     dependencies:
       '@babel/core': 7.24.5
-      '@babel/standalone': 7.24.5
-      '@babel/types': 7.24.5
       '@babel/standalone': 7.24.5
       '@babel/types': 7.24.5
       defu: 6.1.4
@@ -9246,10 +9217,7 @@ packages:
       '@babel/core': 7.24.5
       '@babel/plugin-proposal-decorators': 7.24.1(@babel/core@7.24.5)
       '@babel/plugin-syntax-import-attributes': 7.24.1(@babel/core@7.24.5)
-      '@babel/plugin-proposal-decorators': 7.24.1(@babel/core@7.24.5)
-      '@babel/plugin-syntax-import-attributes': 7.24.1(@babel/core@7.24.5)
       '@babel/plugin-syntax-import-meta': 7.10.4(@babel/core@7.24.5)
-      '@babel/plugin-transform-typescript': 7.24.5(@babel/core@7.24.5)
       '@babel/plugin-transform-typescript': 7.24.5(@babel/core@7.24.5)
       '@vue/babel-plugin-jsx': 1.2.2(@babel/core@7.24.5)
       '@vue/compiler-dom': 3.4.26
@@ -9433,7 +9401,6 @@ packages:
     dependencies:
       '@volar/typescript': 2.2.0
       '@vue/language-core': 2.0.16(typescript@5.4.5)
-      '@vue/language-core': 2.0.16(typescript@5.4.5)
       semver: 7.6.0
       typescript: 5.4.5
 
@@ -9456,21 +9423,6 @@ packages:
     dependencies:
       date-fns: 2.30.0
       vue: 3.4.26(typescript@5.4.5)
-    dev: false
-
-  /vue3-icon@2.1.0:
-    resolution: {integrity: sha512-cnFiGAEwzp/KQKody2Yj8cBDP4Kez0AUp5mDnp052FA1fECl8a9uYUKLaeRdH0JakmZ7Jfp3tdHbpBEWF9sgBA==}
-    dev: false
-
-  /vue3-snackbar@2.2.1(vue@3.4.26):
-    resolution: {integrity: sha512-HIsqM6u30APfZ2Hj9v4vudddZ1LwWZZkcGhRTskVTqglAnQWooJxP/NoyFeBWTgasjJ5vDbwy8NdZEhZONz6WA==}
-    requiresBuild: true
-    peerDependencies:
-      vue: ^3.0.0
-    dependencies:
-      tiny-emitter: 2.1.0
-      vue: 3.4.26(typescript@5.4.5)
-      vue3-icon: 2.1.0
     dev: false
 
   /vue@3.4.26(typescript@5.4.5):
