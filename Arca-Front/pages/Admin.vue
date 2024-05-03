@@ -1,5 +1,6 @@
 <script>
 import UsersComponent from '@/components/admin/UsersComponent'
+import PersonnesComponent from "~/components/admin/PersonnesComponent.vue";
 import UserController from '~/services/userController'
 definePageMeta({
   middleware:'auth-admin',
@@ -9,6 +10,7 @@ definePageMeta({
 export default {
   components: {
     UsersComponent,
+    PersonnesComponent
   },
   data() {
     return {

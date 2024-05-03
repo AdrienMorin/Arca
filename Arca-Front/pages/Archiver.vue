@@ -41,9 +41,9 @@
 
 </div>
 
-  
 
-  
+
+
 
 </template>
 
@@ -54,7 +54,9 @@ import { DocumentCheckIcon } from '@heroicons/vue/24/outline';
 import axios from 'axios';
 import { useFileStore } from '~/fileTransfer';
 
-
+definePageMeta({
+  middleware:'auth',
+});
 export default {
   components: {
     DocumentCheckIcon,
@@ -65,7 +67,7 @@ export default {
       fileName: '',
       file: null,
     };
-  }, 
+  },
     methods: {
       handleDragOver(event){
       event.preventDefault();
@@ -93,7 +95,7 @@ export default {
       triggerFileInput(){
         this.$refs.fileInput.click();
       },
-      
+
       fileTransfer(){
         console.log('File transfer initiated...');
         const fileStore = useFileStore();
@@ -101,9 +103,6 @@ export default {
         const test=fileStore.file;
         console.log(test.name);
         this.$router.push('/ajout-document');
-
-
-        
       }
     }
 };

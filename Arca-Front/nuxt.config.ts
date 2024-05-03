@@ -4,7 +4,7 @@ export default defineNuxtConfig({
     '@nuxt/ui',
     '@nuxt/fonts',
     '@vueuse/nuxt',
-    '@pinia/nuxt',
+    '@pinia/nuxt'
   ],
   ui: {
     icons: ['heroicons', 'simple-icons'],

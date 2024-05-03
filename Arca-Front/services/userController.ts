@@ -58,7 +58,7 @@ class UserController {
         Authorization: `Bearer ${token}`
       }
     })
-    return response.data.message !== "Vous êtes connecté en tant qu'administrateur";
+    return response.data.message === "Vous êtes connecté en tant qu'administrateur";
   }
 
   public async deleteUser(id: number, token: string): Promise<any> {
@@ -103,7 +103,7 @@ class UserController {
     personnes: string
 
   ): Promise<any> {
-    const response = await axios.post(`${baseUrl}/basic/upload`, 
+    const response = await axios.post(`${baseUrl}/basic/upload`,
       {file, titre, description, retranscription, date, personnes},
       {
         headers: {
