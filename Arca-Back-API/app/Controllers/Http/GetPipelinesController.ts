@@ -31,9 +31,15 @@ export default class GetPipelinesController {
 
         const tempFolderPath = '../Arca-Front/temp'; 
         const tempFilePath = `${tempFolderPath}/${s3_name}`;
+
+        fs.readdirSync(tempFolderPath).forEach((file) => {
+            const filePath = `${tempFolderPath}/${file}`;
+            fs.unlinkSync(filePath);
+            console.log("................")
+        });
         fs.writeFileSync(tempFilePath, contents);
-        //console.log("contents "+contents)
-    
+
+        console.log("done")
         return response.status(200).json({message: 'Document récupéré avec succès'})
         
     }
