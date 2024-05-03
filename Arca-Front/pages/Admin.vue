@@ -1,9 +1,10 @@
 <script>
 import UsersComponent from '@/components/admin/UsersComponent'
 import CategoriesComponent from '../components/admin/CategoriesComponent.vue'
-import PersonnesComponent from "~/components/admin/PersonnesComponent.vue";
-import UserController from '~/services/userController'
-definePageMeta({
+import PersonnesComponent from "~/components/admin/PersonnesComponent.vue"
+import VillesComponent from '../components/admin/VillesComponent.vue'
+definePageMeta
+({
   middleware:'auth-admin',
   layout: 'default'
 });
@@ -11,12 +12,13 @@ definePageMeta({
 export default {
   components: {
     UsersComponent,
-    CategoriesComponent
+    CategoriesComponent,
+    VillesComponent,
+    PersonnesComponent
   },
   async mounted() {
     const tokenCookie = useCookie('token')
     const token = tokenCookie.value
-    PersonnesComponent
   },
   data() {
     return {
