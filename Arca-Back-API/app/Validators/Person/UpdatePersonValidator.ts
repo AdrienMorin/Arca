@@ -4,14 +4,29 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 export default class UpdatePersonValidator {
   constructor(protected ctx: HttpContextContract) {}
   public schema = schema.create({
-    name : schema.string({}, [
+    firstname : schema.string({}, [
       rules.required(),
       rules.trim(),
       rules.escape(),
       rules.minLength(3),
       rules.maxLength(255)
-    ])
+    ]),
+    lastname : schema.string({}, [
+      rules.required(),
+      rules.trim(),
+      rules.escape(),
+      rules.minLength(3),
+      rules.maxLength(255)
+    ]),
+    role : schema.string({}, [
+      rules.trim(),
+      rules.escape(),
+      rules.minLength(3),
+      rules.maxLength(255)
+    ]),
+    location : schema.number.optional()
   })
 
   public messages: CustomMessages = {}
 }
+

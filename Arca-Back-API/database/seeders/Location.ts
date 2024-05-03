@@ -5,7 +5,7 @@ import fs from 'fs';
 export default class extends BaseSeeder {
   public async run () {
     // Read the JSON file
-    const dataBuffer = fs.readFileSync('App/data/cities.json');
+    const dataBuffer = fs.readFileSync('app/data/cities.json');
     
     // Convert the buffer to a string and parse it to a JSON object
     const data = JSON.parse(dataBuffer.toString());
@@ -17,10 +17,11 @@ export default class extends BaseSeeder {
         uniqueCities.add(cityAndRegion);
         acc.push({
           //uppercase the first letter of the display name
-          displayname: item.label.charAt(0).toUpperCase() + item.label.slice(1)+", "+item.region_geojson_name,
+          displayname: item.label.charAt(0).toUpperCase() + item.label.slice(1)+", "+item.region_geojson_name+", France",
           cityname: item.label,
           regionname: item.region_name,
-          zipcode: item.zip_code
+          zipcode: item.zip_code,
+          country: "France"
         });
       }
       return acc;

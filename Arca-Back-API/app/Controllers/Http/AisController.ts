@@ -1,10 +1,20 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import CreateAiDocumentValidator from 'App/Validators/AI/CreateAiDocumentValidator';
+import CreateAiDocumentValidator from 'App/Validators/Pipelines/CreateAiDocumentValidator';
 const { MongoClient, ServerApiVersion } = require("mongodb");
 const uri = "mongodb+srv://hexanomedufutur:LCQbwYjD0LLaTxRW@arca-metadata-storage.qp6278d.mongodb.net/";
 import Drive from '@ioc:Adonis/Core/Drive';
 import fs from 'fs';
 import axios from 'axios';
+import Env from '@ioc:Adonis/Core/Env';
+const https = require('https');
+
+// Create an instance of Axios with custom HTTPS agent
+const instance = axios.create({
+    httpsAgent: new https.Agent({
+        rejectUnauthorized: false // Ignore certificate verification errors
+    })
+});
+
 
 const client = new MongoClient(uri,  {
     serverApi: {
@@ -17,7 +27,7 @@ const client = new MongoClient(uri,  {
 
 export default class AisController {
 
-    public async createDocument({ auth,bouncer,response,request}:HttpContextContract){
+    public async uploadDoc({ auth,bouncer,response,request}:HttpContextContract){
             
         await auth.use('api').authenticate()
         await bouncer.with('AiPolicy').authorize('create')
@@ -26,9 +36,10 @@ export default class AisController {
         await client.db("admin").command({ ping: 1 });
 
         const payload = await request.validate(CreateAiDocumentValidator)
-        const fileName= "testPipe"+'.'+payload.file.extname
+        const _id = Math.random().toString(36).substr(2) + Date.now().toString(36);
+        const fileName= _id+'.'+payload.file.extname
         const doc={
-            _id: "testPipe",
+            _id: _id,
             name: payload.file.clientName,
             filename: fileName,
             createdBy: auth.user?.id,
@@ -37,7 +48,7 @@ export default class AisController {
             updatedBy: auth.user?.id
         }
 
-        const result = await client.db("reviewDB").collection("review").insertOne(doc);
+        await client.db("reviewDB").collection("review").insertOne(doc);
 
         if (payload.file.tmpPath) {
             console.log(payload.file.tmpPath)
@@ -48,10 +59,18 @@ export default class AisController {
         }
 
         //appel à une api, parametre :  _id et filename
-        axios.post('http://127.0.0.1:5000/create_metadata', {
-            id: "testPipe",
+        instance.post('https://127.0.0.1:5000/create_metadata', {
+            id: _id,
             filename: fileName
-        })
+        }, {
+            headers: {
+                'x-api-key': Env.get('API_KEY')
+            }
+        }).then(response => {
+            console.log('Response:', response.data);
+        }).catch(error => {
+            console.error('Error:', error);
+        });
         
 
 

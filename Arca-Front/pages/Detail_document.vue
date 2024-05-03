@@ -27,6 +27,9 @@ export default {
 
   }
 }
+definePageMeta({
+  middleware:'auth',
+});
 
 </script>
 
@@ -39,10 +42,6 @@ export default {
       
       
 <div class="h-screen overflow-hidden">
-  
-  
-  <Navbar />
-  
   
       <div class="flex flex-row relative w-full h-screen">
   

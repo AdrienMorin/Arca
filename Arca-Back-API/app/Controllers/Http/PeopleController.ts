@@ -2,6 +2,8 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import CreatePersonValidator from "App/Validators/Person/CreatePersonValidator";
 import UpdatePersonValidator from "App/Validators/Person/UpdatePersonValidator";
 import Person from "App/Models/Person";
+import Database from '@ioc:Adonis/Lucid/Database'
+
 
 export default class PeopleController {
 
@@ -9,7 +11,16 @@ export default class PeopleController {
         await auth.use('api').authenticate()
         await bouncer.with('PersonPolicy').authorize('create')
         const payload = await request.validate(CreatePersonValidator)
-        await Person.create(payload)
+        const displayname = payload.firstname + ' ' + payload.lastname
+        const first = payload.firstname.replace(/-/g, " ").toLowerCase();
+        const lastname = payload.lastname.replace(/-/g, " ").toLowerCase()
+        await Person.create({
+            displayname: displayname,
+            firstname: first,
+            lastname: lastname,
+            role: payload.role,
+            location: payload.location
+        })
         return response.status(200).json({message: 'Personne créée avec succès'})
     }
 
@@ -17,8 +28,17 @@ export default class PeopleController {
         await auth.use('api').authenticate()
         await bouncer.with('PersonPolicy').authorize('update')
         const payload = await request.validate(UpdatePersonValidator)
+        const displayname = payload.firstname + ' ' + payload.lastname
+        const firstname = payload.firstname.toLowerCase().replace("-", " ")
+        const lastname = payload.lastname.toLowerCase()
         const document=await Person.findOrFail(request.param("id"))
-        await document.merge(payload).save()
+        await document.merge({
+            displayname: displayname,
+            firstname: firstname,
+            lastname: lastname,
+            role: payload.role,
+            location: payload.location
+        }).save()
         return response.status(200).json({message:'Personne mise à jour avec succès'})
 
     }
@@ -26,7 +46,12 @@ export default class PeopleController {
     public async fetchPeople({auth, bouncer, response}: HttpContextContract){
         await auth.use('api').authenticate()
         await bouncer.with('PersonPolicy').authorize('viewList')
-        const allDocuments = await Person.query()
+        const allDocuments = await Database
+            .from('people')
+            .join('locations', 'people.location', '=', 'locations.id')
+            .select('people.*')
+            .select('locations.displayname as location')
+
         return response.status(200).json(allDocuments)
     }
 
@@ -45,17 +70,4 @@ export default class PeopleController {
         return response.status(200).json(user)
     }
 
-    public async deletePersonById({auth, bouncer, request, response}: HttpContextContract) {
-        await auth.use('api').authenticate()
-        await bouncer.with('PersonPolicy').authorize('delete')
-        try {
-            const documentId = request.body().id
-            const document = await Person.findOrFail(documentId)
-            await document.delete()
-            return response.status(200).json({message: 'Personne supprimée avec succès'})
-        } catch (error) {
-            return response.status(400).json({message: 'Une erreur est survenue lors de la suppression de la personne'})
-        }
-
-    }
 }

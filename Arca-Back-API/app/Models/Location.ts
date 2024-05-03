@@ -17,6 +17,9 @@ export default class Location extends BaseModel {
   @column()
   public zipcode: string
 
+  @column()
+  public country: string
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 

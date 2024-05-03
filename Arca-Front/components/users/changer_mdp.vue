@@ -6,19 +6,23 @@
     <div class="rounded-lg bg-white p-8 shadow-2xl lg:w-1/2 md:w-3/4 mx-auto">
       <h2 class="text-2xl font-bold">Changer de mot de passe</h2>
 
-      <UForm :validate="validate" :validate-on="['submit']" :state="state" class="space-y-5 mx-auto max-w-lg my-5" @submit="handleSubmit">
-        <UFormGroup label="Ancien Mot de passe" name="modDePasse">
-          <UInput v-model="oldPassword" type="password" placeholder="Entrez votre ancien mot de passe" class="text-gray-400 font-light" />
-        </UFormGroup>
-
-        <UFormGroup label="Nouveau mot de passe" name="motDePasse">
-          <UInput v-model="newPassword1" @input="updatePasswords" placeholder="Entrez votre nouveau mot de passe" class="text-gray-400 font-light" type="password" autofocus />
-        </UFormGroup>
-
-        <UFormGroup label="Confirmez votre nouveau mot de passe" name="motDePasse">
-          <UInput v-model="newPassword2" @input="updatePasswords" placeholder="Confirmez votre nouveau mot de passe" class="text-gray-400 font-light" type="password" autofocus />
-        </UFormGroup>
-      </UForm>
+      <form @submit.prevent="handleSubmit" class="space-y-5 mx-auto max-w-lg my-5 text-md">
+        <div class="flex flex-col">
+          <label for="oldPassword" class="text-gray-600">Ancien Mot de passe</label>
+          <input v-model="oldPassword" id="oldPassword" type="password" placeholder="Entrez votre ancien mot de passe" class="text-gray-500 font-light bg-gray-100 border border-gray-300 p-2 rounded text-sm" />
+        </div>
+        
+        <div class="flex flex-col">
+          <label for="newPassword1" class="text-gray-600">Nouveau mot de passe</label>
+          <input v-model="newPassword1" @input="updatePasswords" id="newPassword1" type="password" placeholder="Entrez votre nouveau mot de passe" class="text-gray-500 font-light bg-gray-100 border border-gray-300 p-2 rounded text-sm" autofocus />
+        </div>
+        
+        <div class="flex flex-col">
+          <label for="newPassword2" class="text-gray-600">Confirmation nouveau mot de passe</label>
+          <input v-model="newPassword2" @input="updatePasswords" id="newPassword2" type="password" placeholder="Confirmez votre nouveau mot de passe" class="text-gray-500 font-light bg-gray-100 border border-gray-300 p-2 rounded text-sm" />
+        </div>
+        
+      </form>
 
       <div class="mt-4 flex gap-2 place-content-end">
         <button @click="closePopup" type="button" class="rounded px-4 py-2 text-blue-600 bg-gray-200 hover:bg-gray-300">
@@ -38,7 +42,6 @@
 <script>
 import { ref } from 'vue';
 import ConfpopupMdp from '~/components/users/popup_ConfChangeMdp.vue';
-import axios from "axios";    
 import UserController from '~/services/userController';
 
 export default {
@@ -79,15 +82,18 @@ export default {
           return;
         }
         console.log("submit password")
-        
-        const response = await UserController.getInstance().changePassword(oldPassword.value, newPassword1.value);
+
+        const tokenCookie = useCookie('token')
+        const token = tokenCookie.value
+        const response = await UserController.getInstance().changePassword(token, oldPassword.value, newPassword1.value);
         console.log(response);
+        
         if (response.status === 200){
           //ferme la pop up 
-          TogglePopup();
+          TogglePopup1('buttonTrigger1');
         }
         //ferme cette fenêtre 
-        TogglePopup1('buttonTrigger1');
+        
         //closePopup();
       } catch (error) {
         console.error('Changement de mot de passe échoué :', error);

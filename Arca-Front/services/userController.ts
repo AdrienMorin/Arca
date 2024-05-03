@@ -35,8 +35,47 @@ class UserController {
     return response;
   }
 
+  public async createUser(firstname: string, lastname: string, email: string, password: string, token: string): Promise<any> {
+    const response = await axios.post(`${baseUrl}/auth/register`,
+    {
+      firstname,
+      lastname,
+      email,
+      password,
+      role: 'user'
+    }, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+    });
+
+    return response;
+  }
+
+  public async isAdmin(token: string): Promise<any> {
+    const response = await axios.get('https://127.0.0.1:3333/api/auth/isLoggedInAsAdmin', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    return response.data.message === "Vous êtes connecté en tant qu'administrateur";
+  }
+
+  public async deleteUser(id: number, token: string): Promise<any> {
+    const response = await axios.post(`${baseUrl}/deleteUser`,
+      {
+        id
+      }, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+    return response;
+  }
+
   public async getUser(token: string):Promise<any>{
-    const response = await axios.get(`${baseUrl}/getUser`, {
+    const response = await axios.get(`${baseUrl}/user/getUser`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -44,7 +83,41 @@ class UserController {
     return response;
   }
 
-  public async register(
+  public async fetchUsers(token: string):Promise<any>{
+    const response = await axios.get(`${baseUrl}/user/fetchUsers`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    console.log(response);
+    return response;
+  }
+
+  public async uploadDocument(
+    token: string,
+    file: File,
+    titre: string,
+    description: string,
+    retranscription: string,
+    date: string,
+    personnes: string
+
+  ): Promise<any> {
+    const response = await axios.post(`${baseUrl}/basic/upload`,
+      {file, titre, description, retranscription, date, personnes},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+
+        }
+      });
+    console.log(response);
+    return response;
+  }
+
+
+    public async register(
     email: string,
     password: string,
     firstname: string,
@@ -62,12 +135,16 @@ class UserController {
   }
 
   public async changePassword(
+    token: string,
     oldPassword: string,
     newPassword: string
   ): Promise<any> {
-    const response = await axios.post(`${baseUrl}/changePassword`, {
-      oldPassword,
-      newPassword,
+    const response = await axios.post(`${baseUrl}/user/changePassword`,
+    {oldPassword, newPassword},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
     });
     return response;
   }

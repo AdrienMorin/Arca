@@ -6,7 +6,7 @@ export default {
   },
 };
 definePageMeta({
-  layout: 'loginLayout'
+  layout: 'login-layout'
 })
 </script>
 

@@ -1,7 +1,7 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import RegisterUserValidator from "App/Validators/RegisterUserValidator";
+import RegisterUserValidator from "App/Validators/User/RegisterUserValidator";
 import User from "App/Models/User";
-import LoginUserValidator from "App/Validators/LoginUserValidator";
+import LoginUserValidator from "App/Validators/Auth/LoginUserValidator";
 
 export default class AuthController {
 
@@ -35,5 +35,19 @@ export default class AuthController {
   public async logout({auth, response}){
     await auth.use('api').revoke()
     return response.status(200).json({message: 'Vous êtes déconnecté'})
+  }
+
+  public async isLoggedInAsAdmin({auth, response}) {
+    try{
+      await auth.use('api').authenticate()
+      if (auth.user?.role === 'admin' || auth.user?.role === 'superuser') {
+        return response.status(200).json({message: 'Vous êtes connecté en tant qu\'administrateur'})
+      } else {
+        return response.status(200).json({message: 'Vous n\'êtes pas autorisé à accéder à cette ressource'})
+      }
+    } catch (error) {
+      return response.status(200).json({message: 'Vous n\'êtes pas connecté'})
+    }
+
   }
 }

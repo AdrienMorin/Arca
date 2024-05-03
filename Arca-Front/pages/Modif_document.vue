@@ -1,6 +1,5 @@
 <template>
   <div class=" flex-col h-screen border overflow-hidden">
-    <Navbar class="flex-none h-auto"/>
     <div class="flex-grow w-full">
         <Popup 
           ref="popupSupprimer"
@@ -153,15 +152,16 @@ import personne_liste from '~/components/users/personne_liste.vue';
 import {ref} from 'vue';
 
 export default {
-  	  components: {
-    doctype,
-    personne_menu,
-    description,
-    Popup,
-    Navbar,
-    personne_liste,
+  components: { 
+  doctype,
+  personne_menu,
+  description,
+  Popup,
+  Navbar,
+  personne_liste,
     
   },
+
 
   data() {
     return {
@@ -207,6 +207,9 @@ export default {
 
     }
 }
+definePageMeta({
+  middleware:'auth',
+});
 
 </script>
 
