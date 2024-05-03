@@ -187,23 +187,22 @@ class UserController {
     return response;
   }
 
-
-  public async getDocument(
+  public async uploadAiDocument(
     token: string,
-    s3_name: string,
-
+    file: File,
   ): Promise<any> {
-    const response = await axios.post(`${baseUrl}/basic/get`,
-      {s3_name},
+    const response = await axios.post(`${baseUrl}/ai/upload`,
+      {file},
       {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
+
         }
       });
+    console.log(response);
     return response;
   }
-
 
   public async fetchCategories(token: string):Promise<any>{
     const response = await axios.get(`${baseUrl}/category/fetchCategories`, {
