@@ -131,10 +131,12 @@ class UserController {
     token: string,
     s3_name: string,
 
+
   ): Promise<any> {
     console.log("++++++++++++++++++++++++++++");
     const response = await axios.post(`${baseUrl}/basic/get`,
       {s3_name},
+
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -142,9 +144,21 @@ class UserController {
 
         }
       });
-    console.log("nom"+s3_name);
+          console.log("nom"+s3_name);
     return response;
   }
+
+ public async uploadAiDocument(
+    token: string,
+    file: File,
+  ): Promise<any> {
+    const response = await axios.post(`${baseUrl}/ai/upload`,
+      {file},
+    console.log(response);
+    return response;
+  }
+
+
   public async fetchCategories(token: string):Promise<any>{
     const response = await axios.get(`${baseUrl}/category/fetchCategories`, {
       headers: {
