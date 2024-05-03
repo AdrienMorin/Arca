@@ -1,26 +1,16 @@
-<script>
-import Datepicker from 'vue3-datepicker'
-export default {
-  /* components: {
-    Datepicker,
-  }, */
-  data() {
-    return {
-      selected: new Date('1944-01-01'),
-      startDate: null,
-      endDate: null,
-      locale: 'fr',
-      to: new Date(),
-      from: new Date('2016-01-01'),
-      dateMode: 'simple'
-      
-    }
-  }
+<script setup lang="ts">
+import { sub, format, isSameDay, type Duration } from 'date-fns'
+const selected = ref({ start: sub(new Date(), { days: 14 }), end: new Date() })
+
+function isRangeSelected (duration: Duration) {
+  return isSameDay(selected.value.start, sub(new Date(), duration)) && isSameDay(selected.value.end, new Date())
 }
-definePageMeta({
-  middleware:'auth',
-});
+
+function selectRange (duration: Duration) {
+  selected.value = { start: sub(new Date(), duration), end: new Date() }
+}
 </script>
+
 
 <template>
   <div class="pt-8">
@@ -39,28 +29,20 @@ definePageMeta({
         <div class="flex flex-col w-1/2">
           <div class="flex items-center mb-2">
             <label class="px-4 font-bold -ml-4">Date</label>
-            <button @click="dateMode = 'simple'"
-              :class="{'bg-blue-600 text-white': dateMode === 'simple', 'hover:shadow-lg': dateMode !== 'simple'}"
-              class="px-4 py-1 rounded-md border border-gray-200 ">Simple
-            </button>
-            <button @click="dateMode = 'periode'"
-              :class="{'bg-blue-600 text-white hover:shadow-lg': dateMode === 'periode', 'hover:shadow-lg': dateMode !== 'periode'}"
-              class="px-4 py-1 rounded-md border border-gray-200">Période
-            </button>
           </div>
-          <div v-if="dateMode === 'simple'" class="mt-2 border rounded-[10px] px-4 py-2 border-gray-500">
-            <!-- <datepicker v-model="selected" placeholder="Date"/> -->
-          </div>
-          <div class="flex gap-2" v-if="dateMode === 'periode'">
-            <div class="mt-2 border border-gray-500 rounded-[10px] px-4 py-2">
-              <!-- <datepicker v-model="startDate" class="text-blue-800" placeholder="Date de début"/> -->
-            </div>
-            <div class="mt-2 border border-gray-500 rounded-[10px] px-4 py-2">
-              <!-- <datepicker v-model="endDate" placeholder="Date de fin"/> -->
-            </div>
-          </div>
+          <UPopover :popper="{ placement: 'bottom-start' }" class="mb-5">
+            <UButton icon="i-heroicons-calendar-days-20-solid">
+              {{ format(selected.start, 'd MMM, yyy') }} - {{ format(selected.end, 'd MMM, yyy') }}
+            </UButton>
+
+            <template #panel="{ close }">
+              <div class="flex items-center sm:divide-x divide-gray-200 dark:divide-gray-800">
+                <DatePicker v-model="selected" @close="close" class="w-full"/>
+              </div>
+            </template>
+          </UPopover>
           <div class="flex flex-col mt-4 w-full">
-            <label class="block mb-2 font-bold w-120">Lieux</label>
+            <label class="block mb-2 font-bold w-120">Lieu</label>
             <input type="text" class="form-input max-w-[464px] px-8 py-2 border rounded-lg" placeholder="Rentrer un lieu">
           </div>
         </div>
@@ -69,12 +51,12 @@ definePageMeta({
           <select class="form-select w-full px-6 py-2 appearance-none bg-white rounded-lg border text-gray-500">
             <option class="rounded-lg">Choisir le type de document</option>
           </select>
-          <label class="block mb-2 mt-4 font-bold">Personnes</label>
+          <label class="block mb-2 mt-4 font-bold">Personne</label>
           <input type="text" class="form-input w-full px-8 py-2 border rounded-lg" placeholder="Rentrer une personne">
         </div>
       </div>
       <div class="text-center mt-12">
-        <nuxt-link to="/ListeRecherche" class="bg-[#007BFF] text-white border-none rounded-[20px] px-[20px] py-[10px] text-[16px] cursor-pointer outline-none hover:bg-[#0056b3]">Lancer la recherche</nuxt-link>
+        <button class="bg-blue-600 text-white border-none rounded-[20px] px-[20px] py-[10px] text-[16px] cursor-pointer outline-none hover:bg-[#0056b3]">Lancer la recherche</button>
       </div>
     </div>
   </div>
