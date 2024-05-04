@@ -84,6 +84,8 @@ Route.group(() => {
 
   Route.get('/ai/getDocs', 'AisController.getOldestDocuments')
 
+  Route.post('/ai/get','GetPipelinesController.getDocReview')
+
   //Upload routes
 
   Route.post('/basic/upload','BasicUploadPipelinesController.uploadDoc')
