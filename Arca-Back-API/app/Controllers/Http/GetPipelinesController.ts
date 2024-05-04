@@ -26,8 +26,6 @@ export default class GetPipelinesController {
 
         const payload = await request.validate(GetPipelineValidator)    
         const s3_name = payload.s3_name;
-        console.log("s3_name "+s3_name)
-        const contents = await Drive.get(s3_name);
 
         const tempFolderPath = '../Arca-Front/temp'; 
         const tempFilePath = `${tempFolderPath}/${s3_name}`;
@@ -35,12 +33,19 @@ export default class GetPipelinesController {
         fs.readdirSync(tempFolderPath).forEach((file) => {
             const filePath = `${tempFolderPath}/${file}`;
             fs.unlinkSync(filePath);
-            console.log("................")
         });
+        const contents = await Drive.get(s3_name);
         fs.writeFileSync(tempFilePath, contents);
 
-        console.log("done")
-        return response.status(200).json({message: 'Document récupéré avec succès'})
+        console.log("s3 done")
+
+        const id = s3_name.split('.')[0];
+        const result = await client.db("arca-metadata").collection("arca").findOne({ _id: id });
+
+        console.log(result);
+        console.log("mongo db done")
+
+        return response.status(200).json(result)
         
     }
 

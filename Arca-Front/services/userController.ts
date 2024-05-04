@@ -52,6 +52,22 @@ class UserController {
     return response;
   }
 
+  public async createLocation(regionname: string, cityname: string, zipcode: number, country: string, token: string): Promise<any> {
+    const response = await axios.post(`${baseUrl}/location/create`,
+    {
+        regionname,
+        cityname,
+        zipcode,
+        country
+    }, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+    });
+
+    return response;
+  }
+
   public async createCategory(name: string, token: string): Promise<any> {
     const response = await axios.post(`${baseUrl}/category/create`,
     {name},
@@ -86,6 +102,19 @@ class UserController {
     return response;
   }
 
+  public async deleteLocation(id: number, token: string): Promise<any> {
+    const response = await axios.post(`${baseUrl}/location/delete`,
+      {
+        id
+      }, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+    return response;
+  }
+
   public async getUser(token: string):Promise<any>{
     const response = await axios.get(`${baseUrl}/user/getUser`, {
       headers: {
@@ -97,6 +126,16 @@ class UserController {
 
   public async fetchUsers(token: string):Promise<any>{
     const response = await axios.get(`${baseUrl}/user/fetchUsers`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    console.log(response);
+    return response;
+  }
+
+  public async fetchLocations(token: string):Promise<any>{
+    const response = await axios.get(`${baseUrl}/location/fetchLocations`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -127,14 +166,32 @@ class UserController {
     console.log(response);
     return response;
   }
+
+
   public async getDocument(
     token: string,
     s3_name: string,
 
+
   ): Promise<any> {
-    console.log("++++++++++++++++++++++++++++");
     const response = await axios.post(`${baseUrl}/basic/get`,
       {s3_name},
+
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        }
+      });
+    return response;
+  }
+
+ public async uploadAiDocument(
+    token: string,
+    file: File,
+  ): Promise<any> {
+    const response = await axios.post(`${baseUrl}/basic/upload`,
+      {file},
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -142,9 +199,11 @@ class UserController {
 
         }
       });
-    console.log("nom"+s3_name);
+    console.log(response);
     return response;
   }
+
+
   public async fetchCategories(token: string):Promise<any>{
     const response = await axios.get(`${baseUrl}/category/fetchCategories`, {
       headers: {
