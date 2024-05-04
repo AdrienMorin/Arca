@@ -4,6 +4,7 @@ const uri = "mongodb+srv://hexanomedufutur:LCQbwYjD0LLaTxRW@arca-metadata-storag
 import Drive from '@ioc:Adonis/Core/Drive';
 import fs from 'fs';
 import GetPipelineValidator from 'App/Validators/Pipelines/GetPipelineValidator';
+import Person from "App/Models/Person";
 
 const client = new MongoClient(uri,  {
     serverApi: {
@@ -41,6 +42,19 @@ export default class GetPipelinesController {
 
         const id = s3_name.split('.')[0];
         const result = await client.db("arca-metadata").collection("arca").findOne({ _id: id });
+
+        interface Person {
+            id: string;
+            name: string;
+        }
+
+        const peopleList: Person[] = [];
+
+        for (const personId of result.people) {
+            const fetchedPerson = await Person.findOrFail(personId);
+            peopleList.push({ id: personId, name: fetchedPerson.displayname });
+        }
+        result.people = peopleList
 
         console.log(result);
         console.log("mongo db done")
