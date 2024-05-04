@@ -50,6 +50,29 @@ class DocumentController {
       throw error;
     }
   }
+
+public async modifyDocument(
+    token: string,
+    id:string,
+    titre: string,
+    description: string,
+    retranscription: string,
+    date: string,
+    personnes: string,
+
+  ): Promise<any> {
+    const response = await axios.post(`${API_URL}/updateDocuments/${id}`,
+      {titre, description, retranscription, date, personnes},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+
+        }
+      });
+    console.log(response);
+    return response;
+  }
 }
 
 export default DocumentController;

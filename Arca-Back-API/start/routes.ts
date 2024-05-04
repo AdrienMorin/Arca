@@ -95,11 +95,15 @@ Route.group(() => {
   Route.post('/basic/get','GetPipelinesController.getDoc')
 
 
+  Route.post('/updateDocuments/:id', 'BasicUploadPipelinesController.updateDoc');
+
   // A passer en admin
 
   Route.post('/deleteArca','GetPipelinesController.deleteDocumentArca')
   
   Route.post('/deleteReview','GetPipelinesController.deleteDocumentReview')
+
+  Route.post('/documents/transfer', 'BasicUploadPipelinesController.transferDocumentById');
 
 }).prefix("/api").middleware('auth')
 
