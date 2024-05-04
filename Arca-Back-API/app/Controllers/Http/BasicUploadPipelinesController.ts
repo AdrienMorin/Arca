@@ -46,7 +46,11 @@ export default class BasicUploadPipelinesController {
             categories: payload.categories,
             towns: payload.villes?.split(';')
         }  
-        const rep = await client.db("arca-metadata").collection("arca").insertOne(doc);
+        if(payload.mongoDB=="ntbr"){    
+            await client.db("arca-metadata").collection("arca").insertOne(doc);
+        }else if (payload.mongoDB=="tbr"){
+            await client.db("reviewDB").collection("review").insertOne(doc);
+        }
         
         if (payload.file.tmpPath) {
             console.log(payload.file.tmpPath)

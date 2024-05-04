@@ -113,7 +113,6 @@ export default {
         const token= tokenCookie.value;
         const response = await UserController.getInstance().getSearchResults(token,this.query);
         console.log(response.data);
-        console.log(response.data.);
       }
     },
 }
