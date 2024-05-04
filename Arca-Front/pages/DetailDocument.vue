@@ -1,0 +1,156 @@
+<script>
+import personne_menu from '~/components/users/personne_menu.vue';
+import display_files from '~/components/users/display_files.vue';
+import { MicrophoneIcon } from "@heroicons/vue/24/outline";
+import Navbar from '~/components/users/Navbar.vue';
+import UserController from '~/services/userController.ts';
+import {categories} from "@vueuse/metadata";
+
+export default {
+  components: {
+    personne_menu,
+    display_files,
+    MicrophoneIcon,
+    Navbar
+  },
+
+  async created() {
+    await this.getDocument();
+
+  },
+
+  unmounted(){
+    console.log("Redirection...")
+  },
+
+  data() {
+    return {
+      nom:  'af5ofehpdblvqdai45.pdf',
+      metadata: '',
+      formattedDate: ''
+    };
+  },
+
+  methods: {
+    categories() {
+      return categories
+    },
+      refreshPage() {
+      location.reload();
+      },
+      modifyDocument() {
+        this.$router.push('/Modif_document');
+      },
+      async getDocument() {
+        const tokenCookie = useCookie('token');
+        const token= tokenCookie.value;
+        const response = await UserController.getInstance().getDocument(token, this.nom)
+        this.metadata = response.data
+        const date = new Date(this.metadata.date);
+        const desiredFormat = 'MMMM d, yyyy h:mm:ss a';
+        this.formattedDate = new Intl.DateTimeFormat('fr-FR', {
+          dateStyle: 'long'
+        }).format(date);
+        console.log(this.formattedDate)
+
+        console.log(this.metadata)
+      }
+    },
+}
+definePageMeta({
+  middleware:'auth',
+});
+
+</script>
+
+
+<template>
+<div class="h-screen overflow-hidden">
+
+  <div class="flex flex-row relative w-full h-screen">
+
+    <div class="flex-none xl:w-1/3 lg:w-1/4  bg-[#027BCE] bg-opacity-10 h-full p-20% ">
+      <div class=" flex items-stretch	 flex-col h-full lg:space-y-4 md:space-y-2">
+        <div class="flex-1/6 justify-left items-center relative md:top-5 lg:left-12 md:left-3">
+          <div class="text-justify lg:text-3xl  md:text-2xl font-bold object-left-bottom relatvie">{{ metadata._id }}</div>
+        </div>
+
+
+        <div class=" flex-5/6 relative lg:left-20 lg:top-6 md:top-6 md:left-6 w-3/4 grid grid-rows-auto h-4/5  grid-flow-row gap-1 ">
+          <div class="flex-col justify-left items-center h-max space-y-1 lg:w-2/3 md:w-3/">
+            <div class="lg:text-2xl md:text-xl "><b>Date </b></div>
+            <div class="lg:text-2xl md:text-xl ">{{formattedDate}}</div>
+          </div>
+
+          <div class="flex-col justify-left items-center h-max space-y-1 ">
+            <div class="lg:text-2xl md:text-xl "><b>Lieux </b></div>
+            <div class=" shadow overflow-hidden rounded-md" style="max-height: 130px; overflow-y: auto;">
+              <ul class="divide-y divide-gray-200">
+                <!-- User rows -->
+                <li v-for="city in metadata.towns" class="px-10 py-4 flex">
+                  <div class="text-sm text-gray-900">{{ city }}</div>
+                </li>
+
+              </ul>
+            </div>
+          </div>
+
+          <div class="flex-col justify-left items-center h-max">
+            <div class="lg:text-2xl md:text-xl "><b>Catégorie de document </b> {{ metadata.categories }}</div>
+            <div class=" shadow overflow-hidden rounded-md" style="max-height: 130px; overflow-y: auto;">
+            </div>
+          </div>
+
+          <div class="flex-col justify-left items-center h-min space-y-1 ">
+            <div class="lg:text-2xl md:text-xl "><b>Personnes </b></div>
+            <div class="bg-gray-50 shadow overflow-hidden rounded-md" style="max-height: 250px; overflow-y: auto;">
+              <ul class="divide-y divide-gray-200">
+                <!-- Header row -->
+                <li class="px-6 py-4 bg-gray-200 flex">
+                  <div class="w-1/5 text-sm font-medium text-gray-900">Id</div>
+                  <div class="w-4/5 text-sm font-medium text-gray-900">Nom</div>
+                </li>
+                <!-- User rows -->
+                <li v-for="person in metadata.people" :key="person.id" class="px-10 py-4 flex">
+                  <div class="w-1/5 text-sm text-gray-900">{{ person.id }}</div>
+                  <div class="w-4/5 text-sm text-gray-900">{{ person.name }}</div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class=" flex-col justify-left items-center space-y-1 border   ">
+            <div class="lg:text-2xl md:text-xl ">Description</div>
+            <div class="object-cover w-full relative h-40"><textarea disabled class="rounded-md relative h-full w-full resize-none overflow-y-scroll " value="">{{metadata.description}}</textarea></div>
+          </div>
+
+
+          <div class="	">
+            <p class="inline-block font-semibold text-lg">Ajouté par:</p>
+            <p class="inline-block text-lg indent-2 ">Mr cena</p>
+          </div>
+
+          <div class="flex-row place-content-between flex w-full  mx-auto">
+            <div class="">
+              <button @click="modifyDocument" type="button" class="relative top-1  w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-base px-10 py-3 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+              <p class="text-xl">Modifier</p>
+              </button>
+            </div>
+
+
+          <div>
+            <button @click="refreshPage" type="button" class="relative top-1  w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-base px-10 py-3 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+            <p class="text-xl">Télécharger</p>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="flex-col flex-grow md:w-1/3 lg:3/4">
+    <display_files :filePath="'_nuxt/temp/' + nom" class="border" />
+  </div>
+</div>
+</div>
+</template>
+

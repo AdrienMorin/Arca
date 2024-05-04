@@ -52,7 +52,7 @@ Route.group(() => {
 
   Route.get('/person/getByName/:name','PeopleController.getByName')
 
-  Route.put('/person/update/:id', 'PeopleController.updatePerson')
+  Route.post('/person/update/:id', 'PeopleController.updatePerson')
 
   // Location routes
 
@@ -91,6 +91,12 @@ Route.group(() => {
   Route.post('/basic/get','GetPipelinesController.getDoc')
 
   Route.post('/search','BasicUploadPipelinesController.advancedSearch')
+
+  // A passer en admin
+
+  Route.post('/deleteArca','GetPipelinesController.deleteDocumentArca')
+  
+  Route.post('/deleteReview','GetPipelinesController.deleteDocumentReview')
 
 }).prefix("/api").middleware('auth')
 

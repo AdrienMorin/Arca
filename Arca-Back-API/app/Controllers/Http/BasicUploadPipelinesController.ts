@@ -46,7 +46,11 @@ export default class BasicUploadPipelinesController {
             categories: payload.categories,
             towns: payload.villes?.split(';')
         }  
-        const rep = await client.db("arca-metadata").collection("arca").insertOne(doc);
+        if(payload.mongoDB=="ntbr"){    
+            await client.db("arca-metadata").collection("arca").insertOne(doc);
+        }else if (payload.mongoDB=="tbr"){
+            await client.db("reviewDB").collection("review").insertOne(doc);
+        }
         
         if (payload.file.tmpPath) {
             console.log(payload.file.tmpPath)
@@ -100,11 +104,15 @@ export default class BasicUploadPipelinesController {
                     "name": 1,
                     "categories": 1,
                     "creator": 1,
+                    "createdAt": 1,
                     "description": 1,
                     "retranscription": 1,
                     "towns": 1,
                     "people": 1,
                     "updatedBy": 1,
+                    "updatedAt": 1,
+                    "date": 1,
+                    "endDate": 1,
                     score: { $meta: "searchScore" }
                 }
             }

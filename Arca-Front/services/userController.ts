@@ -52,6 +52,22 @@ class UserController {
     return response;
   }
 
+  public async createLocation(regionname: string, cityname: string, zipcode: number, country: string, token: string): Promise<any> {
+    const response = await axios.post(`${baseUrl}/location/create`,
+    {
+        regionname,
+        cityname,
+        zipcode,
+        country
+    }, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+    });
+
+    return response;
+  }
+
   public async createCategory(name: string, token: string): Promise<any> {
     const response = await axios.post(`${baseUrl}/category/create`,
     {name},
@@ -86,6 +102,19 @@ class UserController {
     return response;
   }
 
+  public async deleteLocation(id: number, token: string): Promise<any> {
+    const response = await axios.post(`${baseUrl}/location/delete`,
+      {
+        id
+      }, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+    return response;
+  }
+
   public async getUser(token: string):Promise<any>{
     const response = await axios.get(`${baseUrl}/user/getUser`, {
       headers: {
@@ -105,6 +134,16 @@ class UserController {
     return response;
   }
 
+  public async fetchLocations(token: string):Promise<any>{
+    const response = await axios.get(`${baseUrl}/location/fetchLocations`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    console.log(response);
+    return response;
+  }
+
   public async uploadDocument(
     token: string,
     file: File,
@@ -112,11 +151,12 @@ class UserController {
     description: string,
     retranscription: string,
     date: string,
-    personnes: string
+    personnes: string,
+    mongoDB: string
 
   ): Promise<any> {
     const response = await axios.post(`${baseUrl}/basic/upload`,
-      {file, titre, description, retranscription, date, personnes},
+      {file, titre, description, retranscription, date, personnes,mongoDB},
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -128,16 +168,13 @@ class UserController {
     return response;
   }
 
-  public async getDocument(
+  public async getSearchResults(
     token: string,
-    s3_name: string,
-
+    query: string,
 
   ): Promise<any> {
-    console.log("++++++++++++++++++++++++++++");
-    const response = await axios.post(`${baseUrl}/basic/get`,
-      {s3_name},
-
+    const response = await axios.post(`${baseUrl}/search`,
+      {query},
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -145,7 +182,27 @@ class UserController {
 
         }
       });
-          console.log("nom"+s3_name);
+    console.log(response);
+    return response;
+  }
+
+
+
+  public async getDocument(
+    token: string,
+    s3_name: string,
+
+
+  ): Promise<any> {
+    const response = await axios.post(`${baseUrl}/basic/get`,
+      {s3_name},
+
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        }
+      });
     return response;
   }
 
