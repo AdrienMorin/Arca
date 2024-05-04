@@ -4,13 +4,24 @@ export default defineNuxtConfig({
     '@nuxt/ui',
     '@nuxt/fonts',
     '@vueuse/nuxt',
-    '@pinia/nuxt'
+    '@pinia/nuxt',
+    'nuxt-snackbar',
+  
   ],
+
+  snackbar: {
+    top: true,
+    right: true,
+    duration: 5000
+  },
+
+
   ui: {
     icons: ['heroicons', 'simple-icons'],
-    safelistColors: ['primary', 'red', 'orange', 'green']
+    safelistColors: ['primary', 'red', 'orange', 'green'],
   },
   devtools: {
     enabled: true
-  }
+  },
+
 });
