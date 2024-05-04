@@ -60,24 +60,21 @@
     
       async uploadDocument() {
         this.personnes=this.$refs.menu_personne.getPersonne();
-          console.log('Uploading document...')
-          const time=new Date(this.date).toISOString();
+        console.log('Uploading document...')
+        const time=new Date(this.date).toISOString();
 
-          const tokenCookie = useCookie('token')
-          const token= tokenCookie.value;
-
-          console.log(this.File);
+        const tokenCookie = useCookie('token')
+        const token= tokenCookie.value;
         const response = await UserController.getInstance().uploadDocument(token,
-        this.File,this.titre,this.description,'restra',time,"personne");
+        this.File,this.titre,this.description,'restra',time,"personne","ntbr");
        
-        
-        // redirect to homepage if user is authenticated
         if (response.status === 200) {
           console.log('Vous êtes connecté')
           this.flipAjouter();
           //this.$router.push('/rechercher');
         }
       },
+
       getDocument() {
         console.log('Checking document...')
         const fileStore = useFileStore();

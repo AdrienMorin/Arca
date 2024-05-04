@@ -151,11 +151,12 @@ class UserController {
     description: string,
     retranscription: string,
     date: string,
-    personnes: string
+    personnes: string,
+    mongoDB: string
 
   ): Promise<any> {
     const response = await axios.post(`${baseUrl}/basic/upload`,
-      {file, titre, description, retranscription, date, personnes},
+      {file, titre, description, retranscription, date, personnes,mongoDB},
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -166,6 +167,7 @@ class UserController {
     console.log(response);
     return response;
   }
+
 
   public async getSearchResults(
     token: string,

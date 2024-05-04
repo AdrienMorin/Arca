@@ -9,6 +9,9 @@ export default class BasicUploadPipelineValidator {
       size: '10mb',
       extnames: ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx','jpg','png','jpeg','webp','mp3','wav','aac']
     }),
+    mongoDB: schema.string({
+
+    }),
     titre: schema.string({
     }),
     description: schema.string.optional({
