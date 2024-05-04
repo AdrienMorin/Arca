@@ -20,6 +20,7 @@ class DocumentController {
     });
     return response.data;
   }
+
 }
 
 export default DocumentController;
