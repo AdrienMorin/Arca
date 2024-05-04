@@ -127,6 +127,7 @@ class UserController {
     console.log(response);
     return response;
   }
+
   public async getDocument(
     token: string,
     s3_name: string,
@@ -146,11 +147,12 @@ class UserController {
     return response;
   }
 
- public async uploadAiDocument(
+  public async uploadAiDocument(
     token: string,
     file: File,
+
   ): Promise<any> {
-    const response = await axios.post(`${baseUrl}/basic/upload`,
+    const response = await axios.post(`${baseUrl}/ai/upload`,
       {file},
       {
         headers: {
