@@ -96,7 +96,11 @@ export default {
       to: new Date(),
       from: new Date('2016-01-01'),
       dateMode: 'simple',
-      documents: [],
+      documents: [
+        { type: 'PDF', name: 'La complainte du partisannnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn', towns: 'Ferme des 3 roues', people: 'Jean Dupont', date: '02/09/1945' },
+        { type: 'PDF', name: 'La ,jhbj du partisannnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn', towns: 'Ferme des 3 roues', people: 'Jean Dupont', date: '02/09/1945' },
+
+      ],
       query: 'certificat',
       results:'',
     } 
