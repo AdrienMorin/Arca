@@ -7,10 +7,6 @@ import BasicUploadPipelineValidator from 'App/Validators/Pipelines/BasicUploadPi
 import CreateAiDocumentValidator from 'App/Validators/Pipelines/CreateAiDocumentValidator';
 import SearchValidator from 'App/Validators/Search/SearchValidator';
 import ModifyDocValidator from 'App/Validators/Pipelines/ModifyDocValidator';
-import axios from 'axios';
-const https = require('https');
-import Env from '@ioc:Adonis/Core/Env';
-
 
 const client = new MongoClient(uri,  {
     serverApi: {
@@ -80,69 +76,6 @@ export default class BasicUploadPipelinesController {
         return response.status(200).json({message: 'Document créé avec succès'})
         
     }
-
-    public async uploadDocAi({ auth,bouncer,response,request}:HttpContextContract){
-            
-        await auth.use('api').authenticate()
-        await bouncer.with('AiPolicy').authorize('create')
-    
-        await client.connect();
-        await client.db("admin").command({ ping: 1 });
-
-        const payload = await request.validate(CreateAiDocumentValidator)
-        const _id = Math.random().toString(36).substr(2) + Date.now().toString(36);
-        const extension = payload.file.extname
-        const fileName= _id+'.'+extension
-        const type = this.findType(extension!)
-
-        
-        const doc={
-            _id: _id,
-            name: payload.file.clientName,
-            filename: fileName,
-            createdBy: auth.user?.id,
-            createdAt: new Date(),
-            updatedAt: new Date(),
-            updatedBy: auth.user?.id,
-            type: type,
-        }
-
-        await client.db("reviewDB").collection("review").insertOne(doc);
-
-        if (payload.file.tmpPath) {
-            console.log(payload.file.tmpPath)
-            const buffer = fs.readFileSync(payload.file.tmpPath);
-            await Drive.put(fileName ,buffer)
-        } else {
-            console.log('Le fichier n\'a pas été déplacé à un emplacement temporaire');
-        }
-
-        //appel à une api, parametre :  _id et filename
-        let worked=0
-        await instance.post('https://51.20.109.232:5000/create_metadata', {
-            id: _id,
-            filename: fileName
-        }, {
-            headers: {
-                'x-api-key': Env.get('API_KEY')
-            }
-        }).then(response => {
-            //console.log('Response:', response.data);
-            if(response.status==200){
-                worked=1
-            }
-        }).catch(error => {
-            console.error('Error:', error);
-        });
-        console.log(worked)
-        if(worked==0){
-            await Drive.delete(fileName)
-            await client.db("reviewDB").collection("review").deleteOne({_id: _id})
-            return response.status(500).json({message: 'Erreur lors de la création du document'})
-        }
-        return response.status(200).json({message: 'Document créé avec succès'})
-        
-        }
 
     public async updateDoc({ auth, response, request }: HttpContextContract) {
         await auth.use('api').authenticate();
@@ -316,29 +249,6 @@ export default class BasicUploadPipelinesController {
             // End the session regardless of the outcome
             session.endSession();
         }
-    }
-
-    public findType(extension: string) {
-        let type: string
-
-        if(extension=='pdf'){
-            type='pdf'
-        }else if(extension=='docx'){
-            type='word'
-        }else if(extension=='pptx'){
-            type='powerpoint'
-        }else if(extension=='xlsx'){
-            type='excel'
-        }else if(extension=='jpg' || extension=='jpeg' || extension=='png'){
-            type='image'
-        }else if(extension=='mp4' || extension=='avi' || extension=='mov' || extension=='mkv'){
-            type='video'
-        }else if(extension=='mp3' || extension=='wav' || extension=='aac'){
-            type='audio'
-        }else{
-            type='other'
-        }
-        return type
     }
     
 }
