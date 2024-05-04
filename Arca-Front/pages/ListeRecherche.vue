@@ -99,8 +99,8 @@ export default {
       from: new Date('2016-01-01'),
       dateMode: 'simple',
       documents: [
-        { type: 'PDF', title: 'La complainte du partisannnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn', location: 'Ferme des 3 roues', person: 'Jean Dupont', date: '02/09/1945' },
-        { type: 'PDF', title: 'La ,jhbj du partisannnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn', location: 'Ferme des 3 roues', person: 'Jean Dupont', date: '02/09/1945' },
+        { type: 'PDF', name: 'La complainte du partisannnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn', towns: 'Ferme des 3 roues', people: 'Jean Dupont', date: '02/09/1945' },
+        { type: 'PDF', name: 'La ,jhbj du partisannnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn', towns: 'Ferme des 3 roues', people: 'Jean Dupont', date: '02/09/1945' },
 
       ],
       query: 'certificat',
@@ -113,7 +113,6 @@ export default {
         const token= tokenCookie.value;
         const response = await UserController.getInstance().getSearchResults(token,this.query);
         console.log(response.data);
-        console.log(response.data.);
       }
     },
 }
