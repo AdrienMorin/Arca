@@ -168,6 +168,7 @@ class UserController {
     return response;
   }
 
+
   public async getSearchResults(
     token: string,
     query: string,
