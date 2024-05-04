@@ -90,6 +90,7 @@ definePageMeta({
                 <li v-for="city in metadata.towns" class="px-10 py-4 flex">
                   <div class="text-sm text-gray-900">{{ city }}</div>
                 </li>
+
               </ul>
             </div>
           </div>
@@ -102,11 +103,17 @@ definePageMeta({
 
           <div class="flex-col justify-left items-center h-min space-y-1 ">
             <div class="lg:text-2xl md:text-xl "><b>Personnes </b></div>
-            <div class=" shadow overflow-hidden rounded-md" style="max-height: 130px; overflow-y: auto;">
+            <div class="bg-gray-50 shadow overflow-hidden rounded-md" style="max-height: 250px; overflow-y: auto;">
               <ul class="divide-y divide-gray-200">
+                <!-- Header row -->
+                <li class="px-6 py-4 bg-gray-200 flex">
+                  <div class="w-1/5 text-sm font-medium text-gray-900">Id</div>
+                  <div class="w-4/5 text-sm font-medium text-gray-900">Nom</div>
+                </li>
                 <!-- User rows -->
-                <li v-for="person in metadata.people" class="px-10 py-4 flex">
-                  <div class="text-sm text-gray-900">{{ person }}</div>
+                <li v-for="person in metadata.people" :key="person.id" class="px-10 py-4 flex">
+                  <div class="w-1/5 text-sm text-gray-900">{{ person.id }}</div>
+                  <div class="w-4/5 text-sm text-gray-900">{{ person.name }}</div>
                 </li>
               </ul>
             </div>
@@ -114,7 +121,7 @@ definePageMeta({
 
           <div class=" flex-col justify-left items-center space-y-1 border   ">
             <div class="lg:text-2xl md:text-xl ">Description</div>
-            <div class="object-cover w-full relative h-40"><textarea class="rounded-md relative h-full w-full resize-none overflow-y-scroll " value=""></textarea></div>
+            <div class="object-cover w-full relative h-40"><textarea disabled class="rounded-md relative h-full w-full resize-none overflow-y-scroll " value="">{{metadata.description}}</textarea></div>
           </div>
 
 
