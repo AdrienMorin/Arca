@@ -105,11 +105,12 @@ export default {
     }
   },
   methods: {
-    async getSearchResults() {
-      const tokenCookie = useCookie('token');
-      const token = tokenCookie.value;
-      const response = await UserController.getInstance().getSearchResults(token, this.searchInput);
-      console.log(response.data);
+      async getSearchResults() {
+        const tokenCookie = useCookie('token');
+        const token= tokenCookie.value;
+        const response = await UserController.getInstance().getSearchResults(token,this.query);
+        console.log(response.data);
+      }
     },
     emitSearchEvent() {
       this.getSearchResults()
