@@ -81,9 +81,19 @@ import { MicrophoneIcon } from "@heroicons/vue/24/outline";
 import Navbar from '~/components/users/Navbar.vue';
 import UserController from '~/services/userController.ts';
 
+import personne_menu from '~/components/users/personne_menu.vue';
+import display_files from '~/components/users/display_files.vue';
+import { MicrophoneIcon } from "@heroicons/vue/24/outline";
+import Navbar from '~/components/users/Navbar.vue';
+import UserController from '~/services/userController.ts';
+
 export default {
   components: {
     Datepicker,
+  },
+  async created() {
+    await this.getSearchResults();
+
   },
   async created() {
     await this.getSearchResults();
@@ -98,11 +108,7 @@ export default {
       to: new Date(),
       from: new Date('2016-01-01'),
       dateMode: 'simple',
-      documents: [
-        { type: 'PDF', name: 'La complainte du partisannnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn', towns: 'Ferme des 3 roues', people: 'Jean Dupont', date: '02/09/1945' },
-        { type: 'PDF', name: 'La ,jhbj du partisannnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn', towns: 'Ferme des 3 roues', people: 'Jean Dupont', date: '02/09/1945' },
-
-      ],
+      documents: [],
       query: 'certificat',
       results:'',
     } 
@@ -113,6 +119,28 @@ export default {
         const token= tokenCookie.value;
         const response = await UserController.getInstance().getSearchResults(token,this.query);
         console.log(response.data);
+        const arr = response.data;
+
+        for (var i = 0; i < arr.length; i++){
+          var obj = arr[i];
+          for (var key in obj){
+            var value = obj[key];
+            if (key === 'name') {
+              obj.name=value;
+            } else if (key === 'towns') {
+              obj.towns=value;           
+            }else if (key === 'people') {
+              obj.people=value;           
+            }else if (key === 'date') {
+              obj.people=value;           
+            }
+          }
+          this.documents.push(obj);
+        }
+        console.log(this.documents);
+        // this.results = response.data;
+        // this.startDate = this.results.date;
+        // this.endDate = this.results.endDate;
       }
     },
 }
@@ -120,4 +148,6 @@ definePageMeta({
   middleware: 'auth',
 });
 </script>
+
+
 

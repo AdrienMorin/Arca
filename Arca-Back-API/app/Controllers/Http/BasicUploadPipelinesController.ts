@@ -104,11 +104,15 @@ export default class BasicUploadPipelinesController {
                     "name": 1,
                     "categories": 1,
                     "creator": 1,
+                    "createdAt": 1,
                     "description": 1,
                     "retranscription": 1,
                     "towns": 1,
                     "people": 1,
                     "updatedBy": 1,
+                    "updatedAt": 1,
+                    "date": 1,
+                    "endDate": 1,
                     score: { $meta: "searchScore" }
                 }
             }
