@@ -97,6 +97,7 @@ Route.group(() => {
 
   Route.post('/deleteArca','GetPipelinesController.deleteDocumentArca')
   
+  Route.post('/deleteReview','GetPipelinesController.deleteDocumentReview')
 
 }).prefix("/api").middleware('auth')
 
