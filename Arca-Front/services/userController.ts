@@ -151,11 +151,12 @@ class UserController {
     description: string,
     retranscription: string,
     date: string,
-    personnes: string
+    personnes: string,
+    mongoDB: string
 
   ): Promise<any> {
     const response = await axios.post(`${baseUrl}/basic/upload`,
-      {file, titre, description, retranscription, date, personnes},
+      {file, titre, description, retranscription, date, personnes,mongoDB},
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -186,6 +187,7 @@ class UserController {
   }
 
 
+
   public async getDocument(
     token: string,
     s3_name: string,
@@ -204,11 +206,12 @@ class UserController {
     return response;
   }
 
- public async uploadAiDocument(
+  public async uploadAiDocument(
     token: string,
     file: File,
+
   ): Promise<any> {
-    const response = await axios.post(`${baseUrl}/basic/upload`,
+    const response = await axios.post(`${baseUrl}/ai/upload`,
       {file},
       {
         headers: {
