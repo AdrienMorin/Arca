@@ -13,15 +13,23 @@ export default {
   methods: {
     async handleSubmit() {
       
-      const response = await UserController.getInstance().login(this.email, this.password)
 
-      const tokenCookie = useCookie('token')
-      tokenCookie.value = response.data.token
 
       // redirect to homepage if user is authenticated
-      if (response.status === 200) {
-        console.log('Vous êtes connecté')
-        this.$router.push('/rechercher');
+      try {
+        const response = await UserController.getInstance().login(this.email, this.password)
+
+        const tokenCookie = useCookie('token')
+        tokenCookie.value = response.data.token
+        if (response.status === 200) {
+          console.log('Vous êtes connecté')
+          this.$router.push('/rechercher');
+          this.$snackbar.add({type:'success',text:"Vous êtes connecté"});
+        } else {
+          this.$snackbar.add({type:'fail',text:"Mail ou mot de passe incorrect"});
+        }
+      } catch (error) {
+        this.$snackbar.add({type:'error',text:"Mail ou mot de passe incorrect"});
       }
 
     },
