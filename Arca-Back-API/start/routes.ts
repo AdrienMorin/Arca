@@ -92,6 +92,12 @@ Route.group(() => {
 
   Route.post('/search','BasicUploadPipelinesController.advancedSearch')
 
+  // A passer en admin
+
+  Route.post('/deleteArca','GetPipelinesController.deleteDocumentArca')
+  
+  Route.post('/deleteReview','GetPipelinesController.deleteDocumentReview')
+
 }).prefix("/api").middleware('auth')
 
 // Unprotected routes
