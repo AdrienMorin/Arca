@@ -130,15 +130,12 @@ export default {
           const response = await UserController.getInstance().uploadAiDocument(token,this.file);
           
           if (response.status === 200) {
-            this.closeModal()
             this.$snackbar.add({ type:'success',text: 'Le téléchargement a réussi.' });  
           } else {
-            this.closeModal()
-            this.$snackbar.add({ type:'error',text: "Le téléchargement n'a pas réussi." });  
+            this.$snackbar.add({ type:'fail',text: "Le téléchargement n'a pas réussi." });  
           }
         } catch (error) {
-          this.closeModal()
-          this.$snackbar.add({ type:'error',text: "Le téléchargement n'a pas réussi." });  
+          this.$snackbar.add({ type:'fail',text: "Le téléchargement n'a pas réussi." });  
         }
         
 
