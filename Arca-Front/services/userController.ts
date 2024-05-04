@@ -169,6 +169,25 @@ class UserController {
   }
 
 
+  public async getSearchResults(
+    token: string,
+    query: string,
+
+  ): Promise<any> {
+    const response = await axios.post(`${baseUrl}/search`,
+      {query},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+
+        }
+      });
+    console.log(response);
+    return response;
+  }
+
+
   public async getDocument(
     token: string,
     query: string,
