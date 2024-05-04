@@ -83,11 +83,14 @@ export default {
         if (response.status === 200) {
           console.log('Vous êtes déconnecté')
           this.$router.push('/login');
+          this.$snackbar.add({type:'success',text:"Vous êtes déconnecté"});
         } else {
           console.error('Failed to logout:', response.data)
+          this.$snackbar.add({type:'fail',text:"Il y a eu une erreur lors de la déconnexion veuillez réessayer"});
         }
       } catch (error) {
-        console.error('Error logging out:', error)
+        console.error('Error logging out:', error);
+        this.$snackbar.add({type:'fail',text:"Il y a eu une erreur lors de la déconnexion veuillez réessayer"});
       }
     },
 

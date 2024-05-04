@@ -108,12 +108,12 @@ export default {
           const response = await UserController.getInstance().uploadAiDocument(token,this.file);
           
           if (response.status === 200) {
-            window.alert('Le téléchargement a réussi.');
+            this.$snackbar.add({ type:'success',text: 'Le téléchargement a réussi.' });  
           } else {
-            window.alert('Le téléchargement a échoué. Veuillez réessayer.');
+            this.$snackbar.add({ type:'fail',text: "Le téléchargement n'a pas réussi." });  
           }
         } catch (error) {
-          window.alert('Une erreur a eu lieu lors du téléchargement: ' + error.message);
+          this.$snackbar.add({ type:'fail',text: "Le téléchargement n'a pas réussi." });  
         }
         
 
