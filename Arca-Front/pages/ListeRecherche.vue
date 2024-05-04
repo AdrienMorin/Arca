@@ -62,10 +62,9 @@
         </thead>
         <tbody>
           <tr v-for="(item, index) in documents" :key="index">
-            <td class="border px-4 py-2 truncate max-w-xs">{{ item.type }}</td>
-            <td class="border px-4 py-2 truncate max-w-xs">{{ item.title }}</td>
-            <td class="border px-4 py-2 truncate max-w-xs">{{ item.location }}</td>
-            <td class="border px-4 py-2 truncate max-w-xs">{{ item.person }}</td>
+            <td class="border px-4 py-2 truncate max-w-xs">{{ item.name }}</td>
+            <td class="border px-4 py-2 truncate max-w-xs">{{ item.towns }}</td>
+            <td class="border px-4 py-2 truncate max-w-xs">{{ item.people }}</td>
             <td class="border px-4 py-2 truncate max-w-xs">{{ item.date }}</td>
           </tr>
         </tbody>
@@ -76,9 +75,19 @@
 
 <script>
 import Datepicker from 'vue3-datepicker'
+import personne_menu from '~/components/users/personne_menu.vue';
+import display_files from '~/components/users/display_files.vue';
+import { MicrophoneIcon } from "@heroicons/vue/24/outline";
+import Navbar from '~/components/users/Navbar.vue';
+import UserController from '~/services/userController.ts';
+
 export default {
   components: {
     Datepicker,
+  },
+  async created() {
+    await this.getSearchResults();
+
   },
   data() {
     return {
@@ -91,15 +100,25 @@ export default {
       dateMode: 'simple',
       documents: [
         { type: 'PDF', title: 'La complainte du partisannnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn', location: 'Ferme des 3 roues', person: 'Jean Dupont', date: '02/09/1945' },
-        { type: 'PDF', title: 'La complainte du partisan', location: 'Ferme des 3 roues', person: 'Marie Curie', date: '02/09/1945' },
-        { type: 'PDF', title: 'La complainte du partisan', location: 'Ferme des 3 roues', person: 'Albert Einstein', date: '02/09/1945' },
-        { type: 'PDF', title: 'La complainte du partisan', location: 'Ferme des 3 roues', person: 'Isaac Newton', date: '02/09/1945' },
-        { type: 'PDF', title: 'La complainte du partisan', location: 'Ferme des 3 roues', person: 'Nikola Tesla', date: '02/09/1945' },
-      ]
-    }
-  }
+        { type: 'PDF', title: 'La ,jhbj du partisannnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn', location: 'Ferme des 3 roues', person: 'Jean Dupont', date: '02/09/1945' },
+
+      ],
+      query: 'certificat',
+      results:'',
+    } 
+  },
+  methods: {
+      async getSearchResults() {
+        const tokenCookie = useCookie('token');
+        const token= tokenCookie.value;
+        const response = await UserController.getInstance().getSearchResults(token,this.query);
+        console.log(response.data);
+        console.log(response.data.);
+      }
+    },
 }
 definePageMeta({
   middleware: 'auth',
 });
 </script>
+
