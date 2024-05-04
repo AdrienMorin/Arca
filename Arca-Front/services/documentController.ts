@@ -21,6 +21,35 @@ class DocumentController {
     return response.data;
   }
 
+  public async deleteDocumentArca(token: string, filename: string): Promise<any> {
+    try {
+      const response = await axios.post(API_URL + '/deleteArca', { filename }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      return response.data;
+    } catch (error) {
+      // Handle error
+      console.error('Error deleting document from Arca:', error);
+      throw error;
+    }
+  }
+
+  public async deleteDocumentReview(token: string, filename: string): Promise<any> {
+    try {
+      const response = await axios.post(API_URL + '/deleteReview', { filename }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      return response.data;
+    } catch (error) {
+      // Handle error
+      console.error('Error deleting document from Review:', error);
+      throw error;
+    }
+  }
 }
 
 export default DocumentController;
