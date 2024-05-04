@@ -86,6 +86,8 @@ Route.group(() => {
 
   Route.post('/ai/get','GetPipelinesController.getDocReview')
 
+  Route.post('/ai/get','GetPipelinesController.getDocReview')
+
   //Upload routes
 
   Route.post('/basic/upload','BasicUploadPipelinesController.uploadDoc')
