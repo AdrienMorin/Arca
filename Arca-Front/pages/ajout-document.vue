@@ -8,6 +8,10 @@
   import Popup from '~/components/users/popup.vue';
   import UserController from '~/services/userController.ts';
   import { useFileStore } from '~/fileTransfer.js';
+  import PersonneController from '~/services/personneController'
+  import LocationController from '~/services/locationController'
+  import CategorieController from '~/services/categorieController'
+
   //import Datepicker from 'vue3-datepicker'
  
   export default {
@@ -18,86 +22,145 @@
       personne_menu,
       description,
       autocomplete_liste,
-      
+    
     },
     mounted() {
-      this.getDocument();
     },
      data() {
       return {
         nom: '', // Initialize with an empty string
-        liste: ['Paris', 'Marseille','prague', 'pipi', 'popo','papa', 'papi'], // import the list of people from the database
         File: '',
         titre: '',
         description: '',
         date: '',
-        lieu: ['Paris', 'Marseille','maman','prague', 'pipi', 'popo','papa', 'papi'],
-        type: '',
-        personnes:'',
+        citiesListe:'',
+        typeDoc: '',
+        personneListe:'',
         titreDoc: '',
+        personnes: [],
+        cities: [],
+        selectedPersonne: '',
+        selectedCities: '',
+        categories:[],
+
       };
     },
+    async created() {
+    this.getDocument();
+    //console.log('Fetching Personnes...');
+    const fetchedPersonnes = await this.fetchPersonnes();
+    this.personnes = fetchedPersonnes.data;
+   // console.log('Personnes fetched:', this.personnes);
+    const fetchedCities = await this.fetchCities();
+    this.cities = fetchedCities.data;
+    this.cities = this.cities.map(city => city.displayname);
+    console.log('fetch categories');
+    const fetchedCategories = await this.fetchCategories();
+    this.categories = fetchedCategories.data;
+    },
+  
+      
     methods: {
-      Ajouter_personne(){
+      async fetchCategories() {
+      const tokenCookie = useCookie('token');
+      const token = tokenCookie.value;
+      return await CategorieController.getInstance().fetchCategories(token);
+    },
+    async fetchCities() {
+      const tokenCookie = useCookie('token');
+      const token = tokenCookie.value;
+      return await LocationController.getInstance().fetchLocations(token);
+    },
+    async fetchPersonnes() {
+      const tokenCookie = useCookie('token');
+      const token = tokenCookie.value;
+      return await PersonneController.getInstance().fetchPersonnes(token);
+    },
+    getListCitier(){
+      this.selectedCities=this.$refs.lieuAajoute.getListe();      
+    },
+    getListPersonne(){
+      this.selectedPersonne=this.$refs.personneAajoute.getListe();
+      this.selectedPersonne=this.selectedPersonne.map(personne => personne.id);
+    },
+    getSelectedCategorie(){
+      return this.$refs.docType.getValue();
+    },
+    Ajouter_personne(){
         if(this.$refs.personneAajoute.search != ''){
         this.$refs.menu_personne.addPersonne(this.$refs.personneAajoute.search);
         this.$refs.personneAajoute.search = '';
-        }
-      },
+      }
+    },
 
-        refreshPage() {
-          location.reload();
-        }, 
-        flipAnnuler() {
-        this.$refs.popupAnnul.mainshow = !this.$refs.popupAnnul.mainshow;
-      }, 
-      flipAjouter() {
-        this.$refs.popupAjout.mainshow = !this.$refs.popupAjout.mainshow;
-      },
-      flipEnregistrer() {
-        this.$refs.popupEnregistrer.mainshow = !this.$refs.popupEnregistrer.mainshow;
-      },
+    refreshPage() {
+      location.reload();
+    }, 
+    flipAnnuler() {
+    this.$refs.popupAnnul.mainshow = !this.$refs.popupAnnul.mainshow;
+     }, 
+    flipAjouter() {
+      this.$refs.popupAjout.mainshow = !this.$refs.popupAjout.mainshow;
+    },
+    flipEnregistrer() {
+      this.$refs.popupEnregistrer.mainshow = !this.$refs.popupEnregistrer.mainshow;
+    },
     
-      async uploadDocument() {
-        this.personnes=this.$refs.menu_personne.getPersonne();
-          console.log('Uploading document...')
-          const time=new Date(this.date).toISOString();
-
-          const tokenCookie = useCookie('token')
-          const token= tokenCookie.value;
-
-          console.log(this.File);
-        const response = await UserController.getInstance().uploadDocument(token,
-        this.File,this.titre,this.description,'restra',time,"personne");
-       
-        
-        // redirect to homepage if user is authenticated
-        if (response.status === 200) {
-          console.log('Vous êtes connecté')
-          this.flipAjouter();
-          //this.$router.push('/rechercher');
+    async uploadDocument() {
+      console.log(this.getSelectedCategorie());
+      /*
+        this.getListCitier();
+        this.getListPersonne();
+        this.citiesListe='';
+        this.personneListe='';
+        for (let i = 0; i < this.selectedCities.length; i++) {
+          this.citiesListe+=this.selectedCities[i];
+          if(i!=this.selectedCities.length-1){
+            this.citiesListe+=';';
+          }
         }
-      },
-      getDocument() {
-        console.log('Checking document...')
-        const fileStore = useFileStore();
-        const test=fileStore.getFile;
-        this.File=test.content;
-        this.titreDoc=test.name;
-        console.log("ee",this.File);
+        for (let i = 0; i < this.selectedPersonne.length; i++) {
+          this.personneListe+=this.selectedPersonne[i];
+          if(i!=this.selectedPersonne.length-1){
+            this.personneListe+=';';
+          }
+        }
 
-      },
+        console.log('Uploading document...');
+        //const time=new Date(this.date).toISOString(); fixxxx date
+        const tokenCookie = useCookie('token');
+        const token= tokenCookie.value;
+        console.log(this.File);
 
-      
+        console.log('Uploading document...')
  
+        console.log(this.File);
+      const response = await UserController.getInstance().uploadDocument(token,
+      this.File,this.titre,this.description,'restra',time,"personne");
+      
+      
+      // redirect to homepage if user is authenticated
+      if (response.status === 200) {
+        console.log('Vous êtes connecté')
+        this.flipAjouter();
+        //this.$router.push('/rechercher');
+      }*/
+    },
+    getDocument() {
+      console.log('Checking document...')
+      const fileStore = useFileStore();
+      const test=fileStore.getFile;
+      this.File=test.content;
+      this.titreDoc=test.name;
+      console.log("ee",this.File);
 
+    },
+  },
+  };
 
-
-    }
-  }
   definePageMeta({
     middleware:'auth',
-  });
+});
 
 </script>
 
@@ -156,21 +219,25 @@
                 </div>
                 
     
-              <div class="flex-col justify-left items-center h-max space-y-3 lg:w-3/5  md:w-3/4 ">
+              <div class="flex-col justify-left items-center h-max space-y-3 lg:w-5/6 md:w-2/2 ">
                 <div class="lg:text-2xl md:text-xl ">Lieu</div>
-                <div class="object-cover w-full"><autocomplete_liste :items="lieu"  ref="lieuAajoute"/></div>
+                <div class="object-cover w-full">
+                  <autocomplete_liste :items="cities" ref="lieuAajoute"/>
+                
+                                  
+                </div>
               </div>
               
                        
               <div class="flex-col justify-left items-center h-max space-y-3  ">
                 <div class="lg:text-2xl md:text-xl ">Type de document</div>
-                <doctype ref="docType"/>
+                <doctype ref="docType" :liste="categories" />
               </div>
    
               <div class="flex-col justify-left items-center h-min space-y-3 lg:w-5/6 md:w-2/2">
                 <div class="lg:text-2xl md:text-xl ">Personnes</div>
                 <div class="object-cover w-full">
-                  <autocomplete_liste :items="liste"  ref="personneAajoute"/>
+                  <autocomplete_liste :items="personnes" :isPersonne=true  ref="personneAajoute"/>
                 </div>
               </div>
              
@@ -192,7 +259,7 @@
             <div class="flex-row place-content-between	flex  w-5/6 mx-auto">
               
               <div class=" place-content-start items-start flex w-2/4 ">
-                <button @click="getDocument()" type="button" class="relative top-1 text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-100 font-medium rounded-lg text-base px-10 py-3 me-2 mb-2 dark:bg-blue-400 dark:hover:bg-blue-500 focus:outline-none dark:focus:ring-blue-600">
+                <button @click="console.log('type',this.$refs.docType.getValue());" type="button" class="relative top-1 text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-100 font-medium rounded-lg text-base px-10 py-3 me-2 mb-2 dark:bg-blue-400 dark:hover:bg-blue-500 focus:outline-none dark:focus:ring-blue-600">
                    <p class="text-xl">Enregistrer et ajouter "à Verfier"</p>
                 </button>
               </div>

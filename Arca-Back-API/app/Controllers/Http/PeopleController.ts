@@ -11,6 +11,7 @@ export default class PeopleController {
         await auth.use('api').authenticate()
         await bouncer.with('PersonPolicy').authorize('create')
         const payload = await request.validate(CreatePersonValidator)
+        console.log(payload);
         const displayname = payload.firstname + ' ' + payload.lastname
         const first = payload.firstname.replace(/-/g, " ").toLowerCase();
         const lastname = payload.lastname.replace(/-/g, " ").toLowerCase()
@@ -21,6 +22,7 @@ export default class PeopleController {
             role: payload.role,
             location: payload.location
         })
+
         return response.status(200).json({message: 'Personne créée avec succès'})
     }
 
