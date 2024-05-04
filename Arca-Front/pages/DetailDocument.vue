@@ -87,10 +87,9 @@ definePageMeta({
             <div class=" shadow overflow-hidden rounded-md" style="max-height: 130px; overflow-y: auto;">
               <ul class="divide-y divide-gray-200">
                 <!-- User rows -->
-                <li v-for="city in metadata.towns" class="px-10 py-4 flex">
+                <li  v-for="city in metadata.towns" :key="city" class="px-10 py-4 flex">
                   <div class="text-sm text-gray-900">{{ city }}</div>
                 </li>
-
               </ul>
             </div>
           </div>
