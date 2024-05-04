@@ -52,7 +52,7 @@ Route.group(() => {
 
   Route.get('/person/getByName/:name','PeopleController.getByName')
 
-  Route.put('/person/update/:id', 'PeopleController.updatePerson')
+  Route.post('/person/update/:id', 'PeopleController.updatePerson')
 
   // Location routes
 
@@ -82,10 +82,15 @@ Route.group(() => {
 
   Route.post('/ai/upload', 'AisController.uploadDoc')
 
+  Route.get('/ai/getDocs', 'AisController.getOldestDocuments')
+
   //Upload routes
 
   Route.post('/basic/upload','BasicUploadPipelinesController.uploadDoc')
 
+  Route.post('/basic/get','GetPipelinesController.getDoc')
+
+  Route.post('/search','BasicUploadPipelinesController.advancedSearch')
 
 }).prefix("/api").middleware('auth')
 
