@@ -108,7 +108,11 @@ export default {
       to: new Date(),
       from: new Date('2016-01-01'),
       dateMode: 'simple',
-      documents: [],
+      documents: [
+        { type: 'PDF', title: 'La complainte du partisannnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn', location: 'Ferme des 3 roues', person: 'Jean Dupont', date: '02/09/1945' },
+        { type: 'PDF', title: 'La ,jhbj du partisannnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn', location: 'Ferme des 3 roues', person: 'Jean Dupont', date: '02/09/1945' },
+
+      ],
       query: 'certificat',
       results:'',
     } 
@@ -119,28 +123,7 @@ export default {
         const token= tokenCookie.value;
         const response = await UserController.getInstance().getSearchResults(token,this.query);
         console.log(response.data);
-        const arr = response.data;
-
-        for (var i = 0; i < arr.length; i++){
-          var obj = arr[i];
-          for (var key in obj){
-            var value = obj[key];
-            if (key === 'name') {
-              obj.name=value;
-            } else if (key === 'towns') {
-              obj.towns=value;           
-            }else if (key === 'people') {
-              obj.people=value;           
-            }else if (key === 'date') {
-              obj.people=value;           
-            }
-          }
-          this.documents.push(obj);
-        }
-        console.log(this.documents);
-        // this.results = response.data;
-        // this.startDate = this.results.date;
-        // this.endDate = this.results.endDate;
+        console.log(response.data.);
       }
     },
 }
