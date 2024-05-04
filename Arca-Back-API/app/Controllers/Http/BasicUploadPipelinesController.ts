@@ -5,6 +5,7 @@ import Drive from '@ioc:Adonis/Core/Drive';
 import fs from 'fs';
 import BasicUploadPipelineValidator from 'App/Validators/Pipelines/BasicUploadPipelineValidator';
 import SearchValidator from 'App/Validators/Search/SearchValidator';
+import ModifyDocValidator from 'App/Validators/Pipelines/ModifyDocValidator';
 
 const client = new MongoClient(uri,  {
     serverApi: {
@@ -75,6 +76,70 @@ export default class BasicUploadPipelinesController {
         
     }
 
+    public async updateDoc({ auth, response, request }: HttpContextContract) {
+        await auth.use('api').authenticate();
+    
+        await client.connect();
+        await client.db("admin").command({ ping: 1 });
+    
+        const docId = request.param("id");
+        const payload = await request.validate(ModifyDocValidator);
+    
+        // Build the update document from optional and required fields
+        let updateData = {
+            updatedAt: new Date(),
+            updatedBy: auth.user?.lastname + ' ' + auth.user?.firstname,
+        };
+    
+        // Conditional assignment for optional fields
+        if (payload.titre) {
+            updateData['name'] = payload.titre;
+        }
+        if (payload.description !== undefined) {
+            updateData['description'] = payload.description;
+        }
+        if (payload.retranscription !== undefined) {
+            updateData['retranscription'] = payload.retranscription;
+        }
+        if (payload.date) {
+            updateData['date'] = payload.date;
+        }
+        if (payload.dateDeFin) {
+            updateData['endDate'] = payload.dateDeFin;
+        }
+        if (payload.personnes) {
+            updateData['people'] = payload.personnes.split(';');
+        }
+        if (payload.categories) {
+            updateData['categories'] = payload.categories;
+        }
+        if (payload.villes) {
+            updateData['towns'] = payload.villes.split(';');
+        }
+        
+        const targetDatabase = payload.mongoDB === "ntbr" ? "arca-metadata" : "reviewDB";
+        const targetCollection = payload.mongoDB === "ntbr" ? "arca" : "review";
+        
+        try {
+            // Update the document in the specified collection
+            const result = await client.db(targetDatabase).collection(targetCollection).updateOne(
+                { _id: docId },
+                { $set: updateData }
+            );
+    
+            if (result.matchedCount === 0) {
+                return response.status(404).json({ message: 'No document found with the provided ID.' });
+            }
+    
+            return response.status(200).json({ message: 'Document updated successfully.' });
+        } catch (error) {
+            console.error('Error updating document:', error);
+            return response.status(500).json({ message: 'Failed to update document.', error });
+        }
+    }
+    
+    
+
     async complexSearch(searchQuery) {
         try {
             if (client.db) {
@@ -140,5 +205,49 @@ export default class BasicUploadPipelinesController {
         return response.status(200).json(results)
     }
 
-
+    public async transferDocumentById({ request, response }: HttpContextContract) {
+        await client.connect();
+        
+        // Get document ID from request
+        const docId = request.input('documentId');
+    
+        // Declare the session variable using the MongoDB client
+        const session = client.startSession();
+    
+        try {
+            // Start the transaction
+            session.startTransaction();
+    
+            // Retrieve and delete the document from the review database
+            const reviewCollection = client.db("reviewDB").collection("review");
+            const documentToMove = await reviewCollection.findOne({ _id: docId }, { session });
+    
+            if (!documentToMove) {
+                await session.abortTransaction();
+                return response.status(404).json({ message: 'Document not found in the review database.' });
+            }
+    
+            // Delete the document from the review database
+            await reviewCollection.deleteOne({ _id: docId }, { session });
+    
+            // Insert the document into the arca database
+            const arcaCollection = client.db("arca-metadata").collection("arca");
+            await arcaCollection.insertOne(documentToMove, { session });
+    
+            // Commit the transaction
+            await session.commitTransaction();
+    
+            return response.status(200).json({ message: 'Document transferred successfully.' });
+        } catch (error) {
+            console.error('Error during document transfer:', error);
+            if (session.inTransaction()) {
+                await session.abortTransaction();
+            }
+            return response.status(500).json({ message: 'Failed to transfer document.', error });
+        } finally {
+            // End the session regardless of the outcome
+            session.endSession();
+        }
+    }
+    
 }
