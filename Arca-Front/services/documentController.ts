@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://127.0.0.1:3333/api/ai/getDocs';
+const API_URL = 'https://127.0.0.1:3333/api';
 
 class DocumentController {
   private static instance: DocumentController;
@@ -13,7 +13,7 @@ class DocumentController {
   }
 
   public async getDocuments(token: string): Promise<any> {
-    const response = await axios.get(API_URL, {
+    const response = await axios.get(API_URL + '/ai/getDocs', {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -21,6 +21,35 @@ class DocumentController {
     return response.data;
   }
 
+  public async deleteDocumentArca(token: string, filename: string): Promise<any> {
+    try {
+      const response = await axios.post(API_URL + '/deleteArca', { filename }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      return response.data;
+    } catch (error) {
+      // Handle error
+      console.error('Error deleting document from Arca:', error);
+      throw error;
+    }
+  }
+
+  public async deleteDocumentReview(token: string, filename: string): Promise<any> {
+    try {
+      const response = await axios.post(API_URL + '/deleteReview', { filename }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      return response.data;
+    } catch (error) {
+      // Handle error
+      console.error('Error deleting document from Review:', error);
+      throw error;
+    }
+  }
 }
 
 export default DocumentController;
