@@ -37,27 +37,27 @@
       </div>
     </div>
   </div>
-  <div class="w-full flex justify-center mt-14">
-    <div class="w-4/5">
-      <table class="table-auto w-full text-left">
-        <thead>
-          <tr class="bg-gray-100">
-            <th class="w-1/5 px-4 py-2">Type</th>
-            <th class="w-1/5 px-4 py-2">Titre</th>
-            <th class="w-1/5 px-4 py-2">Lieu</th>
-            <th class="w-1/5 px-4 py-2">Personnes</th>
-            <th class="w-1/5 px-4 py-2">Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, index) in documents" :key="index">
-            <td class="border px-4 py-2 truncate max-w-xs">{{ item.name }}</td>
-            <td class="border px-4 py-2 truncate max-w-xs">{{ item.towns }}</td>
-            <td class="border px-4 py-2 truncate max-w-xs">{{ item.people }}</td>
-            <td class="border px-4 py-2 truncate max-w-xs">{{ item.date }}</td>
-          </tr>
-        </tbody>
-      </table>
+  <div class="mr-10 ml-10 mt-10">
+    <h2 class="font-bold text-2xl mb-4 text-center">Résultats de la recherche</h2>
+    <div class="bg-gray-50 shadow overflow-hidden rounded-md" style="max-height: 250px; overflow-y: auto;">
+      <ul class="divide-y divide-gray-200">
+        <!-- Header row -->
+        <li class="px-6 py-4 bg-gray-200 flex">
+          <div class="w-1/6 text-sm font-medium text-gray-900">Catégorie</div>
+          <div class="w-1/6 text-sm font-medium text-gray-900">Nom du document</div>
+          <div class="w-2/6 text-sm font-medium text-gray-900">Description</div>
+          <div class="w-1/6 text-sm font-medium text-gray-900">Ville(s)</div>
+          <div class="w-1/6 text-sm font-medium text-gray-900">Personnes</div>
+        </li>
+        <!-- User rows -->
+        <li v-for="doc in this.documents" :key="doc._id" class="px-10 py-4 flex">
+          <div class="w-1/6 text-sm text-gray-900">{{ doc.categories }}</div>
+          <div class="w-1/6 text-sm text-gray-900">{{ doc.name }}</div>
+          <div class="w-2/6 text-sm text-gray-900">{{ doc.description }}</div>
+          <div class="w-1/6 text-sm text-gray-500">{{ doc.towns }}</div>
+          <div class="w-1/6 text-sm text-gray-900">{{ doc.people }}</div>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -93,10 +93,7 @@ export default {
       to: new Date(),
       from: new Date('2016-01-01'),
       dateMode: 'simple',
-      documents: [
-        { type: 'PDF', name: 'La complainte du partisannnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn', towns: 'Ferme des 3 roues', people: 'Jean Dupont', date: '02/09/1945' },
-        { type: 'PDF', name: 'La ,jhbj du partisannnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn', towns: 'Ferme des 3 roues', people: 'Jean Dupont', date: '02/09/1945' },
-      ],
+      documents: [],
       results: '',
       searchInput: '' // Ajout de la propriété de données searchInput
     }
@@ -106,6 +103,7 @@ export default {
       const tokenCookie = useCookie('token');
       const token = tokenCookie.value;
       const response = await UserController.getInstance().getSearchResults(token, this.searchInput);
+      this.documents = response.data;
       console.log(response.data);
     },
     emitSearchEvent() {

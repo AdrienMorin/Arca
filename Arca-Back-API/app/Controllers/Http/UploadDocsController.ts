@@ -9,6 +9,7 @@ import ModifyDocValidator from 'App/Validators/Pipelines/ModifyDocValidator';
 import axios from 'axios';
 const https = require('https');
 import Env from '@ioc:Adonis/Core/Env';
+import Person from "App/Models/Person";
 import S3FileUpdateValidator from 'App/Validators/Pipelines/S3FileUpdateValidator';
 
 
@@ -59,6 +60,7 @@ export default class UploadDocsController {
             
             description: payload.description,
             retranscription: payload.retranscription,
+            author: auth.user?.lastname + ' '+auth.user?.firstname,
             date: payload.date,
             endDate: payload.dateDeFin,
             people: payload.personnes?.split(';'),
@@ -87,21 +89,21 @@ export default class UploadDocsController {
     public async updateDocContentOnS3({ auth, response, request }: HttpContextContract) {
         // Authenticate the user
         await auth.use('api').authenticate();
-    
+
         // Validate the request against the custom validator
         const validatedData = await request.validate(S3FileUpdateValidator);
         const { fileName, file } = validatedData;
-    
+
         // Check if the file is provided in the temporary path for update
         if (file.tmpPath) {
             console.log(`Updating file content for: ${fileName}`);
-    
+
             // Read the file data from the temporary location
             const buffer = fs.readFileSync(file.tmpPath);
-    
+
             // Overwrite the existing file on S3 using the same file name
             await Drive.put(fileName, buffer);
-    
+
             // Return a success response
             return response.status(200).json({ message: 'Document content updated successfully' });
         } else {
@@ -109,7 +111,7 @@ export default class UploadDocsController {
             return response.status(400).json({ message: 'Temporary file path is required' });
         }
     }
-    
+
 
     public async uploadDocAi({ auth,bouncer,response,request}:HttpContextContract){
             
@@ -140,6 +142,7 @@ export default class UploadDocsController {
             updatedAt: new Date(),
             updatedBy: auth.user?.id,
             type: type,
+            author: "Retranscription automatique",
         }
 
         await client.db("reviewDB").collection("review").insertOne(doc);
@@ -203,6 +206,7 @@ export default class UploadDocsController {
         }
         if (payload.retranscription !== undefined) {
             updateData['retranscription'] = payload.retranscription;
+            updateData['author'] = auth.user?.lastname + ' ' + auth.user?.firstname;
         }
         if (payload.date) {
             updateData['date'] = payload.date;
