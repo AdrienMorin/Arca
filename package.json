@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "date-fns": "^2.30.0",
+    "office-converter": "^1.0.2",
     "v-calendar": "^3.1.2"
   }
 }

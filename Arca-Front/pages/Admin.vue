@@ -13,7 +13,8 @@ export default {
   components: {
     UsersComponent,
     CategoriesComponent,
-    VillesComponent
+    VillesComponent,
+    PersonnesComponent
   },
   async mounted() {
     const tokenCookie = useCookie('token')

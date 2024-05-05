@@ -1,6 +1,5 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import CreateLocationValidator from "App/Validators/Location/CreateLocationValidator";
-import UpdateLocationValidator from "App/Validators/Location/UpdateLocationValidator";
 import Location from "App/Models/Location";
 
 export default class LocationsController {

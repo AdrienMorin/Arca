@@ -169,9 +169,31 @@ export default {
       }
       console.log(this.modifiedPersonne)
     },
-    async modify(){
+    async modify() {
       console.log("modification")
+      const tokenCookie = useCookie('token')
+      const token = tokenCookie.value
+      const response = await PersonneController.getInstance().updatePersonne(this.modifiedPersonne.firstname, this.modifiedPersonne.lastname, this.modifiedPersonne.location, this.modifiedPersonne.role, this.modifiedPersonne.id, token)
+      console.log(response)
+      if (response.status === 200) {
+        const index = this.personnes.findIndex(personne => personne.id === this.modifiedPersonne.id);
+        if (index !== -1) {
+          this.personnes.splice(index, 1);
+        }
+        const newLocationResponse = await LocationController.getInstance().getLocationById(this.modifiedPersonne.location, token)
+        this.modifiedPersonne.location = newLocationResponse.data.displayname
+        this.personnes.push(this.modifiedPersonne)
+        this.modifiedPersonne = {
+          firstname: '',
+          lastname: '',
+          location: null,
+          role: '',
+          id: null
+        }
+        this.showModifyForm = !this.showModifyForm
+        this.showModifyButton = !this.showModifyButton
+      }
     }
   }
-};
+}
 </script>

@@ -35,6 +35,20 @@ class UserController {
     return response;
   }
 
+  public async isConnected(token: string): Promise<any> {
+    const response = await axios.get('https://127.0.0.1:3333/api', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    console.log(response);
+    if (response.data != 'Vous êtes connecté') {
+      return false;
+    }else{
+      return true;
+    }
+  }
+
   public async createUser(firstname: string, lastname: string, email: string, password: string, token: string): Promise<any> {
     const response = await axios.post(`${baseUrl}/auth/register`,
     {
@@ -168,7 +182,6 @@ class UserController {
     return response;
   }
 
-
   public async getSearchResults(
     token: string,
     query: string,
@@ -180,46 +193,47 @@ class UserController {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
-
         }
       });
     console.log(response);
     return response;
   }
 
-
-  public async getSearchResults(
-    token: string,
-    query: string,
-
-  ): Promise<any> {
-    const response = await axios.post(`${baseUrl}/search`,
-      {query},
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-
-        }
-      });
-    console.log(response);
-    return response;
-  }
 
 
   public async getDocument(
     token: string,
     s3_name: string,
 
+
   ): Promise<any> {
     const response = await axios.post(`${baseUrl}/basic/get`,
       {s3_name},
+
       {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         }
       });
+    return response;
+  }
+
+  public async uploadAiDocument(
+    token: string,
+    file: File,
+
+  ): Promise<any> {
+    const response = await axios.post(`${baseUrl}/ai/upload`,
+      {file},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+
+        }
+      });
+    console.log(response);
     return response;
   }
 

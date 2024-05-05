@@ -5,17 +5,17 @@ import Drive from '@ioc:Adonis/Core/Drive';
 import fs from 'fs';
 import BasicUploadPipelineValidator from 'App/Validators/Pipelines/BasicUploadPipelineValidator';
 import CreateAiDocumentValidator from 'App/Validators/Pipelines/CreateAiDocumentValidator';
-import SearchValidator from 'App/Validators/Search/SearchValidator';
 import ModifyDocValidator from 'App/Validators/Pipelines/ModifyDocValidator';
 import axios from 'axios';
 const https = require('https');
 import Env from '@ioc:Adonis/Core/Env';
+import Person from "App/Models/Person";
+import S3FileUpdateValidator from 'App/Validators/Pipelines/S3FileUpdateValidator';
 
 
 const client = new MongoClient(uri,  {
     serverApi: {
         version: ServerApiVersion.v1,
-        strict: false,
         strict: false,
         deprecationErrors: true,
     }
@@ -27,8 +27,7 @@ const instance = axios.create({
     })
 });
 
-
-export default class BasicUploadPipelinesController {
+export default class UploadDocsController {
 
     public async uploadDoc({ auth,bouncer,response,request}:HttpContextContract){   
         await auth.use('api').authenticate()
@@ -39,6 +38,11 @@ export default class BasicUploadPipelinesController {
 
         const payload = await request.validate(BasicUploadPipelineValidator)    
         const _id = Math.random().toString(36).substr(2) + Date.now().toString(36);
+        const docId = await client.db("arca-metadata").collection("arca").findOne({_id: _id})
+        const docIdReview = await client.db("reviewDB").collection("review").findOne({_id: _id})
+        if(docId || docIdReview){
+            return response.status(500).json({message: 'Erreur lors de la création du document, veuillez réessayer'})
+        }
         const extension = payload.file.extname
         const fileName= _id+'.'+extension
         const type = this.findType(extension!)
@@ -56,6 +60,7 @@ export default class BasicUploadPipelinesController {
             
             description: payload.description,
             retranscription: payload.retranscription,
+            author: auth.user?.lastname + ' '+auth.user?.firstname,
             date: payload.date,
             endDate: payload.dateDeFin,
             people: payload.personnes?.split(';'),
@@ -81,6 +86,33 @@ export default class BasicUploadPipelinesController {
         
     }
 
+    public async updateDocContentOnS3({ auth, response, request }: HttpContextContract) {
+        // Authenticate the user
+        await auth.use('api').authenticate();
+
+        // Validate the request against the custom validator
+        const validatedData = await request.validate(S3FileUpdateValidator);
+        const { fileName, file } = validatedData;
+
+        // Check if the file is provided in the temporary path for update
+        if (file.tmpPath) {
+            console.log(`Updating file content for: ${fileName}`);
+
+            // Read the file data from the temporary location
+            const buffer = fs.readFileSync(file.tmpPath);
+
+            // Overwrite the existing file on S3 using the same file name
+            await Drive.put(fileName, buffer);
+
+            // Return a success response
+            return response.status(200).json({ message: 'Document content updated successfully' });
+        } else {
+            console.error('No temporary file path provided, unable to update document content.');
+            return response.status(400).json({ message: 'Temporary file path is required' });
+        }
+    }
+
+
     public async uploadDocAi({ auth,bouncer,response,request}:HttpContextContract){
             
         await auth.use('api').authenticate()
@@ -91,6 +123,11 @@ export default class BasicUploadPipelinesController {
 
         const payload = await request.validate(CreateAiDocumentValidator)
         const _id = Math.random().toString(36).substr(2) + Date.now().toString(36);
+        const docId = await client.db("arca-metadata").collection("arca").findOne({_id: _id})
+        const docIdReview = await client.db("reviewDB").collection("review").findOne({_id: _id})
+        if(docId || docIdReview){
+            return response.status(500).json({message: 'Erreur lors de la création du document, veuillez réessayer'})
+        }
         const extension = payload.file.extname
         const fileName= _id+'.'+extension
         const type = this.findType(extension!)
@@ -105,6 +142,7 @@ export default class BasicUploadPipelinesController {
             updatedAt: new Date(),
             updatedBy: auth.user?.id,
             type: type,
+            author: "Retranscription automatique",
         }
 
         await client.db("reviewDB").collection("review").insertOne(doc);
@@ -119,7 +157,7 @@ export default class BasicUploadPipelinesController {
 
         //appel à une api, parametre :  _id et filename
         let worked=0
-        await instance.post('https://127.0.0.1:5000/create_metadata', {
+        await instance.post('https://51.20.109.232:5000/create_metadata', {
             id: _id,
             filename: fileName
         }, {
@@ -168,6 +206,7 @@ export default class BasicUploadPipelinesController {
         }
         if (payload.retranscription !== undefined) {
             updateData['retranscription'] = payload.retranscription;
+            updateData['author'] = auth.user?.lastname + ' ' + auth.user?.firstname;
         }
         if (payload.date) {
             updateData['date'] = payload.date;
@@ -204,73 +243,6 @@ export default class BasicUploadPipelinesController {
             console.error('Error updating document:', error);
             return response.status(500).json({ message: 'Failed to update document.', error });
         }
-    }
-    
-    
-
-    async complexSearch(searchQuery) {
-        try {
-            if (client.db) {
-                await client.connect();
-            }
-
-            // Replace 'collection_name' with the actual name of your MongoDB collection
-            const collection = client.db("arca-metadata").collection('arca');
-
-            // Execute the search query
-            let cursor = await collection.aggregate(searchQuery);
-
-            return cursor;
-        } catch (err) {
-            console.error('Error executing complex search:', err);
-            throw err;
-        }
-    }
-
-    public async advancedSearch({ request, response }: HttpContextContract) {
-        // Define your complex search query
-        const payload = await request.validate(SearchValidator)
-
-        const agg = [
-            {
-                $search: {
-                    text: {
-                        query: `${payload.query}`,
-                        path: {
-                            wildcard: "*"
-                        }
-                    }
-                }
-            },
-            {
-                $project: {
-                    "name": 1,
-                    "categories": 1,
-                    "creator": 1,
-                    "createdAt": 1,
-                    "description": 1,
-                    "retranscription": 1,
-                    "towns": 1,
-                    "people": 1,
-                    "updatedBy": 1,
-                    "updatedAt": 1,
-                    "date": 1,
-                    "endDate": 1,
-                    score: { $meta: "searchScore" }
-                }
-            }
-        ];
-
-        const cursor = await this.complexSearch(agg);
-
-        let results = [];
-
-        await cursor.forEach((doc) => {
-            console.log(doc)
-            results.push(doc);
-        });
-
-        return response.status(200).json(results)
     }
 
     public async transferDocumentById({ request, response }: HttpContextContract) {
@@ -340,5 +312,5 @@ export default class BasicUploadPipelinesController {
         }
         return type
     }
-    
+
 }
