@@ -4,11 +4,11 @@
       <!-- Recherche Section (Left) -->
       <div class="w-full md:w-1/2">
         <div class="relative mb-2 mt-5 w-3/4 mx-auto">
-          <input type="text" class="form-input w-full rounded-[10px] pr-10 px-4 py-2" placeholder="Rechercher">
+          <input v-model="searchInput" type="text" id="query" class="form-input w-full rounded-[10px] pr-10 px-4 py-2" placeholder="Rechercher">
           <button class="absolute right-0 top-0 mt-2 mr-2 text-xl">🔍</button>
         </div>
         <div class="text-center mt-6">
-          <nuxt-link to="/ListeRecherche" class="bg-[#007BFF] text-white border-none rounded-[20px] px-[20px] py-[10px] text-[16px] cursor-pointer outline-none hover:bg-[#0056b3]">Lancer la recherche</nuxt-link>
+          <button @click="emitSearchEvent" class="bg-blue-600 text-white border-none rounded-[20px] px-[20px] py-[10px] text-[16px] cursor-pointer outline-none hover:bg-[#0056b3]">Lancer la recherche</button>
         </div>
       </div>
       <!-- Recherche Intelligente Section (Right) -->
@@ -17,20 +17,9 @@
           <div class="flex flex-col w-full px-2">
             <div class="flex items-center">
               <label class="px-2 text-sm font-bold">Date</label>
-              <button @click="dateMode = 'simple'" :class="{'bg-blue-500 text-white': dateMode === 'simple'}" class="px-3 py-1 text-sm rounded-l hover:shadow-lg">Simple</button>
-              <button @click="dateMode = 'periode'" :class="{'bg-blue-500 text-white': dateMode === 'periode'}" class="px-3 py-1 text-sm rounded-r hover:shadow-lg">Période</button>
             </div>
-            <div v-if="dateMode === 'simple'" class="mt-2 border rounded-[10px] max-w-[260px] px-4 py-1">
-              <datepicker v-model="selected" placeholder="Date"/>
-            </div>
-            <div class="flex gap-3" v-if="dateMode === 'periode'">
-              <div class="mt-2 border rounded-[10px] max-w-[131px] px-4 py-1">
-                <datepicker v-model="startDate" placeholder="Date de début" class="w-full"/>
-              </div>
-              <div class="mt-2 border rounded-[10px] max-w-[131px] px-4 py-1">
-                <datepicker v-model="endDate" placeholder="Date de fin" class="w-full"/>
-              </div>
-            </div>
+            <DatePicker />
+
             <div class="flex flex-col mt-3 w-full">
               <label class="block mb-1 text-sm font-bold">Lieux</label>
               <input type="text" class="form-input max-w-[260px] px-6 py-1 border rounded-lg" placeholder="Rentrer un lieu">
@@ -78,19 +67,25 @@
 
 <script>
 import Datepicker from 'vue3-datepicker'
-import personne_menu from '~/components/users/personne_menu.vue';
-import display_files from '~/components/users/display_files.vue';
-import { MicrophoneIcon } from "@heroicons/vue/24/outline";
-import Navbar from '~/components/users/Navbar.vue';
 import UserController from '~/services/userController.ts';
+import DatePicker from "~/components/search/DatePicker.vue";
 
 export default {
+  props: {
+    searchQuery: {
+      type: String,
+      required: true
+    }
+  },
   components: {
+    DatePicker,
     Datepicker,
   },
   async created() {
+    console.log('searchQuery : ' + this.searchQuery);
+    this.searchInput = this.searchQuery
+    console.log('searchInput : ' + this.searchInput);
     await this.getSearchResults();
-
   },
   data() {
     return {
@@ -104,23 +99,26 @@ export default {
       documents: [
         { type: 'PDF', name: 'La complainte du partisannnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn', towns: 'Ferme des 3 roues', people: 'Jean Dupont', date: '02/09/1945' },
         { type: 'PDF', name: 'La ,jhbj du partisannnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn', towns: 'Ferme des 3 roues', people: 'Jean Dupont', date: '02/09/1945' },
-
       ],
-      query: 'certificat',
-      results:'',
-    } 
+      results: '',
+      searchInput: '' // Ajout de la propriété de données searchInput
+    }
   },
   methods: {
-      async getSearchResults() {
-        const tokenCookie = useCookie('token');
-        const token= tokenCookie.value;
-        const response = await UserController.getInstance().getSearchResults(token,this.query);
-        console.log(response.data);
-      }
+    async getSearchResults() {
+      const tokenCookie = useCookie('token');
+      const token = tokenCookie.value;
+      const response = await UserController.getInstance().getSearchResults(token, this.searchInput);
+      console.log(response.data);
     },
+    emitSearchEvent() {
+      this.getSearchResults()
+    }
+  },
+  watch: {
+    searchQuery(newValue) {
+      this.searchInput = newValue;
+    }
+  }
 }
-definePageMeta({
-  middleware: 'auth',
-});
 </script>
-
