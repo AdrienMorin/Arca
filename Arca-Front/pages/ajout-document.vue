@@ -223,7 +223,7 @@
         
         <div class="flex flex-row">
          
-        <div class="flex-none xl:w-1/3 lg:w-1/4 border border-black bg-[#027BCE] bg-opacity-10 h-full h-screen overflow-auto overflow-x-hidden">
+        <div class="flex-none xl:w-1/3 lg:w-1/4 bg-[#027BCE] bg-opacity-10 h-full h-screen overflow-auto overflow-x-hidden">
           <div class=" flex items-stretch	 flex-col h-full lg:space-y-4 md:space-y-2">
             <div class="flex-1/6 justify-left items-center relative md:top-5 lg:left-12 md:left-3">
               <div class="text-justify lg:text-3xl  md:text-2xl font-bold object-left-bottom relatvie">Ajout de document</div>
@@ -283,7 +283,7 @@
           </div>
         </div>
 
-        <div class=" flex-col h-screen p-10% flex-grow md:w-1/2 space-y-3 border border-red-500">
+        <div class=" flex-col h-screen p-10% flex-grow md:w-1/2 space-y-3 ">
                 
                 <div class=" h-5/6  ">
                   <display_files  />

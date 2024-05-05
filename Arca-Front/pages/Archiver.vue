@@ -74,7 +74,6 @@ definePageMeta({
 export default {
   components: {
     DocumentCheckIcon,
-    ConfpopupMdp,
   },
 
   data() {
