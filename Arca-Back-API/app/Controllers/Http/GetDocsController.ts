@@ -3,20 +3,19 @@ const { MongoClient, ServerApiVersion } = require("mongodb");
 const uri = "mongodb+srv://hexanomedufutur:LCQbwYjD0LLaTxRW@arca-metadata-storage.qp6278d.mongodb.net/";
 import Drive from '@ioc:Adonis/Core/Drive';
 import fs from 'fs';
+import Person from 'App/Models/Person';
 import GetPipelineValidator from 'App/Validators/Pipelines/GetPipelineValidator';
-import Person from "App/Models/Person";
+import docxPdf from 'docx-pdf';
 
 const client = new MongoClient(uri,  {
     serverApi: {
         version: ServerApiVersion.v1,
-        strict: true,
+        strict: false,
         deprecationErrors: true,
     }
-}
-);
+});
 
-export default class GetPipelinesController {
-
+export default class GetDocsController {
 
     public async getDoc({ auth, bouncer, response, request }: HttpContextContract) {
         await auth.use('api').authenticate();
@@ -65,15 +64,11 @@ export default class GetPipelinesController {
 
         const peopleList: Person[] = [];
 
-        if(result.people){
-            for (const personId of result.people) {
-                const fetchedPerson = await Person.findOrFail(personId);
-                peopleList.push({ id: personId, name: fetchedPerson.displayname });
-            }
-            result.people = peopleList;
-        } else {
-            result.people = [];
+        for (const personId of result.people) {
+            const fetchedPerson = await Person.findOrFail(personId);
+            peopleList.push({ id: personId, name: fetchedPerson.displayname });
         }
+        result.people = peopleList;
 
         console.log(result);
         console.log("mongo db done");
@@ -145,7 +140,7 @@ export default class GetPipelinesController {
         console.log("s3 done")
 
         const id = s3_name.split('.')[0];
-        const result = await client.db("arca-metadata").collection("arca").findOne({ _id: id });
+        const result = await client.db("reviewDB").collection("review").findOne({ _id: id });
 
         interface Person {
             id: string;
@@ -154,16 +149,11 @@ export default class GetPipelinesController {
 
         const peopleList: Person[] = [];
 
-        if (result.people) {
-            for (const personId of result.people) {
-                const fetchedPerson = await Person.findOrFail(personId);
-                peopleList.push({ id: personId, name: fetchedPerson.displayname });
-            }
-            result.people = peopleList
-        } else {
-            result.people = []
+        for (const personId of result.people) {
+            const fetchedPerson = await Person.findOrFail(personId);
+            peopleList.push({ id: personId, name: fetchedPerson.displayname });
         }
-
+        result.people = peopleList
 
         console.log(result);
         console.log("mongo db done")
@@ -171,6 +161,5 @@ export default class GetPipelinesController {
         return response.status(200).json(result)
         
     }
-
-
+    
 }

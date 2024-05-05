@@ -43,6 +43,7 @@ export default {
 }
 </script>
 
+
 <template>
   <div>
     <component :is="activeLink" @search-event="handleSearchEvent" @detail-event="handleDetailDocumentEvent" @showSearchResult-event="handleShowSearchResult" :nomDoc="docName" :searchQuery="searchQuery"></component>
