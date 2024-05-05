@@ -164,13 +164,17 @@ class UserController {
     titre: string,
     description: string,
     retranscription: string,
-    date: string,
+    date: {
+      start: string,
+      end:string,
+    },
+    villes: string,
     personnes: string,
     mongoDB: string
 
   ): Promise<any> {
     const response = await axios.post(`${baseUrl}/basic/upload`,
-      {file, titre, description, retranscription, date, personnes,mongoDB},
+      {file, titre, description, retranscription, date, villes, personnes, mongoDB},
       {
         headers: {
           Authorization: `Bearer ${token}`,

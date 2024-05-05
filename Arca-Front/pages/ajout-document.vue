@@ -48,7 +48,7 @@
         selectedPersonne: '',
         selectedCities: '',
         categories:[],
-
+        mongoDB: '',
       };
     },
     async created() {
@@ -112,7 +112,7 @@
       this.$refs.popupEnregistrer.mainshow = !this.$refs.popupEnregistrer.mainshow;
     },
     
-    async uploadDocument() {
+    async uploadDocument(db) {
       console.log(this.getSelectedCategorie());
         this.getListCitier();
         this.getListPersonne();
@@ -132,17 +132,14 @@
         }
         this.description=this.$refs.description.description;
         this.retrancription=this.$refs.retranscription.description;
-
-       
+        this.mongoDB = db;
         const tokenCookie = useCookie('token');
         const token= tokenCookie.value;
-        //console.log(this.File);
 
-        console.log('Uploading document...')
  
         console.log(this.File);
       const response = await UserController.getInstance().uploadDocument(token,
-      this.File,this.titre,this.description,this.retrancription,this.date,this.citiesListe,this.personneListe);
+      this.File,this.titre,this.description,this.retrancription,this.date,this.citiesListe,this.personneListe,this.mongoDB);
       
       
       // redirect to homepage if user is authenticated
@@ -292,14 +289,14 @@
                 <div class="flex-row place-content-between  flex  w-5/6 mx-auto">
 
                   <div class=" place-content-start items-start flex w-2/4 ">
-                    <button @click="console.log('type',this.$refs.docType.getValue());" type="button" class="relative top-1 text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-100 font-medium rounded-lg text-base px-10 py-3 me-2 mb-2 dark:bg-blue-400 dark:hover:bg-blue-500 focus:outline-none dark:focus:ring-blue-600">
-                      <p class="text-xl">Enregistrer et ajouter "à Verfier"</p>
+                    <button @click="uploadDocument('tbr')" type="button" class="relative top-1 text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-100 font-medium rounded-lg text-base px-10 py-3 me-2 mb-2 dark:bg-blue-400 dark:hover:bg-blue-500 focus:outline-none dark:focus:ring-blue-600">
+                      <p class="text-xl">Enregistrer et ajouter "à Vérifier"</p>
                     </button>
                   </div>
 
                   <div class="place-content-end	flex w-2/4 ">
                     <div>
-                      <button @click="uploadDocument()" type="button" class="relative top-1  w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-base px-10 py-3 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                      <button @click="uploadDocument('ntbr')" type="button" class="relative top-1  w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-base px-10 py-3 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                         <p class="text-xl">Ajouter le  Document</p>
                       </button>
                     </div>
