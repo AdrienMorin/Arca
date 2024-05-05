@@ -18,9 +18,9 @@ export default class BasicUploadPipelineValidator {
     }),
     retranscription: schema.string.optional({
     }),
-    date: schema.date.optional({
-    }),
-    dateDeFin: schema.date.optional({
+    date: schema.object.optional().members({
+      start: schema.date.optional(),
+      end: schema.date.optional(),
     }),
     personnes: schema.string.optional({
     }),

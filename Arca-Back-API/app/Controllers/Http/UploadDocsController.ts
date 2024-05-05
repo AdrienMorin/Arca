@@ -33,9 +33,8 @@ export default class UploadDocsController {
         await auth.use('api').authenticate()
         await bouncer.with('AiPolicy').authorize('create')
 
-       await client.connect();
-       await client.db("admin").command({ ping: 1 });
-
+        await client.connect();
+        await client.db("admin").command({ ping: 1 });
         const payload = await request.validate(BasicUploadPipelineValidator)    
         const _id = Math.random().toString(36).substr(2) + Date.now().toString(36);
         const docId = await client.db("arca-metadata").collection("arca").findOne({_id: _id})
@@ -61,8 +60,8 @@ export default class UploadDocsController {
             description: payload.description,
             retranscription: payload.retranscription,
             author: auth.user?.lastname + ' '+auth.user?.firstname,
-            date: payload.date,
-            endDate: payload.dateDeFin,
+            date: payload.date.start,
+            endDate: payload.date.end,
             people: payload.personnes?.split(';'),
             categories: payload.categories,
             towns: payload.villes?.split(';')
