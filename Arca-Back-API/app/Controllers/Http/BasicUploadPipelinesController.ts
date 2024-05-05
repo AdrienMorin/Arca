@@ -62,6 +62,7 @@ export default class BasicUploadPipelinesController {
             
             description: payload.description,
             retranscription: payload.retranscription,
+            author: auth.user?.lastname + ' '+auth.user?.firstname,
             date: payload.date,
             endDate: payload.dateDeFin,
             people: payload.personnes?.split(';'),
@@ -143,6 +144,7 @@ export default class BasicUploadPipelinesController {
             updatedAt: new Date(),
             updatedBy: auth.user?.id,
             type: type,
+            author: "Retranscription automatique",
         }
 
         await client.db("reviewDB").collection("review").insertOne(doc);
@@ -206,6 +208,7 @@ export default class BasicUploadPipelinesController {
         }
         if (payload.retranscription !== undefined) {
             updateData['retranscription'] = payload.retranscription;
+            updateData['author'] = auth.user?.lastname + ' ' + auth.user?.firstname;
         }
         if (payload.date) {
             updateData['date'] = payload.date;
