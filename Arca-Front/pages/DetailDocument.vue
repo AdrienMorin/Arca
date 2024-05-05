@@ -47,11 +47,15 @@ export default {
         const response = await UserController.getInstance().getDocument(token, this.nom)
         this.metadata = response.data
         const date = new Date(this.metadata.date);
-        const desiredFormat = 'MMMM d, yyyy h:mm:ss a';
         this.formattedDate = new Intl.DateTimeFormat('fr-FR', {
           dateStyle: 'long'
         }).format(date);
         console.log(this.formattedDate)
+
+        const dateModif = new Date(this.metadata.updatedAt);
+        this.formattedDateModif = new Intl.DateTimeFormat('fr-FR', {
+          dateStyle: 'long'
+        }).format(dateModif);
 
         console.log(this.metadata)
       }
@@ -65,26 +69,24 @@ definePageMeta({
 
 
 <template>
-<div class="h-screen overflow-hidden">
 
-  <div class="flex flex-row relative w-full h-screen">
+<div class="flex flex-row relative w-full ">
 
-    <div class="flex-none xl:w-1/3 lg:w-1/4  bg-[#027BCE] bg-opacity-10 h-full p-20% ">
-      <div class=" flex items-stretch	 flex-col h-full lg:space-y-4 md:space-y-2">
+    <div  class="xl:w-1/3 lg:w-1/4  bg-[#027BCE] bg-opacity-10 p-20% h-screen overflow-auto">
+      <div class=" flex items-stretch	flex-col lg:space-y-4 md:space-y-2 ">
         <div class="flex-1/6 justify-left items-center relative md:top-5 lg:left-12 md:left-3">
-          <div class="text-justify lg:text-3xl  md:text-2xl font-bold object-left-bottom relatvie">{{ metadata._id }}</div>
+          <div class="text-justify lg:text-4xl  md:text-2xl font-medium object-left-bottom relatvie">{{ metadata.name }}</div>
         </div>
 
-
-        <div class=" flex-5/6 relative lg:left-20 lg:top-6 md:top-6 md:left-6 w-3/4 grid grid-rows-auto h-4/5  grid-flow-row gap-1 ">
-          <div class="flex-col justify-left items-center h-max space-y-1 lg:w-2/3 md:w-3/">
-            <div class="lg:text-2xl md:text-xl "><b>Date </b></div>
-            <div class="lg:text-2xl md:text-xl ">{{formattedDate}}</div>
+        <div class=" flex-5/6 relative lg:left-20 lg:top-6 md:top-6 md:left-6 w-3/4 grid grid-rows-auto h-4/5  grid-flow-row gap-4 overflow-auto">
+          <div class="flex-col justify-left items-center h-max space-y-1 lg:w-2/3">
+            <div class="lg:text-xl md:text-xl mt-4 font-semibold">Date</div>
+            <div class="lg:text-lg md:text-lg ">{{formattedDate}}</div>
           </div>
 
-          <div class="flex-col justify-left items-center h-max space-y-1 ">
-            <div class="lg:text-2xl md:text-xl "><b>Lieux </b></div>
-            <div class=" shadow overflow-hidden rounded-md" style="max-height: 130px; overflow-y: auto;">
+          <div class="flex-col justify-left items-center h-max space-y-1 gap-4 ">
+            <div class="lg:text-xl md:text-xl mt-4 font-semibold ">Lieux</div>
+            <div class=" shadow overflow-hidden rounded-md bg-white" style="max-height: 130px; overflow-y: auto;">
               <ul class="divide-y divide-gray-200">
                 <!-- User rows -->
                 <li  v-for="city in metadata.towns" :key="city" class="px-10 py-4 flex">
@@ -95,13 +97,14 @@ definePageMeta({
           </div>
 
           <div class="flex-col justify-left items-center h-max">
-            <div class="lg:text-2xl md:text-xl "><b>Catégorie de document </b> {{ metadata.categories }}</div>
-            <div class=" shadow overflow-hidden rounded-md" style="max-height: 130px; overflow-y: auto;">
+            <div class="lg:text-xl md:text-xl mt-4 font-semibold">Catégorie de document</div>
+            <div class=" overflow-hidden rounded-md text-lg" style="max-height: 130px; overflow-y: auto;">
+            {{ metadata.categories }}
             </div>
           </div>
 
           <div class="flex-col justify-left items-center h-min space-y-1 ">
-            <div class="lg:text-2xl md:text-xl "><b>Personnes </b></div>
+            <div class="lg:text-xl md:text-xl mt-4 font-semibold ">Personnes</div>
             <div class="bg-gray-50 shadow overflow-hidden rounded-md" style="max-height: 250px; overflow-y: auto;">
               <ul class="divide-y divide-gray-200">
                 <!-- Header row -->
@@ -118,38 +121,54 @@ definePageMeta({
             </div>
           </div>
 
-          <div class=" flex-col justify-left items-center space-y-1 border   ">
-            <div class="lg:text-2xl md:text-xl ">Description</div>
-            <div class="object-cover w-full relative h-40"><textarea disabled class="rounded-md relative h-full w-full resize-none overflow-y-scroll " value="">{{metadata.description}}</textarea></div>
+          <div class="flex-col justify-left items-center space-y-1">
+            <div class="lg:text-xl md:text-xl font-semibold mt-4">Description</div>
+            <div class="object-cover w-full relative">
+              {{metadata.description}}
+            </div>
           </div>
 
-
-          <div class="	">
-            <p class="inline-block font-semibold text-lg">Ajouté par:</p>
-            <p class="inline-block text-lg indent-2 ">Mr cena</p>
+          <div class="flex-col justify-left items-center space-y-1">
+            <div class="lg:text-xl md:text-xl font-semibold mt-4">Retranscription</div>
+            <div class="object-cover w-full relative h-40 overflow-auto">
+              {{metadata.retranscription}}
+            </div>
           </div>
 
-          <div class="flex-row place-content-between flex w-full  mx-auto">
+          <div class="flex-col justify-left items-center space-y-1">
+            <div class="lg:text-xl md:text-xl font-semibold mt-4">Dernière modification</div>
+            <div class="object-cover w-full relative ">
+              {{metadata.updatedBy}} ({{formattedDateModif}})
+            </div>
+          </div>
+
+          <div class="flex-col justify-left items-center space-y-1">
+            <div class="lg:text-xl md:text-xl font-semibold mt-4">Ajouté par </div>
+            <div class="object-cover w-full relative">
+              {{metadata.creator}}
+            </div>
+          </div>
+
+          <div class="flex-row place-content-between flex w-full mx-auto mb-4">
             <div class="">
-              <button @click="modifyDocument" type="button" class="relative top-1  w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-base px-10 py-3 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-              <p class="text-xl">Modifier</p>
+              <button @click="modifyDocument" type="button" class="relative top-1  w-full text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-base px-10 py-3 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+              <p class="text-lg font-light ">Modifier</p>
               </button>
             </div>
 
-
-          <div>
-            <button @click="refreshPage" type="button" class="relative top-1  w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-base px-10 py-3 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-            <p class="text-xl">Télécharger</p>
-            </button>
+            <div>
+              <button @click="refreshPage" type="button" class="relative top-1  w-full text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-base px-10 py-3 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+              <p class="text-lg font-light">Télécharger</p>
+              </button>
+            </div>
           </div>
-        </div>
       </div>
     </div>
   </div>
-  <div class="flex-col flex-grow md:w-1/3 lg:3/4">
+  <div class="flex-grow ">
     <display_files :filePath="'_nuxt/temp/' + nom" class="border" />
   </div>
 </div>
-</div>
+
 </template>
 
