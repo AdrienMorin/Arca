@@ -1,5 +1,5 @@
 <template>
-  <nav class="bg-blue-600 h-16 py-3.5 px-6 md:flex justify-between items-center">
+  <nav class="bg-blue-600 h-16 py-3.5 px-6 md:flex justify-between items-center sticky top-0 z-50">
     <div class="flex items-center">
       <NuxtLink to="/rechercher">
         <img src="~/public/logo-thel.png" alt="Logo" class="h-10 w-9">
