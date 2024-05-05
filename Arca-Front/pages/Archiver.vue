@@ -67,7 +67,6 @@ import { DocumentCheckIcon } from '@heroicons/vue/24/outline';
 import axios from 'axios';
 import { useFileStore } from '~/fileTransfer';
 import UserController from '~/services/userController.ts';
-import ConfpopupMdp from '~/components/users/popup_ConfChangeMdp.vue';
 
 definePageMeta({
   middleware:'auth',
@@ -75,13 +74,11 @@ definePageMeta({
 export default {
   components: {
     DocumentCheckIcon,
-    ConfpopupMdp,
   },
 
   data() {
     return {
       uploaded: false,
-      mainshow: false,
       fileName: '',
       file: null,
       showModal: false,

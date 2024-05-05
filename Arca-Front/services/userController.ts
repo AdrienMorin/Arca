@@ -35,6 +35,20 @@ class UserController {
     return response;
   }
 
+  public async isConnected(token: string): Promise<any> {
+    const response = await axios.get('https://127.0.0.1:3333/api', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    console.log(response);
+    if (response.data != 'Vous êtes connecté') {
+      return false;
+    }else{
+      return true;
+    }
+  }
+
   public async createUser(firstname: string, lastname: string, email: string, password: string, token: string): Promise<any> {
     const response = await axios.post(`${baseUrl}/auth/register`,
     {

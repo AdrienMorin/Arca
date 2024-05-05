@@ -65,7 +65,8 @@ export default {
           break;
         case 'doc':
         case 'docx':
-          tag = `<iframe src="https://docs.google.com/gview?url=${filePath}&embedded=true" style="width:100%; height:500px;" frameborder="0"></iframe>`;
+          const pdfPath = filePath.replace('.docx', '.pdf'); // Assuming the server replaces .docx with .pdf
+          tag = `<embed src="${pdfPath}" type="application/pdf" class="h-full w-full object-contain" style="width:100%; height:100vh;" />`;
           break;
         case 'xls':
         case 'xlsx':

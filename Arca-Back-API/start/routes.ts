@@ -90,6 +90,8 @@ Route.group(() => {
 
   Route.post('/basic/upload','BasicUploadPipelinesController.uploadDoc')
 
+  Route.post('/basic/update','BasicUploadPipelinesController.updateDocContentOnS3')
+
   Route.post('/basic/get','GetPipelinesController.getDoc')
 
   Route.post('/search','BasicUploadPipelinesController.advancedSearch')

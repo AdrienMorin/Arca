@@ -11,6 +11,7 @@ import axios from 'axios';
 const https = require('https');
 import Env from '@ioc:Adonis/Core/Env';
 import Person from "App/Models/Person";
+import S3FileUpdateValidator from 'App/Validators/Pipelines/S3FileUpdateValidator';
 
 
 const client = new MongoClient(uri,  {
@@ -39,6 +40,11 @@ export default class BasicUploadPipelinesController {
 
         const payload = await request.validate(BasicUploadPipelineValidator)    
         const _id = Math.random().toString(36).substr(2) + Date.now().toString(36);
+        const docId = await client.db("arca-metadata").collection("arca").findOne({_id: _id})
+        const docIdReview = await client.db("reviewDB").collection("review").findOne({_id: _id})
+        if(docId || docIdReview){
+            return response.status(500).json({message: 'Erreur lors de la création du document, veuillez réessayer'})
+        }
         const extension = payload.file.extname
         const fileName= _id+'.'+extension
         const type = this.findType(extension!)
@@ -81,6 +87,33 @@ export default class BasicUploadPipelinesController {
         
     }
 
+    public async updateDocContentOnS3({ auth, response, request }: HttpContextContract) {
+        // Authenticate the user
+        await auth.use('api').authenticate();
+
+        // Validate the request against the custom validator
+        const validatedData = await request.validate(S3FileUpdateValidator);
+        const { fileName, file } = validatedData;
+
+        // Check if the file is provided in the temporary path for update
+        if (file.tmpPath) {
+            console.log(`Updating file content for: ${fileName}`);
+
+            // Read the file data from the temporary location
+            const buffer = fs.readFileSync(file.tmpPath);
+
+            // Overwrite the existing file on S3 using the same file name
+            await Drive.put(fileName, buffer);
+
+            // Return a success response
+            return response.status(200).json({ message: 'Document content updated successfully' });
+        } else {
+            console.error('No temporary file path provided, unable to update document content.');
+            return response.status(400).json({ message: 'Temporary file path is required' });
+        }
+    }
+
+
     public async uploadDocAi({ auth,bouncer,response,request}:HttpContextContract){
             
         await auth.use('api').authenticate()
@@ -91,6 +124,11 @@ export default class BasicUploadPipelinesController {
 
         const payload = await request.validate(CreateAiDocumentValidator)
         const _id = Math.random().toString(36).substr(2) + Date.now().toString(36);
+        const docId = await client.db("arca-metadata").collection("arca").findOne({_id: _id})
+        const docIdReview = await client.db("reviewDB").collection("review").findOne({_id: _id})
+        if(docId || docIdReview){
+            return response.status(500).json({message: 'Erreur lors de la création du document, veuillez réessayer'})
+        }
         const extension = payload.file.extname
         const fileName= _id+'.'+extension
         const type = this.findType(extension!)
