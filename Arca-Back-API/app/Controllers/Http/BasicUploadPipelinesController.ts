@@ -118,7 +118,7 @@ export default class BasicUploadPipelinesController {
 
         //appel à une api, parametre :  _id et filename
         let worked=0
-        await instance.post('https://127.0.0.1:5000/create_metadata', {
+        await instance.post('https://51.20.109.232:5000/create_metadata', {
             id: _id,
             filename: fileName
         }, {
