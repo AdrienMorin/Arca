@@ -38,6 +38,11 @@ export default class BasicUploadPipelinesController {
 
         const payload = await request.validate(BasicUploadPipelineValidator)    
         const _id = Math.random().toString(36).substr(2) + Date.now().toString(36);
+        const docId = await client.db("arca-metadata").collection("arca").findOne({_id: _id})
+        const docIdReview = await client.db("reviewDB").collection("review").findOne({_id: _id})
+        if(docId || docIdReview){
+            return response.status(500).json({message: 'Erreur lors de la création du document, veuillez réessayer'})
+        }
         const extension = payload.file.extname
         const fileName= _id+'.'+extension
         const type = this.findType(extension!)
@@ -90,6 +95,11 @@ export default class BasicUploadPipelinesController {
 
         const payload = await request.validate(CreateAiDocumentValidator)
         const _id = Math.random().toString(36).substr(2) + Date.now().toString(36);
+        const docId = await client.db("arca-metadata").collection("arca").findOne({_id: _id})
+        const docIdReview = await client.db("reviewDB").collection("review").findOne({_id: _id})
+        if(docId || docIdReview){
+            return response.status(500).json({message: 'Erreur lors de la création du document, veuillez réessayer'})
+        }
         const extension = payload.file.extname
         const fileName= _id+'.'+extension
         const type = this.findType(extension!)
