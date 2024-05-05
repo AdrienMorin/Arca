@@ -133,9 +133,7 @@ export default class UploadDocsController {
 
         
         const doc={
-            _id: _id,
             name: payload.file.clientName,
-            filename: fileName,
             createdBy: auth.user?.id,
             createdAt: new Date(),
             updatedAt: new Date(),
@@ -144,7 +142,7 @@ export default class UploadDocsController {
             author: "Retranscription automatique",
         }
 
-        await client.db("reviewDB").collection("review").insertOne(doc);
+        //await client.db("reviewDB").collection("review").insertOne(doc);
 
         if (payload.file.tmpPath) {
             console.log(payload.file.tmpPath)
@@ -154,9 +152,9 @@ export default class UploadDocsController {
             console.log('Le fichier n\'a pas été déplacé à un emplacement temporaire');
         }
 
-        //appel à une api, parametre :  _id et filename
+        //appel à une api, parametre :  _id et filename, adresse ip aws 51.20.109.232
         let worked=0
-        await instance.post('https://51.20.109.232:5000/create_metadata', {
+        await instance.post('https://127.0.0.1:5000/create_metadata', {
             id: _id,
             filename: fileName
         }, {
@@ -167,15 +165,19 @@ export default class UploadDocsController {
             //console.log('Response:', response.data);
             if(response.status==200){
                 worked=1
+                
             }
         }).catch(error => {
             console.error('Error:', error);
         });
         console.log(worked)
+
         if(worked==0){
             await Drive.delete(fileName)
             await client.db("reviewDB").collection("review").deleteOne({_id: _id})
             return response.status(500).json({message: 'Erreur lors de la création du document'})
+        }else if(worked==1){
+            await client.db("reviewDB").collection("review").updateOne({_id: _id}, {$set: doc});
         }
         return response.status(200).json({message: 'Document créé avec succès'})
         
