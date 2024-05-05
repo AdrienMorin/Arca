@@ -1,4 +1,18 @@
 <template>
+
+  <div v-if="showModal" class="fixed z-50 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+      <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" @click="showModal = false">
+      </div>
+      <!-- Modal content -->
+      <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+        <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+          <!-- Modal content goes here -->
+          <p class="text-center">Votre document est en train d'être téléchargé, veuillez attendre un peu</p>
+        </div>
+      </div>
+    </div>
+  </div>
 <div class="flex justify-center items-center h-screen mt-[-5%]">
   <div class="drop-document-container w-[45%] max-h-[50%]  text-center border-2 border-[#027BCE] rounded-[10px] p-[8%]" v-if="!uploaded">
     <div >
@@ -70,9 +84,16 @@ export default {
       mainshow: false,
       fileName: '',
       file: null,
+      showModal: false,
     };
   },
     methods: {
+      openModal() {
+        this.showModal = true;
+      },
+      closeModal() {
+        this.showModal = false;
+      },
       handleDragOver(event){
       event.preventDefault();
       },
@@ -105,15 +126,19 @@ export default {
         const tokenCookie = useCookie('token');
         const token= tokenCookie.value;
         try {
+          this.openModal()
           const response = await UserController.getInstance().uploadAiDocument(token,this.file);
           
           if (response.status === 200) {
+            this.closeModal()
             this.$snackbar.add({ type:'success',text: 'Le téléchargement a réussi.' });  
           } else {
-            this.$snackbar.add({ type:'fail',text: "Le téléchargement n'a pas réussi." });  
+            this.closeModal()
+            this.$snackbar.add({ type:'error',text: "Le téléchargement n'a pas réussi." });  
           }
         } catch (error) {
-          this.$snackbar.add({ type:'fail',text: "Le téléchargement n'a pas réussi." });  
+          this.closeModal()
+          this.$snackbar.add({ type:'error',text: "Le téléchargement n'a pas réussi." });  
         }
         
 
