@@ -5,7 +5,6 @@ import Drive from '@ioc:Adonis/Core/Drive';
 import fs from 'fs';
 import BasicUploadPipelineValidator from 'App/Validators/Pipelines/BasicUploadPipelineValidator';
 import CreateAiDocumentValidator from 'App/Validators/Pipelines/CreateAiDocumentValidator';
-import SearchValidator from 'App/Validators/Search/SearchValidator';
 import ModifyDocValidator from 'App/Validators/Pipelines/ModifyDocValidator';
 import axios from 'axios';
 const https = require('https');
@@ -27,8 +26,7 @@ const instance = axios.create({
     })
 });
 
-
-export default class BasicUploadPipelinesController {
+export default class UploadDocsController {
 
     public async uploadDoc({ auth,bouncer,response,request}:HttpContextContract){   
         await auth.use('api').authenticate()
@@ -242,73 +240,6 @@ export default class BasicUploadPipelinesController {
             return response.status(500).json({ message: 'Failed to update document.', error });
         }
     }
-    
-    
-
-    async complexSearch(searchQuery) {
-        try {
-            if (client.db) {
-                await client.connect();
-            }
-
-            // Replace 'collection_name' with the actual name of your MongoDB collection
-            const collection = client.db("arca-metadata").collection('arca');
-
-            // Execute the search query
-            let cursor = await collection.aggregate(searchQuery);
-
-            return cursor;
-        } catch (err) {
-            console.error('Error executing complex search:', err);
-            throw err;
-        }
-    }
-
-    public async advancedSearch({ request, response }: HttpContextContract) {
-        // Define your complex search query
-        const payload = await request.validate(SearchValidator)
-
-        const agg = [
-            {
-                $search: {
-                    text: {
-                        query: `${payload.query}`,
-                        path: {
-                            wildcard: "*"
-                        }
-                    }
-                }
-            },
-            {
-                $project: {
-                    "name": 1,
-                    "categories": 1,
-                    "creator": 1,
-                    "createdAt": 1,
-                    "description": 1,
-                    "retranscription": 1,
-                    "towns": 1,
-                    "people": 1,
-                    "updatedBy": 1,
-                    "updatedAt": 1,
-                    "date": 1,
-                    "endDate": 1,
-                    score: { $meta: "searchScore" }
-                }
-            }
-        ];
-
-        const cursor = await this.complexSearch(agg);
-
-        let results = [];
-
-        await cursor.forEach((doc) => {
-            console.log(doc)
-            results.push(doc);
-        });
-
-        return response.status(200).json(results)
-    }
 
     public async transferDocumentById({ request, response }: HttpContextContract) {
         await client.connect();
@@ -377,5 +308,5 @@ export default class BasicUploadPipelinesController {
         }
         return type
     }
-    
+
 }
