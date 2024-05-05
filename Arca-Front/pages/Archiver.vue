@@ -67,6 +67,7 @@ export default {
   data() {
     return {
       uploaded: false,
+      mainshow: false,
       fileName: '',
       file: null,
     };

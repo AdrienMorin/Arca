@@ -1,11 +1,9 @@
 
 
 <template>
-    <div class=" flex-col gap-4 place-content-start mx-auto overflow-y-scroll h-40  bg-[#D9E1EC] ">
-         <personne v-for="(personne,index) in personnes.slice().reverse()" :key="index" :nom="personne.nom" class="h-6" />
+   
 
     
-    </div>
    
 </template>
 
@@ -15,7 +13,7 @@ import personne from '~/components/users/ajout_personne.vue';
 
 export default {
   components: {
-    personne
+    personne,
   },data() {
     return {
       personnes: []
@@ -26,14 +24,21 @@ export default {
     addPersonne(text){
       const newPersonne = {
         nom: text,
+        id: Math.random().toString(36).substr(2, 9),
       };
       // Push the new blog post to the array
       this.personnes.push(newPersonne);
     },
-    getPersonne(){
-      return this.personnes;
-    },
-  }
+      getPersonne() {
+        return this.personnes.filter(personne => personne.nom !== '');
+      
+      },
+      deletePersonne(id){
+        this.personnes.pop(id);
+    }
+       
+  }  
+
 }
  
   

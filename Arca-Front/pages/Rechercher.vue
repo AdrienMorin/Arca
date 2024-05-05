@@ -31,6 +31,7 @@ export default {
 }
 </script>
 
+
 <template>
   <div>
     <component :is="activeLink" @search-event="handleSearchEvent" :searchQuery="searchQuery"></component>

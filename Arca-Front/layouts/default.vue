@@ -3,7 +3,9 @@ import Navbar from "~/components/users/Navbar.vue";
 </script>
 
 <template>
-  <Navbar />
-  <slot/>
+  <div class="overflow-y-hidden">
+    <Navbar/>
+    <slot/>
+  </div>
 
 </template>

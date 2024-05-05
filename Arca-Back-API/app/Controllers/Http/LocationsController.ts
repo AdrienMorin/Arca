@@ -17,7 +17,7 @@ export default class LocationsController {
             displayname: payload.cityname+ ', ' + payload.regionname + ', ' + payload.country
         })
         return response.status(200).json({message: 'Lieu créé avec succès'})
-    }
+    }false
 
 
     public async fetchLocations({auth, bouncer, response}: HttpContextContract){
