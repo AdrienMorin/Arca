@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-row min-h-10 border bg-[#D9E1EC]  " v-if="this.Visible"  >
+  <div class="flex flex-row min-h-10 border   " v-if="this.Visible"  >
     <div class=" flex-auto">
       <div class="relative lg:left-3 	text-black text-xl" >{{nom}}</div>
     </div>

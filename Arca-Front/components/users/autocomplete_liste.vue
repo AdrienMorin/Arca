@@ -1,5 +1,5 @@
   <template>
-      <div class="flex-col w-full ounded-md" v-if="isPersonne">
+      <div class="flex-col w-full ounded-md " v-if="isPersonne">
           <input v-model="search" @input="onChange" type="text" class=" rounded-t-md  w-full" />
           <div v-show="isOpen" class="absolute z-50 w-full rounde-md">
               <div v-for="(result, index) in results" :key="index" class="border bg-white rounded-md relative item-block">
@@ -8,7 +8,7 @@
           </div>
           <div class="flex-col  place-content-start mx-auto overflow-auto rounded-b-md max-h-40  border bg-[#D9E1EC]">
           <div  v-for="(personne,index) in personnes" :key="index" >
-            <div class="flex flex-grow border bg-[#D9E1EC]  ">
+            <div class="flex flex-grow border bg-gray-50 shadow   ">
                     <div class="flex-grow ">
                       <div v-if="isPersonne" class="relative lg:left-3 	text-black text-xl" >{{personne.displayname}}</div>
                       <div v-else class="relative lg:left-2 	text-black text-ml" >{{personne}}</div>
