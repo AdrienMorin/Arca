@@ -41,6 +41,7 @@ function selectRange (duration: Duration) {
               </div>
             </template>
           </UPopover>
+          
           <div class="flex flex-col mt-4 w-full">
             <label class="block mb-2 font-bold w-120">Lieu</label>
             <input type="text" class="form-input max-w-[464px] px-8 py-2 border rounded-lg" placeholder="Rentrer un lieu">

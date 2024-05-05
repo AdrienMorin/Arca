@@ -59,6 +59,7 @@ export default {
     },
     method: {
         getDescription(){
+        
             return this.description;
         }
     }

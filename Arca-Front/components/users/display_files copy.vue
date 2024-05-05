@@ -88,7 +88,6 @@ export default {
       const reader = new FileReader();
       reader.onload = (event) => {
       this.fileUrl = event.target.result;
-      console.log('fileUrl:', this.fileUrl);
       };
       reader.readAsDataURL(this.File);
     },

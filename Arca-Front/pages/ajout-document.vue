@@ -12,8 +12,7 @@
   import LocationController from '~/services/locationController'
   import CategorieController from '~/services/categorieController'
   import display_files from '~/components/users/display_files copy.vue';
-
-  //import Datepicker from '~/components/users/DatePicker.vue'
+  import Datepicker from '~/components/search/DatePicker.vue'
   
 
   export default {
@@ -23,8 +22,8 @@
       personne_menu,
       description,
       autocomplete_liste,
-      display_files
-      //Datepicker,
+      display_files,
+      Datepicker,
     
     },
     mounted() {
@@ -36,7 +35,10 @@
         titre: '',
         description: '',
         retrancription: '',
-        date: '',
+        date: {
+          start:'',
+          end:'',
+        },
         citiesListe:'',
         typeDoc: '',
         personneListe:'',
@@ -128,11 +130,10 @@
             this.personneListe+=';';
           }
         }
-        this.description=this.$refs.description.getDescription();
-        this.retrancription=this.$refs.retranscription.getDescription();
+        this.description=this.$refs.description.description;
+        this.retrancription=this.$refs.retranscription.description;
 
-        console.log('Uploading document...');
-        //const time=new Date(this.date).toISOString(); fixxxx date
+       
         const tokenCookie = useCookie('token');
         const token= tokenCookie.value;
         //console.log(this.File);
@@ -141,7 +142,7 @@
  
         console.log(this.File);
       const response = await UserController.getInstance().uploadDocument(token,
-      this.File,this.titre,this.description,this.retrancription,'date',this.citiesListe,this.personneListe);
+      this.File,this.titre,this.description,this.retrancription,this.date,this.citiesListe,this.personneListe);
       
       
       // redirect to homepage if user is authenticated
@@ -160,6 +161,12 @@
       console.log("ee",this.File);
 
     },
+    handleSelectedRange(range) {
+    this.date.start= range.start;
+    this.date.start=new Date(range.start).toISOString();
+    this.date.end= new Date(range.end).toISOString();
+    //console.log('newDateeeee',this.date.start);
+}
   },
   };
 
@@ -171,7 +178,7 @@
 
 
 <template>
-  <div class="h-screen object-contain">
+  <div class="">
   <!--popup -->
         <Popup
           ref="popupAnnul"
@@ -206,7 +213,7 @@
   <!--popup --> 
 
     <!-- component -->
-      <div class="flex-col w-full h-screen p-10% ">
+      <div class="flex-col w-full  p-10% ">
 
 
 
@@ -216,12 +223,12 @@
         
         <div class="flex flex-row">
          
-        <div class="flex-none xl:w-1/3 lg:w-1/4 border border-black bg-[#027BCE] bg-opacity-10 h-full overflow-y-auto overflow-x-hidden ">
+        <div class="flex-none xl:w-1/3 lg:w-1/4 border border-black bg-[#027BCE] bg-opacity-10 h-full h-screen overflow-auto overflow-x-hidden">
           <div class=" flex items-stretch	 flex-col h-full lg:space-y-4 md:space-y-2">
             <div class="flex-1/6 justify-left items-center relative md:top-5 lg:left-12 md:left-3">
               <div class="text-justify lg:text-3xl  md:text-2xl font-bold object-left-bottom relatvie">Ajout de document</div>
             </div>
-            <div class=" flex-5/6 relative lg:left-24 lg:top-12 md:top-6 md:left-6 w-3/4 grid grid-rows-auto   grid-flow-row gap-1 ">
+            <div class=" flex-5/6 relative lg:left-24 lg:top-12 md:top-6 md:left-6 w-3/4 grid grid-rows-auto justify-left items-left  grid-flow-row gap-1 ">
               <div class="flex-col justify-left items-center h-max space-y-4 lg:w-5/6 md:w-2/2">
                 <div class="lg:text-2xl md:text-xl ">Titre</div>
                 <div><input class="rounded-md w-full" v-model="titre"></div>
@@ -229,7 +236,7 @@
               <div class="flex-col justify-left items-center h-max space-y-3 lg:w-2/3 md:w-3/">
                 <div class="lg:text-2xl md:text-xl ">Date</div>
                 <div class="object-cover w-full"> 
-                  <input type="date" class="rounded-md w-full" v-model="date">
+                  <Datepicker ref="datepicker" @selected-range="handleSelectedRange($event)"/> 
                 </div>
                 </div>
                 
@@ -265,7 +272,7 @@
               <div class="grid-span-5 border border-black "></div>
               </div>
 
-                <div class="flex justify-center items-center h-min space-y-9  relative grid-span-5 md:w-2/2 lg:w-3/4  ">
+                <div class="flex justify-center items-center h-min space-y-9 border relative grid-span-5 w-full ">
               <button @click="flipAnnuler()" type="button" class="relative top-1 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-base px-6 py-3 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                 <p class="text-xl">Annuler</p>
               </button>
