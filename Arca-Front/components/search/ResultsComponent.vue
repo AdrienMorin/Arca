@@ -50,13 +50,12 @@
           <div class="w-1/6 text-sm font-medium text-gray-900">Personnes</div>
         </li>
         <!-- User rows -->
-        <li v-for="doc in this.documents" :key="doc._id" class="px-10 py-4 flex">
-          <div class="w-1/6 text-sm text-gray-900">{{ doc.categories }}</div>
-          <div class="w-1/6 text-sm text-gray-900">{{ doc.name }}</div>
-          <div class="w-2/6 text-sm text-gray-900">{{ doc.description }}</div>
-          <div class="w-1/6 text-sm text-gray-500">{{ doc.towns }}</div>
-          <div class="w-1/6 text-sm text-gray-900">{{ doc.people }}</div>
-        </li>
+          <li v-for="doc in this.documents" :key="doc._id" @click="emitDetailEvent(doc.filename)" class="px-10 py-4 flex">
+              <div class="w-1/6 text-sm text-gray-900">{{ doc.categories }}</div>
+              <div class="w-1/6 text-sm text-gray-900">{{ doc.name }}</div>
+              <div class="w-2/6 text-sm text-gray-900">{{ doc.description }}</div>
+              <div class="w-1/6 text-sm text-gray-500">{{ doc.towns }}</div>
+          </li>
       </ul>
     </div>
   </div>
@@ -108,6 +107,11 @@ export default {
     },
     emitSearchEvent() {
       this.getSearchResults()
+    },
+    emitDetailEvent(id) {
+      console.log('docName : ' + id);
+      this.$emit('detail-event', id)
+      //this.$emit('detail-event', 'docName')
     }
   },
   watch: {

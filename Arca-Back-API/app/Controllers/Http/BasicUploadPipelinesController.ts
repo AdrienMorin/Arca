@@ -297,6 +297,7 @@ export default class BasicUploadPipelinesController {
                     "updatedAt": 1,
                     "date": 1,
                     "endDate": 1,
+                    "filename": 1,
                     score: { $meta: "searchScore" }
                 }
             }
@@ -318,7 +319,8 @@ export default class BasicUploadPipelinesController {
             people: string[],
             categories: string,
             towns: string[],
-            score: number
+            score: number,
+            filename: string
         }
         interface ResultFormatted {
             _id: string,
@@ -334,7 +336,8 @@ export default class BasicUploadPipelinesController {
             people: string,
             categories: string,
             towns: string,
-            score: number
+            score: number,
+            filename: string
         }
 
         const results: Result[] = [];
@@ -374,7 +377,8 @@ export default class BasicUploadPipelinesController {
                 people: peopleListFormatted,
                 categories: res.categories,
                 towns: townsListFormatted,
-                score: res.score
+                score: res.score,
+                filename: res.filename
             }
             console.log(resFormatted);
             resultsFormatted.push(resFormatted);

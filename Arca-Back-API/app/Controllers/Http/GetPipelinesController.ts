@@ -66,11 +66,15 @@ export default class GetPipelinesController {
 
         const peopleList: Person[] = [];
 
-        for (const personId of result.people) {
-            const fetchedPerson = await Person.findOrFail(personId);
-            peopleList.push({ id: personId, name: fetchedPerson.displayname });
+        if(result.people){
+            for (const personId of result.people) {
+                const fetchedPerson = await Person.findOrFail(personId);
+                peopleList.push({ id: personId, name: fetchedPerson.displayname });
+            }
+            result.people = peopleList;
+        } else {
+            result.people = [];
         }
-        result.people = peopleList;
 
         console.log(result);
         console.log("mongo db done");
@@ -151,11 +155,16 @@ export default class GetPipelinesController {
 
         const peopleList: Person[] = [];
 
-        for (const personId of result.people) {
-            const fetchedPerson = await Person.findOrFail(personId);
-            peopleList.push({ id: personId, name: fetchedPerson.displayname });
+        if (result.people) {
+            for (const personId of result.people) {
+                const fetchedPerson = await Person.findOrFail(personId);
+                peopleList.push({ id: personId, name: fetchedPerson.displayname });
+            }
+            result.people = peopleList
+        } else {
+            result.people = []
         }
-        result.people = peopleList
+
 
         console.log(result);
         console.log("mongo db done")
