@@ -10,6 +10,7 @@ import ModifyDocValidator from 'App/Validators/Pipelines/ModifyDocValidator';
 import axios from 'axios';
 const https = require('https');
 import Env from '@ioc:Adonis/Core/Env';
+import Person from "App/Models/Person";
 
 
 const client = new MongoClient(uri,  {
@@ -262,14 +263,83 @@ export default class BasicUploadPipelinesController {
 
         const cursor = await this.complexSearch(agg);
 
-        let results = [];
+        interface Result {
+            _id: string,
+            name: string,
+            creator: string,
+            createdAt: Date,
+            updatedAt: Date,
+            updatedBy: string,
+            description: string,
+            retranscription: string,
+            date: Date,
+            endDate: Date,
+            people: string[],
+            categories: string,
+            towns: string[],
+            score: number
+        }
+        interface ResultFormatted {
+            _id: string,
+            name: string,
+            creator: string,
+            createdAt: Date,
+            updatedAt: Date,
+            updatedBy: string,
+            description: string,
+            retranscription: string,
+            date: Date,
+            endDate: Date,
+            people: string,
+            categories: string,
+            towns: string,
+            score: number
+        }
+
+        const results: Result[] = [];
+        let resultsFormatted: ResultFormatted[] = [];
 
         await cursor.forEach((doc) => {
             console.log(doc)
             results.push(doc);
         });
 
-        return response.status(200).json(results)
+        for (const res of results) {
+            let peopleList:string[] = [];
+            let peopleListFormatted = '';
+            let townsList:string[] = [];
+            let townsListFormatted = '';
+            for (const personId of res.people) {
+                const fetchedPerson = await Person.findOrFail(personId);
+                peopleList.push(fetchedPerson.displayname);
+            }
+            peopleListFormatted = peopleList.join(', ');
+
+            for (const town of res.towns) {
+                townsList.push(town);
+            }
+            townsListFormatted = townsList.join(', ');
+            const resFormatted: ResultFormatted = {
+                _id: res._id,
+                name: res.name,
+                creator: res.creator,
+                createdAt: res.updatedAt,
+                updatedAt: res.updatedAt,
+                updatedBy: res.updatedBy,
+                description: res.description,
+                retranscription: res.retranscription,
+                date: res.date,
+                endDate: res.endDate,
+                people: peopleListFormatted,
+                categories: res.categories,
+                towns: townsListFormatted,
+                score: res.score
+            }
+            console.log(resFormatted);
+            resultsFormatted.push(resFormatted);
+        }
+
+        return response.status(200).json(resultsFormatted)
     }
 
     public async transferDocumentById({ request, response }: HttpContextContract) {
