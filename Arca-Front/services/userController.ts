@@ -179,7 +179,6 @@ class UserController {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
-
         }
       });
     console.log(response);
@@ -272,7 +271,7 @@ class UserController {
     oldName: string,
     newName: string
   ): Promise<any> {
-    const response = await axios.post(`${baseUrl}/category/update`, 
+    const response = await axios.post(`${baseUrl}/category/update`,
     {oldName, newName},
     {
       headers: {
