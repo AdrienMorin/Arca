@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { sub, format, isSameDay, type Duration } from 'date-fns'
+import DatePicker from "~/components/users/DatePicker.vue";
+
 const selected = ref({ start: sub(new Date(), { days: 14 }), end: new Date() })
 
 function isRangeSelected (duration: Duration) {
