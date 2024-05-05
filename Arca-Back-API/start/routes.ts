@@ -84,6 +84,8 @@ Route.group(() => {
 
   Route.get('/ai/getDocs', 'AisController.getOldestDocuments')
 
+  Route.post('/ai/get','GetPipelinesController.getDocReview')
+
   //Upload routes
 
   Route.post('/basic/upload','BasicUploadPipelinesController.uploadDoc')
@@ -92,11 +94,15 @@ Route.group(() => {
 
   Route.post('/search','BasicUploadPipelinesController.advancedSearch')
 
+  Route.post('/updateDocuments/:id', 'BasicUploadPipelinesController.updateDoc');
+
   // A passer en admin
 
   Route.post('/deleteArca','GetPipelinesController.deleteDocumentArca')
   
   Route.post('/deleteReview','GetPipelinesController.deleteDocumentReview')
+
+  Route.post('/documents/transfer', 'BasicUploadPipelinesController.transferDocumentById');
 
 }).prefix("/api").middleware('auth')
 

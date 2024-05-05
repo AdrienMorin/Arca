@@ -48,7 +48,7 @@ export default class PeopleController {
         await bouncer.with('PersonPolicy').authorize('viewList')
         const allDocuments = await Database
             .from('people')
-            .join('locations', 'people.location', '=', 'locations.id')
+            .leftJoin('locations', 'people.location', '=', 'locations.id')
             .select('people.*')
             .select('locations.displayname as location')
 
