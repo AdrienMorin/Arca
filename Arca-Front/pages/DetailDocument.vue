@@ -25,7 +25,7 @@ export default {
 
   data() {
     return {
-      nom:  'af5ofehpdblvqdai45.pdf',
+      nom:  '0rkrvwpvt51lvs9225l.docx',
       metadata: '',
       formattedDate: ''
     };
