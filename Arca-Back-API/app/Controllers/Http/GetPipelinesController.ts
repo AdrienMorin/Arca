@@ -42,6 +42,47 @@ export default class GetPipelinesController {
         return response.status(200).json({message: 'Document récupéré avec succès'})
         
     }
+
+    public async getOldestDocuments({ response }: HttpContextContract) {
+        try {
+            await client.connect();
+    
+            const documents = await client.db("reviewDB").collection("review").find({})
+                .sort({ dateDeCreation: 1 })
+                .limit(30)
+                .toArray();
+    
+            if (!documents.length) {
+                return response.status(404).json({ message: "No documents found." });
+            }
+    
+            var personIds = documents.reduce((acc, doc) => {
+                if (doc.personnes && doc.personnes.length) {
+                    acc.push(...doc.personnes.filter(id => !acc.includes(id)));
+                }
+                return acc;
+            }, []);
+    
+            const people = await Person.query().whereIn('id', personIds);
+            const peopleMap = new Map(people.map(person => [person.id.toString(), person.displayname]));
+                            
+            const result = documents.map(doc => ({
+                extension: doc.filename?.split('.').pop(),
+                name: doc.name,
+                villes: doc.villes || [],
+                personnes: (doc.personnes || []).map(id => peopleMap.get(id) || 'Unknown'),
+                type: doc.type,
+                date: doc.createdAt
+            }));
+    
+            return response.json(result);
+        } catch (error) {
+            console.error("Error fetching oldest documents:", error);
+            return response.status(500).json({ message: "Internal server error" });
+        } finally {
+            await client.close();
+        }
+    }
     
     public async getDocReview({ auth,bouncer,response,request}:HttpContextContract){   
         await auth.use('api').authenticate()

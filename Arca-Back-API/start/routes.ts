@@ -80,9 +80,9 @@ Route.group(() => {
 
   //AI routes
 
-  Route.post('/ai/upload', 'AisController.uploadDoc')
+  Route.post('/ai/upload', 'BasicUploadPipelinesController.uploadDocAi')
 
-  Route.get('/ai/getDocs', 'AisController.getOldestDocuments')
+  Route.get('/ai/getDocs', 'GetPipelinesController.getOldestDocuments')
 
   Route.post('/ai/get','GetPipelinesController.getDocReview')
 
