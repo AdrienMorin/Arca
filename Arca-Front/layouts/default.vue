@@ -4,7 +4,8 @@ import Navbar from "~/components/users/Navbar.vue";
 
 <template>
   <div class="overflow-y-hidden">
-    <Navbar/>
+    <Navbar class="sticky top-0 z-50">
+    </Navbar>
     <slot/>
   </div>
 
