@@ -171,14 +171,14 @@ export default class UploadDocsController {
         
         }
 
-    public async updateDoc({ auth, response, request }: HttpContextContract) {
+    public async updateDocument({ auth, response, request }: HttpContextContract) {
         await auth.use('api').authenticate();
     
         await client.connect();
         await client.db("admin").command({ ping: 1 });
     
-        const docId = request.param("id");
         const payload = await request.validate(ModifyDocValidator);
+        const docId = payload.id?.split('.')[0];
     
         let updateData = {
             updatedAt: new Date(),
@@ -195,11 +195,11 @@ export default class UploadDocsController {
             updateData['retranscription'] = payload.retranscription;
             updateData['author'] = auth.user?.lastname + ' ' + auth.user?.firstname;
         }
-        if (payload.date) {
-            updateData['date'] = payload.date;
+        if (payload.date.start) {
+            updateData['date'] = payload.date.start;
         }
-        if (payload.dateDeFin) {
-            updateData['endDate'] = payload.dateDeFin;
+        if (payload.date.end) {
+            updateData['endDate'] = payload.date.end;
         }
         if (payload.personnes) {
             updateData['people'] = payload.personnes.split(';');
@@ -233,7 +233,8 @@ export default class UploadDocsController {
 
     public async transferDocumentById({ request, response }: HttpContextContract) {
         await client.connect();
-        const docId = request.input('documentId');
+        const payload = await request.validate(ModifyDocValidator);
+        const docId = payload.id?.split('.')[0];
         const session = client.startSession();
     
         try {

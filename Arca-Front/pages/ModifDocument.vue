@@ -116,6 +116,9 @@
     flipSupprimer() {
       this.$refs.popupSupprimer.mainshow = !this.$refs.popupSupprimer.mainshow;
     },
+    flipModifier() {
+      this.$refs.popupModifier.mainshow = !this.$refs.popupModifier.mainshow;
+    },
     async uploadDocument(db) {
       this.getListCitier();
       this.getListPersonne();
@@ -198,8 +201,19 @@
       const tokenCookie = useCookie('token');
       const token= tokenCookie.value;
 
+      console.log('................');
+      console.log('Uploading document...');
+      console.log('File', this.File)
+      console.log('Name', this.metadata.name)
+      console.log('Description', this.metadata.description)
+      console.log('Retranscription', this.metadata.retranscription)
+      console.log('Date', this.date)
+      console.log('Cities', this.citiesListe)
+      console.log('Personnes', this.personneListe)
+      console.log('MongoDB', this.nom)
+
       const response = await UserController.getInstance().updateDocument(token,
-      this.File,this.titre,this.description,this.retrancription,this.date,this.citiesListe,this.personneListe,this.mongoDB, this.nom);
+      this.File,this.metadata.name,this.description,this.retrancription,this.date,this.citiesListe,this.personneListe,"ntbr", this.nom);
       
       if (response.status === 200) {
         console.log('Vous êtes connecté')
@@ -209,25 +223,6 @@
 
     async transferDocumentById() {
       console.log('Transfering document............................');
-      this.getListCitier();
-      this.getListPersonne();
-      this.citiesListe='';
-      this.personneListe='';
-      for (let i = 0; i < this.selectedCities.length; i++) {
-        this.citiesListe+=this.selectedCities[i];
-        if(i!=this.selectedCities.length-1){
-          this.citiesListe+=';';
-        }
-      }
-      for (let i = 0; i < this.selectedPersonne.length; i++) {
-        this.personneListe+=this.selectedPersonne[i];
-        if(i!=this.selectedPersonne.length-1){
-          this.personneListe+=';';
-        }
-      }
-      this.description=this.$refs.description.description;
-      this.retrancription=this.$refs.retranscription.description;
-      this.mongoDB = db;
       const tokenCookie = useCookie('token');
       const token= tokenCookie.value;
 
@@ -242,11 +237,9 @@
     async deleteDocument() {
       console.log('Deleting document............................');
       console.log('Name', this.nom)
-      this.mongoDB = 'ntbr';
-      console.log('MongoDB', this.mongoDB)
       const tokenCookie = useCookie('token');
       const token= tokenCookie.value;
-      const response = await UserController.getInstance().deleteDocument(token,this.nom,this.mongoDB);
+      const response = await UserController.getInstance().deleteDocument(token,this.nom,"ntbr");
       
       if (response.status === 200) {
         console.log('Vous êtes connecté')
@@ -315,6 +308,16 @@
       :description1="'Votre Document'"
       :titreDoc="'Complainte du'"
       :description2="'a bien été supprimé de la base de donnée.'"
+      :color="true" 
+      :annuler="false">
+    </Popup>
+
+    <Popup 
+      ref="popupModifier"
+      :title="'Modifier Document'"
+      :description1="'Votre Document'"
+      :titreDoc="'Complainte du'"
+      :description2="'a bien été modifié de la base de donnée.'"
       :color="true" 
       :annuler="false">
     </Popup>
