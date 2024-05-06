@@ -99,9 +99,9 @@ export default class GetDocsController {
             const people = await Person.query().whereIn('id', personIds);
             const peopleMap = new Map(people.map(person => [person.id.toString(), person.displayname]));        
             const result = documents.map(doc => ({
-                id: doc.filename,
-                extension: doc.filename?.split('.')[1],
-                name: doc.name?.split('.')[0],
+                id : doc._id,
+                extension: doc.filename?.split('.').pop(),
+                name: doc.name,
                 villes: doc.villes || [],
                 personnes: (doc.personnes || []).map(id => {
                     const stringId = id.toString();

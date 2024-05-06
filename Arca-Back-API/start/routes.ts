@@ -49,6 +49,8 @@ Route.group(() => {
   Route.post('/basic/get', 'GetDocsController.getDoc')
   Route.post('/search', 'SearchDocsController.advancedSearch')
   Route.post('/updateDocuments/:id', 'UploadDocsController.updateDoc')
+  Route.post('/transferDocumentById/:id', 'UploadDocsController.transferDocumentById')
+
 
   // A passer en admin
   Route.post('/deleteArca', 'DeleteDocsController.deleteDocumentArca')

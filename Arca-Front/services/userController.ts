@@ -139,6 +139,53 @@ class UserController {
     return response;
   }
 
+  public async updateDoc(
+    token: string,
+    file: File,
+    titre: string,
+    description: string,
+    retranscription: string,
+    date: {
+      start: string,
+      end:string,
+    },
+    villes: string,
+    personnes: string,
+    mongoDB: string,
+    id:string,
+
+  ): Promise<any> {
+    const response = await axios.post(`${baseUrl}/basic/updateDocuments/${id}`,
+      {file, titre, description, retranscription, date, villes, personnes, mongoDB},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+
+        }
+      });
+    console.log(response);
+    return response;
+  }
+
+  public async transferDocById(
+    token: string,
+    id:string,
+
+  ): Promise<any> {
+    const response = await axios.post(`${baseUrl}/basic/transferDocumentById/${id}`,
+      {id},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+
+        }
+      });
+    console.log(response);
+    return response;
+  }
+
   public async getSearchResults(
     token: string,
     query: string,
@@ -194,7 +241,18 @@ class UserController {
     return response;
   }
 
-    public async register(
+
+  public async fetchCategories(token: string):Promise<any>{
+    const response = await axios.get(`${baseUrl}/category/fetchCategories`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return response;
+  }
+
+
+  public async register(
     email: string,
     password: string,
     firstname: string,
