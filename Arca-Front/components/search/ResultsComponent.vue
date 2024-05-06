@@ -62,9 +62,9 @@
 </template>
 
 <script>
-import Datepicker from 'vue3-datepicker'
 import UserController from '~/services/userController.ts';
 import DatePicker from "~/components/search/DatePicker.vue";
+import {useFileStore} from "~/detailDocumentTransfert.js";
 
 export default {
   props: {
@@ -74,8 +74,7 @@ export default {
     }
   },
   components: {
-    DatePicker,
-    Datepicker,
+    DatePicker
   },
   async created() {
     console.log('searchQuery : ' + this.searchQuery);
@@ -108,10 +107,47 @@ export default {
     emitSearchEvent() {
       this.getSearchResults()
     },
-    emitDetailEvent(id) {
-      console.log('docName : ' + id);
-      this.$emit('detail-event', id)
+    async emitDetailEvent(docName) {
+      console.log('docName : ' + docName);
+      await this.fileDownloadAndTransfer(docName)
+      this.$emit('detail-event')
       //this.$emit('detail-event', 'docName')
+    },
+    async fileDownloadAndTransfer(docName){
+      // mettre un argument filename et get le fichier sur s3
+      // Mettre le file et sa metadata dans le store
+      console.log('File download and transfer initiated...');
+
+      const tokenCookie = useCookie('token');
+      const token = tokenCookie.value;
+      const response = await UserController.getInstance().getDocument(token, docName)
+
+      const date = new Date(response.data.date);
+      this.formattedDate = new Intl.DateTimeFormat('fr-FR', {
+        dateStyle: 'long'
+      }).format(date);
+      const dateModif = new Date(response.data.updatedAt);
+      const formattedDateModif = new Intl.DateTimeFormat('fr-FR', {
+        dateStyle: 'long'
+      }).format(dateModif);
+
+      // Store in pinia
+      const fileStore = useFileStore();
+      console.log('reading file from url');
+      const fileFetched = await fetch('/_nuxt/temp/'+docName)
+      console.log('file read from url');
+      const blob = await fileFetched.blob()
+      const file = new File([blob], docName, {type: blob.type});
+      console.log('file:', file);
+
+      const metadata = response.data;
+
+      // ou utiliser l'action setFile
+      fileStore.setFile(file, metadata);
+      const test=fileStore.getFile;
+      const testmeta=fileStore.getMetadata;
+      console.log('testname : ',test);
+      console.log('testmetadata : ',testmeta);
     }
   },
   watch: {

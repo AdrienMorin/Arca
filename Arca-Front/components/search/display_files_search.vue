@@ -31,7 +31,7 @@
 </template>
 
 <script>
-  import { useFileStore } from '~/fileTransfer.js';
+  import { useFileStore } from '~/detailDocumentTransfert.js';
 
 export default {
   props: {
