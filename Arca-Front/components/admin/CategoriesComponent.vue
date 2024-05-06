@@ -63,7 +63,7 @@
 </template>
 
 <script>
-    import UserController from '~/services/userController'
+    import CategoryController from '~/services/categorieController'
 
     export default {
         data() {
@@ -84,7 +84,7 @@
             async fetchCategories() {
                 const tokenCookie = useCookie('token')
                 const token = tokenCookie.value
-                return await UserController.getInstance().fetchCategories(token)
+                return await CategoryController.getInstance().fetchCategories(token)
             },
             async addCategory() {
                 console.log('Adding category:', this.newCategory);
@@ -114,6 +114,7 @@
                             type: 'error'
                         })
                     }
+
                 }
                 
             },
