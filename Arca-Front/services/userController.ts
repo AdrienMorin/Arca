@@ -152,8 +152,8 @@ class UserController {
     id:string,
 
   ): Promise<any> {
-    const response = await axios.post(`${baseUrl}/basic/updateDocuments/${id}`,
-      {file, titre, description, retranscription, date, villes, personnes, mongoDB},
+    const response = await axios.post(`${baseUrl}/updateDocument`,
+      {file, titre, description, retranscription, date, villes, personnes, mongoDB,id},
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -170,8 +170,8 @@ class UserController {
     id:string,
 
   ): Promise<any> {
-    const response = await axios.post(`${baseUrl}/basic/updateDocuments/${id}`,
-      {},
+    const response = await axios.post(`${baseUrl}/transferDocumentById`,
+      {id},
       {
         headers: {
           Authorization: `Bearer ${token}`,
