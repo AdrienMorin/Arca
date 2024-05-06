@@ -69,6 +69,7 @@ export default class GetDocsController {
             peopleList.push({ id: personId, displayname: fetchedPerson.displayname });
         }
         result.people = peopleList;
+        result.source="arca"
 
         console.log(result);
         console.log("mongo db done");
@@ -159,6 +160,15 @@ export default class GetDocsController {
             }
             result.people = peopleList
         }
+
+        const peopleList: Person[] = [];
+
+        for (const personId of result.people) {
+            const fetchedPerson = await Person.findOrFail(personId);
+            peopleList.push({ id: personId, name: fetchedPerson.displayname });
+        }
+        result.people = peopleList
+        result.source= "review"
 
         console.log(result);
         console.log("mongo db done")
