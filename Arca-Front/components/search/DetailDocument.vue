@@ -65,6 +65,30 @@ export default {
 
       console.log(this.metadata)
     },
+    downloadFile() {
+    // Check if the file exists
+    if (!this.file) {
+      alert('No file available for download');
+      return;
+    }
+
+    // Create a Blob from the file
+    const blob = new Blob([this.file], { type: 'application/pdf' });
+
+    // Generate a URL for the Blob
+    const url = window.URL.createObjectURL(blob);
+
+    // Create a temporary anchor tag to trigger download
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = this.metadata.name || 'download.pdf'; // Use metadata name or a default name
+    document.body.appendChild(a);
+    a.click();
+
+    // Cleanup: revoke the URL and remove the anchor tag
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+  },
     retour() {
       this.$emit('showSearchResult-event');
     },
@@ -85,7 +109,7 @@ definePageMeta({
       <button @click="retour" type="button" class="relative top-1  w- text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-base px-8 py-1 me-2 mb-2 ml-4 mt-4 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
         <p class="text-lg font-light">Retour</p>
       </button>
-      <div class=" flex items-stretch	flex-col lg:space-y-4 md:space-y-2 ">
+      <div class=" flex items-stretch	flex-col lg:space-y-4 md:space-y-2" style="height: 100%">
         <div class="flex-1/6 justify-left items-center relative md:top-5 lg:left-12 md:left-3">
           <div class="text-justify lg:text-4xl  md:text-2xl font-medium object-left-bottom relatvie">{{
               metadata.name
@@ -168,14 +192,13 @@ definePageMeta({
           <div class="flex-row place-content-between flex w-full mx-auto mb-4">
             <div class="">
               <button @click="modifyDocument" type="button"
-                      class="relative top-1 mb-8 w-full text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-base px-10 py-3 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                      class="relative top-1 mb-5 w-full text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-base px-10 py-3 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                 <p class="text-lg font-light ">Modifier</p>
               </button>
             </div>
 
             <div>
-              <button @click="getDocument" type="button"
-                      class="relative top-1 mb-8 w-full text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-base px-10 py-3 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+              <button @click="downloadFile" type="button" class="relative top-1 mb-5 w-full text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-base px-10 py-3 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                 <p class="text-lg font-light">Télécharger</p>
               </button>
             </div>
