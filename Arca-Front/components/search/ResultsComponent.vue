@@ -93,7 +93,7 @@ export default {
       dateMode: 'simple',
       documents: [],
       results: '',
-      searchInput: '' // Ajout de la propriété de données searchInput
+      searchInput: '' // Ajout de la propriété de données searchInput,
     }
   },
   methods: {
@@ -143,7 +143,7 @@ export default {
       const metadata = response.data;
 
       // ou utiliser l'action setFile
-      fileStore.setFile(file, metadata);
+      fileStore.setFile(file, metadata,'recherche');
       const test=fileStore.getFile;
       const testmeta=fileStore.getMetadata;
       console.log('testname : ',test);

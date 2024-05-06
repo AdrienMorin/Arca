@@ -22,11 +22,12 @@ export const useFileStore = defineStore({
         towns: '',
         score: null,
         filename: null
-      }
+      },
+      source: ''
     },
   }),
   actions: {
-    setFile(file, metadata) {
+    setFile(file, metadata, db) {
       this.file = {
         name: file.name,
         content: file,
@@ -46,7 +47,8 @@ export const useFileStore = defineStore({
           towns: metadata.towns,
           score: metadata.score,
           filename: metadata.filename
-        }
+        },
+        source: db
       };
       console.log('file set: ', this.file);
     },
@@ -54,12 +56,14 @@ export const useFileStore = defineStore({
       this.file = {
         name: '',
         content: null,
-        metadata: null
+        metadata: null,
+        source: ''
       };
     },
   },
   getters: {
     getFile: state => state.file,
     getMetadata: state => state.file.metadata,
+    getSource: state => state.file.source,
   }
 });
