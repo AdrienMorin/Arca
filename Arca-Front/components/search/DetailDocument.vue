@@ -73,15 +73,14 @@ export default {
     }
 
     // Create a Blob from the file
-    const blob = new Blob([this.file], { type: 'application/pdf' });
+    const blob = new Blob([this.file.content], { type: 'application/pdf' });
 
-    // Generate a URL for the Blob
+    console.log(blob)
     const url = window.URL.createObjectURL(blob);
-
-    // Create a temporary anchor tag to trigger download
+    console.log("url" + url)
     const a = document.createElement('a');
     a.href = url;
-    a.download = this.metadata.name || 'download.pdf'; // Use metadata name or a default name
+    a.download = this.metadata.name || 'download.pdf';
     document.body.appendChild(a);
     a.click();
 
