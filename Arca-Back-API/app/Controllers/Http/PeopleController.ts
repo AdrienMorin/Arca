@@ -15,13 +15,23 @@ export default class PeopleController {
         const displayname = payload.firstname + ' ' + payload.lastname
         const first = payload.firstname.replace(/-/g, " ").toLowerCase();
         const lastname = payload.lastname.replace(/-/g, " ").toLowerCase()
-        await Person.create({
+
+        try{
+            await Person.create({
             displayname: displayname,
             firstname: first,
             lastname: lastname,
             role: payload.role,
             location: payload.location
-        })
+            })
+        }catch(e){
+            console.log(e)
+            if(e.code === '23505'){
+                return response.status(400).json({message: 'Cette personne existe déjà'})
+            }else{
+                return response.status(500).json({message: 'Erreur lors de la création de la personne'})
+            }
+        }
 
         return response.status(200).json({message: 'Personne créée avec succès'})
     }
@@ -33,14 +43,28 @@ export default class PeopleController {
         const displayname = payload.firstname + ' ' + payload.lastname
         const firstname = payload.firstname.toLowerCase().replace("-", " ")
         const lastname = payload.lastname.toLowerCase()
-        const document=await Person.findOrFail(request.param("id"))
-        await document.merge({
-            displayname: displayname,
-            firstname: firstname,
-            lastname: lastname,
-            role: payload.role,
-            location: payload.location
-        }).save()
+        let document
+        try{
+            document=await Person.findOrFail(request.param("id"))
+        }catch(e){
+            return response.status(404).json({message: 'Personne non trouvée'})
+        }
+        try{
+            await document.merge({
+                displayname: displayname,
+                firstname: firstname,
+                lastname: lastname,
+                role: payload.role,
+                location: payload.location
+            }).save()
+         }catch(e){
+            console.log(e)
+            if(e.code === '23505'){
+                return response.status(400).json({message: 'Cette personne existe déjà'})
+            }else{
+                return response.status(500).json({message: 'Erreur lors de la mise à jour de la personne'})
+            }
+        }
         return response.status(200).json({message:'Personne mise à jour avec succès'})
 
     }

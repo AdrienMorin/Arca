@@ -8,7 +8,17 @@ export default class CategoriesController {
         await auth.use('api').authenticate()
         await bouncer.with('CategoryPolicy').authorize('create')
         const payload = await request.validate(CreateCategoryValidator)
-        await Category.create(payload)
+        try{
+            await Category.create(payload)
+        }catch(e){
+            console.log(e)
+            if(e.code === '23505'){
+                return response.status(400).json({message: 'Cette catégorie existe déjà'})
+            }else{
+                return response.status(500).json({message: 'Erreur lors de la création de la catégorie'})
+            }
+        }
+
         return response.status(200).json({message: 'Catégorie créée avec succès'})
     }
 
@@ -16,10 +26,25 @@ export default class CategoriesController {
         await auth.use('api').authenticate()
         await bouncer.with('CategoryPolicy').authorize('update')
         const payload = await request.validate(UpdateCategoryValidator)
-        const document= await Category.findByOrFail('name', payload.oldName)
-        await document.merge({
-            name: payload.newName
-        }).save()
+        let document
+        try{
+            document= await Category.findByOrFail('name', payload.oldName)
+        }catch(e){
+            return response.status(404).json({message: 'Catégorie non trouvée'})
+        }
+        try{
+            await document.merge({
+                name: payload.newName
+            }).save()
+        }catch(e){
+            console.log(e)
+            if(e.code === '23505'){
+                return response.status(400).json({message: 'Cette catégorie existe déjà'})
+            }else{
+                return response.status(500).json({message: 'Erreur lors de la mise à jour de la catégorie'})
+            }
+        }
+        
         return response.status(200).json({message:'Catégorie mise à jour avec succès'})
     }
 

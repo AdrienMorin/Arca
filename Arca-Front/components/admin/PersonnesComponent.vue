@@ -141,16 +141,35 @@ export default {
     async addPersonne() {
       const tokenCookie = useCookie('token')
       const token = tokenCookie.value
-      const response = await PersonneController.getInstance().createPersonne(this.newPersonne.firstname, this.newPersonne.lastname, this.newPersonne.location, this.newPersonne.role, token)
-      if (response.status === 200) {
-        const newLocationResponse = await LocationController.getInstance().getLocationById(this.newPersonne.location, token)
-        this.newPersonne.location = newLocationResponse.data.displayname
-        this.personnes.push(this.newPersonne)
-        this.newPersonne = {
-          firstname: '',
-          lastname: '',
-          location: null,
-          role: ''
+      try{
+        const response = await PersonneController.getInstance().createPersonne(this.newPersonne.firstname, this.newPersonne.lastname, this.newPersonne.location, this.newPersonne.role, token)
+        if (response.status === 200) {
+          const newLocationResponse = await LocationController.getInstance().getLocationById(this.newPersonne.location, token)
+          this.newPersonne.location = newLocationResponse.data.displayname
+          this.personnes.push(this.newPersonne)
+          this.newPersonne = {
+            firstname: '',
+            lastname: '',
+            location: null,
+            role: ''
+          }
+          this.$snackbar.add({
+            text: 'Personne ajoutée avec succès',
+            type: 'success'
+          })
+        }
+      } catch (error) {
+        console.error(error)
+        if(error.response.status === 400){
+          this.$snackbar.add({
+            text: 'La personne existe déjà',
+            type: 'error'
+          })
+        }else{
+          this.$snackbar.add({
+            text: 'Erreur lors de l\'ajout de la personne',
+            type: 'error'
+          })
         }
       }
     },
@@ -175,23 +194,47 @@ export default {
       const token = tokenCookie.value
       const response = await PersonneController.getInstance().updatePersonne(this.modifiedPersonne.firstname, this.modifiedPersonne.lastname, this.modifiedPersonne.location, this.modifiedPersonne.role, this.modifiedPersonne.id, token)
       console.log(response)
-      if (response.status === 200) {
-        const index = this.personnes.findIndex(personne => personne.id === this.modifiedPersonne.id);
-        if (index !== -1) {
-          this.personnes.splice(index, 1);
+      try{
+        if (response.status === 200) {
+          const index = this.personnes.findIndex(personne => personne.id === this.modifiedPersonne.id);
+          if (index !== -1) {
+            this.personnes.splice(index, 1);
+          }
+          const newLocationResponse = await LocationController.getInstance().getLocationById(this.modifiedPersonne.location, token)
+          this.modifiedPersonne.location = newLocationResponse.data.displayname
+          this.personnes.push(this.modifiedPersonne)
+          this.modifiedPersonne = {
+            firstname: '',
+            lastname: '',
+            location: null,
+            role: '',
+            id: null
+          }
+          this.showModifyForm = !this.showModifyForm
+          this.showModifyButton = !this.showModifyButton
+          this.$snackbar.add({
+            text: 'Personne modifiée avec succès',
+            type: 'success'
+          })
         }
-        const newLocationResponse = await LocationController.getInstance().getLocationById(this.modifiedPersonne.location, token)
-        this.modifiedPersonne.location = newLocationResponse.data.displayname
-        this.personnes.push(this.modifiedPersonne)
-        this.modifiedPersonne = {
-          firstname: '',
-          lastname: '',
-          location: null,
-          role: '',
-          id: null
-        }
-        this.showModifyForm = !this.showModifyForm
-        this.showModifyButton = !this.showModifyButton
+      } catch (error) {
+        console.error(error)
+        if(error.response.status === 404){
+          this.$snackbar.add({
+            text: 'La personne n\'existe pas',
+            type: 'error'
+          })
+        }else if(error.response.status === 400){
+          this.$snackbar.add({
+            text: 'La nouvelle personne existe déjà',
+            type: 'error'
+          })
+          }else{
+            this.$snackbar.add({
+              text: 'Erreur lors de la modification de la personne',
+              type: 'error'
+            })
+          }
       }
     }
   }
