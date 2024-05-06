@@ -52,6 +52,7 @@ export default {
       console.log("ee", this.file);
       console.log("metadata date", this.metadata.date);
 
+      if(this.metadata.date){
       const date = new Date(this.metadata.date);
 
       this.formattedDate = new Intl.DateTimeFormat('fr-FR', {
@@ -62,7 +63,7 @@ export default {
       this.formattedDateModif = new Intl.DateTimeFormat('fr-FR', {
         dateStyle: 'long'
       }).format(dateModif);
-
+    }
       console.log(this.metadata)
     },
     downloadFile() {

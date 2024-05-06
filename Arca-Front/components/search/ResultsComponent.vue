@@ -122,6 +122,7 @@ export default {
       const token = tokenCookie.value;
       const response = await UserController.getInstance().getDocument(token, docName)
 
+      if(response.data.date){
       const date = new Date(response.data.date);
       this.formattedDate = new Intl.DateTimeFormat('fr-FR', {
         dateStyle: 'long'
@@ -130,7 +131,7 @@ export default {
       const formattedDateModif = new Intl.DateTimeFormat('fr-FR', {
         dateStyle: 'long'
       }).format(dateModif);
-
+    }
       // Store in pinia
       const fileStore = useFileStore();
       console.log('reading file from url');
@@ -146,8 +147,10 @@ export default {
       fileStore.setFile(file, metadata,'recherche');
       const test=fileStore.getFile;
       const testmeta=fileStore.getMetadata;
+      const testsource=fileStore.getSource;
       console.log('testname : ',test);
       console.log('testmetadata : ',testmeta);
+      console.log('testsource : ',testsource);
     }
   },
   watch: {
