@@ -100,9 +100,9 @@ export default class GetDocsController {
             const people = await Person.query().whereIn('id', personIds);
             const peopleMap = new Map(people.map(person => [person.id.toString(), person.displayname]));        
             const result = documents.map(doc => ({
-                id : doc._id,
-                extension: doc.filename?.split('.').pop(),
-                name: doc.name,
+                id: doc.filename,
+                extension: doc.filename?.split('.')[1],
+                name: doc.name?.split('.')[0],
                 villes: doc.villes || [],
                 personnes: (doc.personnes || []).map(id => {
                     const stringId = id.toString();
@@ -160,15 +160,6 @@ export default class GetDocsController {
             }
             result.people = peopleList
         }
-
-        const peopleList: Person[] = [];
-
-        for (const personId of result.people) {
-            const fetchedPerson = await Person.findOrFail(personId);
-            peopleList.push({ id: personId, name: fetchedPerson.displayname });
-        }
-        result.people = peopleList
-        result.source= "review"
 
         console.log(result);
         console.log("mongo db done")
