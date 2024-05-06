@@ -334,7 +334,6 @@ class UserController {
 
 
   public async register(
-  public async register(
     email: string,
     password: string,
     firstname: string,

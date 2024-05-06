@@ -77,7 +77,6 @@
       
     methods: {
     async fetchCategories() {
-    async fetchCategories() {
       const tokenCookie = useCookie('token');
       const token = tokenCookie.value;
       return await CategorieController.getInstance().fetchCategories(token);
@@ -449,7 +448,6 @@
     </div>
   </div>
   
-  </div>
   </div>
 </template>
 
