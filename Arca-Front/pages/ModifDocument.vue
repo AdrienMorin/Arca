@@ -1,4 +1,3 @@
-
 <script lang="ts">
   
   import doctype from '~/components/users/Document-type-dropdown.vue';
@@ -14,7 +13,6 @@
   import display_files from '~/components/search/display_files_search.vue';
   import Datepicker from '~/components/search/DatePicker.vue'
   
-
   export default {
     components: {
       Popup, 
@@ -30,7 +28,7 @@
     },
      data() {
       return {
-        nom: '', // Initialize with an empty string
+        nom: '',
         File: '',
         titre: '',
         description: '',
@@ -42,43 +40,36 @@
         citiesListe:'',
         typeDoc: '',
         personneListe:'',
-      //  titreDoc: '',
         personnes: [],
         cities: [],
         selectedPersonne: '',
         selectedCities: '',
         categories:[],
-        mongoDB: '',
+        mongoDB: 'ntbr',
         metadata: '',
         dateModif:'',
+        id:''
       };
     },
     async created() {
-    this.getDocument();
-    const modif = new Date(this.metadata.updatedAt);
-    this.dateModif= new Intl.DateTimeFormat('fr-FR', {
-        dateStyle: 'long'
+      this.getDocument();
+      const modif = new Date(this.metadata.updatedAt);
+      this.dateModif= new Intl.DateTimeFormat('fr-FR', {
+          dateStyle: 'long'
       }).format(modif);
       this.date.start= new Date(this.metadata.date);
       this.date.end= new Date(this.metadata.endDate);
-      console.log('rrrfrfrf',this.date);
-    // console.log('metadata date',this.metadata.date);
-     // console.log('dateModiffffffff',this.dateModif);
-    //console.log('Fetching Personnes...');
-    const fetchedPersonnes = await this.fetchPersonnes();
-    this.personnes = fetchedPersonnes.data;
-   // console.log('Personnes fetched:', this.personnes);
-    const fetchedCities = await this.fetchCities();
-    this.cities = fetchedCities.data;
-    this.cities = this.cities.map(city => city.displayname);
-  //  console.log('fetch categories');
-    const fetchedCategories = await this.fetchCategories();
-    this.categories = fetchedCategories.data;
+      const fetchedPersonnes = await this.fetchPersonnes();
+      this.personnes = fetchedPersonnes.data;
+      const fetchedCities = await this.fetchCities();
+      this.cities = fetchedCities.data;
+      this.cities = this.cities.map(city => city.displayname);
+      const fetchedCategories = await this.fetchCategories();
+      this.categories = fetchedCategories.data;
     },
-  
       
     methods: {
-      async fetchCategories() {
+    async fetchCategories() {
       const tokenCookie = useCookie('token');
       const token = tokenCookie.value;
       return await CategorieController.getInstance().fetchCategories(token);
@@ -122,73 +113,150 @@
     flipEnregistrer() {
       this.$refs.popupEnregistrer.mainshow = !this.$refs.popupEnregistrer.mainshow;
     },
-    
+    flipSupprimer() {
+      this.$refs.popupSupprimer.mainshow = !this.$refs.popupSupprimer.mainshow;
+    },
     async uploadDocument(db) {
-      //console.log(this.getSelectedCategorie());
-        this.getListCitier();
-        this.getListPersonne();
-        this.citiesListe='';
-        this.personneListe='';
-        for (let i = 0; i < this.selectedCities.length; i++) {
-          this.citiesListe+=this.selectedCities[i];
-          if(i!=this.selectedCities.length-1){
-            this.citiesListe+=';';
-          }
+      this.getListCitier();
+      this.getListPersonne();
+      this.citiesListe='';
+      this.personneListe='';
+      for (let i = 0; i < this.selectedCities.length; i++) {
+        this.citiesListe+=this.selectedCities[i];
+        if(i!=this.selectedCities.length-1){
+          this.citiesListe+=';';
         }
-        for (let i = 0; i < this.selectedPersonne.length; i++) {
-          this.personneListe+=this.selectedPersonne[i];
-          if(i!=this.selectedPersonne.length-1){
-            this.personneListe+=';';
-          }
+      }
+      for (let i = 0; i < this.selectedPersonne.length; i++) {
+        this.personneListe+=this.selectedPersonne[i];
+        if(i!=this.selectedPersonne.length-1){
+          this.personneListe+=';';
         }
-        this.description=this.$refs.description.description;
-        this.retranscription=this.$refs.retranscription.description;
-        this.mongoDB = db;
-        const tokenCookie = useCookie('token');
-        const token= tokenCookie.value;
+      }
+      this.description=this.$refs.description.description;
+      this.retranscription=this.$refs.retranscription.description;
+      this.mongoDB = db;
+      const tokenCookie = useCookie('token');
+      const token= tokenCookie.value;
 
- 
-        console.log('Uploading document...');
-        console.log('File', this.File)
-        console.log('Name', this.metadata.name)
-        console.log('Description', this.metadata.description)
-        console.log('Retranscription', this.metadata.retranscription)
-        console.log('Date', this.date)
-        console.log('Cities', this.citiesListe)
-        console.log('Personnes', this.personneListe)
-        console.log('MongoDB', this.mongoDB)
+      console.log('Uploading document...');
+      console.log('File', this.File)
+      console.log('Name', this.metadata.name)
+      console.log('Description', this.metadata.description)
+      console.log('Retranscription', this.metadata.retranscription)
+      console.log('Date', this.date)
+      console.log('Cities', this.citiesListe)
+      console.log('Personnes', this.personneListe)
+      console.log('MongoDB', this.mongoDB)
 
-
-       // console.log(this.File);
       const response = await UserController.getInstance().uploadDocument(token,
       this.File,this.metadata.name,this.description,this.retranscription,this.date,this.citiesListe,this.personneListe,this.mongoDB);
       
-      
-      // redirect to homepage if user is authenticated
       if (response.status === 200) {
         console.log('Vous êtes connecté')
         this.flipAjouter();
-        //this.$router.push('/rechercher');
       }
     },
+
     getDocument() {
       console.log('Checking document...');
       const fileStore = useFileStore();
       const test=fileStore.getFile;
       this.File=test;
       this.metadata=fileStore.getMetadata;
-     // this.$refs.description.setDescription(this.metadata.description);
-      //this.$refs.retranscription.description=this.metadata.retranscription;
-     // console.log("ee",this.File);
-      //console.log("metadata", this.metadata);
-
+      this.nom=this.metadata.filename
+      this.mongoDB=this.metadata.mongoDB;
+      console.log("+++++++++++++++++++++++++",this.metadata)
     },
     handleSelectedRange(range) {
-    this.date.start= range.start;
-    this.date.start=new Date(range.start).toISOString();
-    this.date.end= new Date(range.end).toISOString();
-    //console.log('newDateeeee',this.date.start);
-}
+      this.date.start= range.start;
+      this.date.start=new Date(range.start).toISOString();
+      this.date.end= new Date(range.end).toISOString();
+    },
+
+    async updateDocument(db) {
+      console.log('Updating document............................');
+      this.getListCitier();
+      this.getListPersonne();
+      this.citiesListe='';
+      this.personneListe='';
+      for (let i = 0; i < this.selectedCities.length; i++) {
+        this.citiesListe+=this.selectedCities[i];
+        if(i!=this.selectedCities.length-1){
+          this.citiesListe+=';';
+        }
+      }
+      for (let i = 0; i < this.selectedPersonne.length; i++) {
+        this.personneListe+=this.selectedPersonne[i];
+        if(i!=this.selectedPersonne.length-1){
+          this.personneListe+=';';
+        }
+      }
+      this.description=this.$refs.description.description;
+      this.retrancription=this.$refs.retranscription.description;
+      this.mongoDB = db;
+      const tokenCookie = useCookie('token');
+      const token= tokenCookie.value;
+
+      const response = await UserController.getInstance().updateDocument(token,
+      this.File,this.titre,this.description,this.retrancription,this.date,this.citiesListe,this.personneListe,this.mongoDB, this.nom);
+      
+      if (response.status === 200) {
+        console.log('Vous êtes connecté')
+        this.flipModifier();
+      }
+    },
+
+    async transferDocumentById() {
+      console.log('Transfering document............................');
+      this.getListCitier();
+      this.getListPersonne();
+      this.citiesListe='';
+      this.personneListe='';
+      for (let i = 0; i < this.selectedCities.length; i++) {
+        this.citiesListe+=this.selectedCities[i];
+        if(i!=this.selectedCities.length-1){
+          this.citiesListe+=';';
+        }
+      }
+      for (let i = 0; i < this.selectedPersonne.length; i++) {
+        this.personneListe+=this.selectedPersonne[i];
+        if(i!=this.selectedPersonne.length-1){
+          this.personneListe+=';';
+        }
+      }
+      this.description=this.$refs.description.description;
+      this.retrancription=this.$refs.retranscription.description;
+      this.mongoDB = db;
+      const tokenCookie = useCookie('token');
+      const token= tokenCookie.value;
+
+      const response = await UserController.getInstance().transferDocumentById(token,this.nom);
+      
+      if (response.status === 200) {
+        console.log('Vous êtes connecté')
+        this.flipModifier();
+      }
+    },
+
+    async deleteDocument() {
+      console.log('Deleting document............................');
+      console.log('Name', this.nom)
+      this.mongoDB = 'ntbr';
+      console.log('MongoDB', this.mongoDB)
+      const tokenCookie = useCookie('token');
+      const token= tokenCookie.value;
+      const response = await UserController.getInstance().deleteDocument(token,this.nom,this.mongoDB);
+      
+      if (response.status === 200) {
+        console.log('Vous êtes connecté')
+        this.flipSupprimer();
+      }
+    },
+
+    async downloadDocument() {
+      console.log('Downloading document............................');
+    },
   },
   };
 
@@ -221,15 +289,35 @@
           :annuler="false">
         </Popup>
 
-        <Popup 
-          ref="popupEnregistrer"
-          :title="'Ajouter Document'"
-          :description1="'Votre Document'"
-          :titreDoc="'Complainte du'"
-          :description2="'a bien été Enregistrée à la base de donnée et devrait être Vérifier par la suite.'"
-          :color="true" 
-          :annuler="false">
-        </Popup>
+    <Popup 
+      ref="popupModif"
+      :title="'Modifier Document'"
+      :description1="'Votre Document'"
+      :titreDoc="'Complainte du'"
+      :description2="'a bien été modifié dans la base de donnée.'"
+      :color="true" 
+      :annuler="false">
+    </Popup>
+
+    <Popup 
+      ref="popupEnregistrer"
+      :title="'Ajouter Document'"
+      :description1="'Votre Document'"
+      :titreDoc="'Complainte du'"
+      :description2="'a bien été Enregistrée à la base de donnée et devrait être Vérifier par la suite.'"
+      :color="true" 
+      :annuler="false">
+    </Popup>
+
+    <Popup 
+      ref="popupSupprimer"
+      :title="'Supprimer Document'"
+      :description1="'Votre Document'"
+      :titreDoc="'Complainte du'"
+      :description2="'a bien été supprimé de la base de donnée.'"
+      :color="true" 
+      :annuler="false">
+    </Popup>
 
 
   <!--popup --> 
@@ -248,7 +336,7 @@
         <div class="flex-none xl:w-1/3 lg:w-1/4 bg-[#027BCE] bg-opacity-10 h-full h-screen overflow-auto overflow-x-hidden">
           <div class=" flex items-stretch	 flex-col h-full lg:space-y-4 md:space-y-2">
             <div class="flex-1/6 justify-left items-center relative md:top-5 lg:left-12 md:left-3">
-              <div class="text-justify lg:text-3xl  md:text-2xl font-bold object-left-bottom relatvie">Ajout de document</div>
+              <div class="text-justify lg:text-3xl  md:text-2xl font-bold object-left-bottom relatvie">Modification de document</div>
             </div>
             <div class=" flex-5/6 relative lg:left-24 lg:top-12 md:top-6 md:left-6 w-3/4 grid grid-rows-auto justify-left items-left  grid-flow-row gap-1 ">
               <div class="flex-col justify-left items-center h-max space-y-4 lg:w-5/6 md:w-2/2">
@@ -314,17 +402,33 @@
                 <div class="flex-row place-content-between  flex  w-5/6 mx-auto">
 
                   <div class=" place-content-start items-start flex w-2/4 ">
-                    <button @click="uploadDocument('tbr')" type="button" class="relative top-1 text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-100 font-medium rounded-lg text-base px-10 py-3 me-2 mb-2 dark:bg-blue-400 dark:hover:bg-blue-500 focus:outline-none dark:focus:ring-blue-600">
-                      <p class="text-xl">Enregistrer et ajouter "à Vérifier"</p>
+                    <div class=" place-content-start items-start flex w-2/4 ">
+                    <button @click="updateDocument('tbr')" type="button" class="relative top-1 text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-100 font-medium rounded-lg text-base px-10 py-3 me-2 mb-2 dark:bg-blue-400 dark:hover:bg-blue-500 focus:outline-none dark:focus:ring-blue-600">
+                      <p class="text-xl">Enregistrer les modifications</p>
                     </button>
                   </div>
 
                   <div class="place-content-end	flex w-2/4 ">
                     <div>
-                      <button @click="uploadDocument('ntbr')" type="button" class="relative top-1  w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-base px-10 py-3 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                        <p class="text-xl">Ajouter le  Document</p>
+                      <button @click="transferDocumentById()" type="button" class="relative top-1  w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-base px-10 py-3 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                        <p class="text-xl">Marquer comme vérifié</p>
                       </button>
                     </div>
+                  </div>
+
+                  <div class=" place-content-start items-start flex w-2/4 ">
+                    <button @click="deleteDocument()" type="button" class="relative top-1 text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-100 font-medium rounded-lg text-base px-10 py-3 me-2 mb-2 dark:bg-red-400 dark:hover:bg-red-500 focus:outline-none dark:focus:ring-red-600">
+                      <p class="text-xl">Supprimer</p>
+                    </button>
+                  </div>
+
+
+                  <div class=" place-content-start items-start flex w-2/4 ">
+                    <button @click="downloadDocument()" type="button" class="relative top-1 text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-100 font-medium rounded-lg text-base px-10 py-3 me-2 mb-2 dark:bg-green-400 dark:hover:bg-green-500 focus:outline-none dark:focus:ring-green-600">
+                      <p class="text-xl">Télécharger</p>
+                    </button>
+                  </div>
+
                   </div>
                 </div>
             </div>

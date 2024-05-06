@@ -189,7 +189,7 @@ class UserController {
     db: string
 
   ): Promise<any> {
-    const response = await axios.post(`${baseUrl}/basic/deleteDocument`,
+    const response = await axios.post(`${baseUrl}/deleteDocument`,
       {id, db},
       {
         headers: {
