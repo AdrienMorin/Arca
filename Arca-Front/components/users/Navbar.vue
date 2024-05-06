@@ -1,5 +1,5 @@
 <template>
-  <nav class="bg-blue-600 h-16 py-3.5 px-6 md:flex justify-between items-center">
+  <nav class="bg-blue-600 h-16 py-3.5 px-6 md:flex justify-between items-center sticky top-0 z-50">
     <div class="flex items-center">
       <NuxtLink to="/rechercher">
         <img src="~/public/logo-thel.png" alt="Logo" class="h-10 w-9">
@@ -22,6 +22,16 @@
             </div>
             <div>
               <NuxtLink to="/archiver" class="text-white px-3 font-medium hover:underline">Archiver</NuxtLink>
+              <span class="text-white px-4">|</span>
+
+            </div>
+          </div>
+          <div class="flex items-center">
+            <div class="ml-4">
+              <img src="~/public/check-icon.png" alt="Vérification" class="h-5 w-5">
+            </div>
+            <div>
+              <NuxtLink to="/review" class="text-white px-3 font-medium hover:underline">Vérifier</NuxtLink>
             </div>
           </div>
           <div v-if="isAdmin" class="flex items-center">
@@ -83,11 +93,14 @@ export default {
         if (response.status === 200) {
           console.log('Vous êtes déconnecté')
           this.$router.push('/login');
+          this.$snackbar.add({type:'success',text:"Vous êtes déconnecté"});
         } else {
           console.error('Failed to logout:', response.data)
+          this.$snackbar.add({type:'fail',text:"Il y a eu une erreur lors de la déconnexion veuillez réessayer"});
         }
       } catch (error) {
-        console.error('Error logging out:', error)
+        console.error('Error logging out:', error);
+        this.$snackbar.add({type:'fail',text:"Il y a eu une erreur lors de la déconnexion veuillez réessayer"});
       }
     },
 

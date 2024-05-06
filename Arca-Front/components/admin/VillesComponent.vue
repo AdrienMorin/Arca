@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import UserController from '~/services/userController'
+import LocationController from '~/services/locationController'
 
 export default {
   data() {
@@ -84,28 +84,47 @@ export default {
     async fetchVilles() {
       const tokenCookie = useCookie('token')
       const token = tokenCookie.value
-      const response = await UserController.getInstance().fetchLocations(token)
+      const response = await LocationController.getInstance().fetchLocations(token)
       return response
     },
     async addVille() {
-      console.log('Adding Ville:', this.newVille);
+      console.log('Adding Ville:', this.newVille.regionname, this.newVille.cityname, this.newVille.zipcode, this.newVille.country);
       const tokenCookie = useCookie('token')
       const token = tokenCookie.value
-      const response = await UserController.getInstance().createLocation(
+      try{
+        const response = await LocationController.getInstance().createLocation(
         this.newVille.regionname,
         this.newVille.cityname,
         this.newVille.zipcode,
         this.newVille.country, token)
         console.log("resp adding ville contr",response)
-      if (response.status === 200){
-        const id=this.newVille.id
-        const displayname = this.newVille.cityname + ', ' + this.newVille.regionname + ', ' + this.newVille.country
-        this.villes.push({"id": id, "displayname": displayname, "zipcode": `${this.newVille.zipcode}`}) // Push Ville to the list
-        this.newVille = {
-        regionname: '',
-        cityname: '',
-        zipcode: '',
-        country: ''}; // Reset form
+        if (response.status === 200){
+          const id=this.newVille.id
+          const displayname = this.newVille.cityname + ', ' + this.newVille.regionname + ', ' + this.newVille.country
+          this.villes.push({"id": id, "displayname": displayname, "zipcode": `${this.newVille.zipcode}`}) // Push Ville to the list
+          this.newVille = {
+          regionname: '',
+          cityname: '',
+          zipcode: '',
+          country: ''}; // Reset form
+          this.$snackbar.add({
+            text: 'Ville ajoutée avec succès',
+            type: 'success'
+          })
+        }
+      } catch (error) {
+        console.log('Error adding Ville:', error)
+        if(error.response.status === 400){
+          this.$snackbar.add({
+            text: 'Ce lieu existe déjà',
+            type: 'error'
+          })
+        } else {
+          this.$snackbar.add({
+            text: 'Erreur lors de l\'ajout de la ville',
+            type: 'error'
+          })
+        }
       }
     },
     async deleteVille(event, id) {
@@ -113,12 +132,24 @@ export default {
         console.log('Deleting Ville:', id)
         const tokenCookie = useCookie('token')
         const token = tokenCookie.value
-        const response = await UserController.getInstance().deleteLocation(id, token)
-        if (response.status === 200){
-          const index = this.villes.findIndex(ville => ville.id === id);
-          if (index !== -1) {
-            this.villes.splice(index, 1);
+        try{
+          const response = await LocationController.getInstance().deleteLocation(id, token)
+          if (response.status === 200){
+            const index = this.villes.findIndex(ville => ville.id === id);
+            if (index !== -1) {
+              this.villes.splice(index, 1);
+            }
           }
+          this.$snackbar.add({
+            text: 'Ville supprimée avec succès',
+            type: 'success'
+          })
+        } catch (error) {
+          console.error(error);
+          this.$snackbar.add({
+            text: 'Erreur lors de la suppression de la ville',
+            type: 'error'
+          })
         }
       }
     },

@@ -63,7 +63,7 @@
 </template>
 
 <script>
-    import UserController from '~/services/userController'
+    import CategoryController from '~/services/categorieController'
 
     export default {
         data() {
@@ -84,31 +84,116 @@
             async fetchCategories() {
                 const tokenCookie = useCookie('token')
                 const token = tokenCookie.value
-                return await UserController.getInstance().fetchCategories(token)
+                return await CategoryController.getInstance().fetchCategories(token)
             },
             async addCategory() {
                 console.log('Adding category:', this.newCategory);
                 const tokenCookie = useCookie('token')
                 const token = tokenCookie.value
-                const response = await UserController.getInstance().createCategory(this.newCategory.name, token)
-                if (response.status === 200){
-                    this.categories.push({"name": `${this.newCategory.name}`}) // Push category to the list
-                    this.newCategory.name = '';
+                
+                try{
+                    const response = await UserController.getInstance().createCategory(this.newCategory.name, token)
+                    if (response.status === 200){
+                        this.categories.push({"name": `${this.newCategory.name}`}) // Push category to the list
+                        this.newCategory.name = '';
+                        this.$snackbar.add({
+                            text: 'Catégorie ajoutée avec succès',
+                            type: 'success'
+                        })
+                    }
+                } catch (error) {
+                    console.log(error)
+                    if(error.response.status === 400){
+                        this.$snackbar.add({
+                            text: 'La catégorie existe déjà',
+                            type: 'error'
+                        })
+                    }else{
+                        this.$snackbar.add({
+                            text: 'Erreur lors de l\'ajout de la catégorie',
+                            type: 'error'
+                        })
+                    }
                 }
+                
             },
             async updateCategory() { 
                 const tokenCookie = useCookie('token')
                 const token = tokenCookie.value
-                
-                const response = await UserController.getInstance().updateCategory(token, this.oldCategory.name, this.updatedCategory.name)
 
-                if (response.status === 200){
-                    const index = this.categories.findIndex(category => category.name === this.oldCategory.name);
-                    if (index !== -1) {
-                        this.categories.splice(index, 1);
+                try{
+                    const response = await UserController.getInstance().updateCategory(token, this.oldCategory.name, this.updatedCategory.name)
+                    if (response.status === 200){
+                        const index = this.categories.findIndex(category => category.name === this.oldCategory.name);
+                        if (index !== -1) {
+                            this.categories.splice(index, 1);
+                        }
+                        this.categories.push({"name": `${this.updatedCategory.name}`})
+                        this.$snackbar.add({
+                            text: 'Catégorie modifiée avec succès',
+                            type: 'success'
+                        })
                     }
-                    this.categories.push({"name": `${this.updatedCategory.name}`})
+                } catch (error) {
+                    if(error.response.status === 404){
+                        this.$snackbar.add({
+                            text: 'La catégorie n\'existe pas',
+                            type: 'error'
+                        })
+                    }else if(error.response.status === 400){
+                        this.$snackbar.add({
+                            text: 'La nouvelle catégorie existe déjà',
+                            type: 'error'
+                        })
+                    }else{
+                        this.$snackbar.add({
+                        text: 'Erreur lors de la modification de la catégorie',
+                        type: 'error'
+                        })
+                    }
+
                 }
+                
+                
+
+                
+
+                try{
+                    const response = await UserController.getInstance().updateCategory(token, this.oldCategory.name, this.updatedCategory.name)
+                    if (response.status === 200){
+                        const index = this.categories.findIndex(category => category.name === this.oldCategory.name);
+                        if (index !== -1) {
+                            this.categories.splice(index, 1);
+                        }
+                        this.categories.push({"name": `${this.updatedCategory.name}`})
+                        this.$snackbar.add({
+                            text: 'Catégorie modifiée avec succès',
+                            type: 'success'
+                        })
+                    }
+                } catch (error) {
+                    if(error.response.status === 404){
+                        this.$snackbar.add({
+                            text: 'La catégorie n\'existe pas',
+                            type: 'error'
+                        })
+                    }else if(error.response.status === 400){
+                        this.$snackbar.add({
+                            text: 'La nouvelle catégorie existe déjà',
+                            type: 'error'
+                        })
+                    }else{
+                        this.$snackbar.add({
+                        text: 'Erreur lors de la modification de la catégorie',
+                        type: 'error'
+                        })
+                    }
+
+                }
+                
+                
+
+                
             },
         }
     };

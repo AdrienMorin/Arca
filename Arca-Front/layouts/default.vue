@@ -3,7 +3,10 @@ import Navbar from "~/components/users/Navbar.vue";
 </script>
 
 <template>
-  <Navbar />
-  <slot/>
+  <div class="overflow-y-hidden">
+    <Navbar class="sticky top-0 z-50">
+    </Navbar>
+    <slot/>
+  </div>
 
 </template>

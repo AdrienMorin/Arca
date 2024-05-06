@@ -36,6 +36,35 @@ class LocationController {
     return response;
   }
 
+  public async createLocation(regionname: string, cityname: string, zipcode: string, country: string, token: string): Promise<any> {
+    const response = await axios.post(`${baseUrl}/location/create`,
+    {
+        regionname,
+        cityname,
+        zipcode,
+        country
+    }, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+    });
+
+    return response;
+  }
+
+  public async deleteLocation(id: number, token: string): Promise<any> {
+    const response = await axios.post(`${baseUrl}/location/delete`,
+      {
+        id
+      }, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+    return response;
+  }
+
 }
 
 export default LocationController;

@@ -3,20 +3,19 @@ const { MongoClient, ServerApiVersion } = require("mongodb");
 const uri = "mongodb+srv://hexanomedufutur:LCQbwYjD0LLaTxRW@arca-metadata-storage.qp6278d.mongodb.net/";
 import Drive from '@ioc:Adonis/Core/Drive';
 import fs from 'fs';
+import Person from 'App/Models/Person';
 import GetPipelineValidator from 'App/Validators/Pipelines/GetPipelineValidator';
-import Person from "App/Models/Person";
+import docxPdf from 'docx-pdf';
 
 const client = new MongoClient(uri,  {
     serverApi: {
         version: ServerApiVersion.v1,
-        strict: true,
+        strict: false,
         deprecationErrors: true,
     }
-}
-);
+});
 
-export default class GetPipelinesController {
-
+export default class GetDocsController {
 
     public async getDoc({ auth, bouncer, response, request }: HttpContextContract) {
         await auth.use('api').authenticate();
@@ -60,20 +59,17 @@ export default class GetPipelinesController {
 
         interface Person {
             id: string;
-            name: string;
+            displayname: string;
         }
 
         const peopleList: Person[] = [];
 
-        if(result.people){
-            for (const personId of result.people) {
-                const fetchedPerson = await Person.findOrFail(personId);
-                peopleList.push({ id: personId, name: fetchedPerson.displayname });
-            }
-            result.people = peopleList;
-        } else {
-            result.people = [];
+        for (const personId of result.people) {
+            const fetchedPerson = await Person.findOrFail(personId);
+            peopleList.push({ id: personId, displayname: fetchedPerson.displayname });
         }
+        result.people = peopleList;
+        result.source="arca"
 
         console.log(result);
         console.log("mongo db done");
@@ -102,15 +98,18 @@ export default class GetPipelinesController {
             }, []);
     
             const people = await Person.query().whereIn('id', personIds);
-            const peopleMap = new Map(people.map(person => [person.id.toString(), person.displayname]));
-                            
+            const peopleMap = new Map(people.map(person => [person.id.toString(), person.displayname]));        
             const result = documents.map(doc => ({
-                extension: doc.filename?.split('.').pop(),
-                name: doc.name,
+                id: doc.filename,
+                extension: doc.filename?.split('.')[1],
+                name: doc.name?.split('.')[0],
                 villes: doc.villes || [],
-                personnes: (doc.personnes || []).map(id => peopleMap.get(id) || 'Unknown'),
-                type: doc.type,
-                date: doc.createdAt
+                personnes: (doc.personnes || []).map(id => {
+                    const stringId = id.toString();
+                    return peopleMap.get(stringId) || '';
+                }),
+                type: doc.type || '',
+                date: doc.createdAt ? new Date(doc.createdAt).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' }) : 'pas de date disponible'
             }));
     
             return response.json(result);
@@ -145,25 +144,22 @@ export default class GetPipelinesController {
         console.log("s3 done")
 
         const id = s3_name.split('.')[0];
-        const result = await client.db("arca-metadata").collection("arca").findOne({ _id: id });
+        const result = await client.db("reviewDB").collection("review").findOne({ _id: id });
+        console.log(result)
+        if(result.people){
+            interface Person {
+                id: string;
+                name: string;
+            }
 
-        interface Person {
-            id: string;
-            name: string;
-        }
-
-        const peopleList: Person[] = [];
-
-        if (result.people) {
+            const peopleList: Person[] = [];
+            
             for (const personId of result.people) {
                 const fetchedPerson = await Person.findOrFail(personId);
                 peopleList.push({ id: personId, name: fetchedPerson.displayname });
             }
             result.people = peopleList
-        } else {
-            result.people = []
         }
-
 
         console.log(result);
         console.log("mongo db done")
@@ -171,6 +167,5 @@ export default class GetPipelinesController {
         return response.status(200).json(result)
         
     }
-
-
+    
 }

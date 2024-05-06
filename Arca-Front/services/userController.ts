@@ -35,6 +35,20 @@ class UserController {
     return response;
   }
 
+  public async isConnected(token: string): Promise<any> {
+    const response = await axios.get('https://127.0.0.1:3333/api', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    console.log(response);
+    if (response.data != 'Vous êtes connecté') {
+      return false;
+    }else{
+      return true;
+    }
+  }
+
   public async createUser(firstname: string, lastname: string, email: string, password: string, token: string): Promise<any> {
     const response = await axios.post(`${baseUrl}/auth/register`,
     {
@@ -52,33 +66,6 @@ class UserController {
     return response;
   }
 
-  public async createLocation(regionname: string, cityname: string, zipcode: number, country: string, token: string): Promise<any> {
-    const response = await axios.post(`${baseUrl}/location/create`,
-    {
-        regionname,
-        cityname,
-        zipcode,
-        country
-    }, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-    });
-
-    return response;
-  }
-
-  public async createCategory(name: string, token: string): Promise<any> {
-    const response = await axios.post(`${baseUrl}/category/create`,
-    {name},
-    {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
-
-    return response;
-  }
 
   public async isAdmin(token: string): Promise<any> {
     const response = await axios.get('https://127.0.0.1:3333/api/auth/isLoggedInAsAdmin', {
@@ -91,19 +78,6 @@ class UserController {
 
   public async deleteUser(id: number, token: string): Promise<any> {
     const response = await axios.post(`${baseUrl}/deleteUser`,
-      {
-        id
-      }, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-
-    return response;
-  }
-
-  public async deleteLocation(id: number, token: string): Promise<any> {
-    const response = await axios.post(`${baseUrl}/location/delete`,
       {
         id
       }, {
@@ -134,28 +108,23 @@ class UserController {
     return response;
   }
 
-  public async fetchLocations(token: string):Promise<any>{
-    const response = await axios.get(`${baseUrl}/location/fetchLocations`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-    console.log(response);
-    return response;
-  }
-
   public async uploadDocument(
     token: string,
     file: File,
     titre: string,
     description: string,
     retranscription: string,
-    date: string,
-    personnes: string
+    date: {
+      start: string,
+      end:string,
+    },
+    villes: string,
+    personnes: string,
+    mongoDB: string
 
   ): Promise<any> {
     const response = await axios.post(`${baseUrl}/basic/upload`,
-      {file, titre, description, retranscription, date, personnes},
+      {file, titre, description, retranscription, date, villes, personnes, mongoDB},
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -167,6 +136,155 @@ class UserController {
     return response;
   }
 
+  public async updateDocument(
+    token: string,
+    file: File,
+    titre: string,
+    description: string,
+    retranscription: string,
+    date: {
+      start: string,
+      end:string,
+    },
+    villes: string,
+    personnes: string,
+    mongoDB: string,
+    id:string,
+
+  ): Promise<any> {
+    const response = await axios.post(`${baseUrl}/updateDocument`,
+      {file, titre, description, retranscription, date, villes, personnes, mongoDB,id},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+
+        }
+      });
+    console.log(response);
+    return response;
+  }
+
+  public async transferDocumentById(
+    token: string,
+    id:string,
+
+  ): Promise<any> {
+    const response = await axios.post(`${baseUrl}/transferDocumentById`,
+      {id},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+
+        }
+      });
+    console.log(response);
+    return response;
+  }
+
+  public async deleteDocument(
+    token: string,
+    id:string,
+    db: string
+
+  ): Promise<any> {
+    const response = await axios.post(`${baseUrl}/deleteDocument`,
+      {id, db},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+
+        }
+      });
+    console.log(response);
+    return response;
+  }
+  
+
+  public async updateDocument(
+    token: string,
+    file: File,
+    titre: string,
+    description: string,
+    retranscription: string,
+    date: {
+      start: string,
+      end:string,
+    },
+    villes: string,
+    personnes: string,
+    mongoDB: string,
+    id:string,
+
+  ): Promise<any> {
+    const response = await axios.post(`${baseUrl}/updateDocument`,
+      {file, titre, description, retranscription, date, villes, personnes, mongoDB,id},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+
+        }
+      });
+    console.log(response);
+    return response;
+  }
+
+  public async transferDocumentById(
+    token: string,
+    id:string,
+
+  ): Promise<any> {
+    const response = await axios.post(`${baseUrl}/transferDocumentById`,
+      {id},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+
+        }
+      });
+    console.log(response);
+    return response;
+  }
+
+  public async deleteDocument(
+    token: string,
+    id:string,
+    db: string
+
+  ): Promise<any> {
+    const response = await axios.post(`${baseUrl}/deleteDocument`,
+      {id, db},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+
+        }
+      });
+    console.log(response);
+    return response;
+  }
+  
+  public async getSearchResults(
+    token: string,
+    query: string,
+
+  ): Promise<any> {
+    const response = await axios.post(`${baseUrl}/search`,
+      {query},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        }
+      });
+    console.log(response);
+    return response;
+  }
 
   public async getDocument(
     token: string,
@@ -186,11 +304,12 @@ class UserController {
     return response;
   }
 
- public async uploadAiDocument(
+  public async uploadAiDocument(
     token: string,
     file: File,
+
   ): Promise<any> {
-    const response = await axios.post(`${baseUrl}/basic/upload`,
+    const response = await axios.post(`${baseUrl}/ai/upload`,
       {file},
       {
         headers: {
@@ -214,7 +333,7 @@ class UserController {
   }
 
 
-    public async register(
+  public async register(
     email: string,
     password: string,
     firstname: string,
@@ -243,22 +362,6 @@ class UserController {
         Authorization: `Bearer ${token}`
       }
     });
-    return response;
-  }
-
-  public async updateCategory(
-    token: string,
-    oldName: string,
-    newName: string
-  ): Promise<any> {
-    const response = await axios.post(`${baseUrl}/category/update`, 
-    {oldName, newName},
-    {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-    console.log(response);
     return response;
   }
 

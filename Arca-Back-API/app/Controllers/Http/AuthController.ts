@@ -8,12 +8,36 @@ export default class AuthController {
   public async register({auth, bouncer, request, response}: HttpContextContract){
     await auth.use('api').authenticate()
     await bouncer.with('UserPolicy').authorize('createUser')
-    const payload = await request.validate(RegisterUserValidator)
+    let payload
+    try{
+      payload = await request.validate(RegisterUserValidator)
+    }catch(e){
+      console.log(e)
+      return response.status(400).json({message: 'Données invalides'})
+    }
     if (payload.role === null || payload.role === 'user') {
-      await User.create(payload)
+      try{
+        await User.create(payload)
+      }catch(e){
+        console.log(e)
+        if(e.code === '23505'){
+          return response.status(400).json({message: 'Cet utilisateur existe déjà'})
+        }else{
+          return response.status(500).json({message: 'Erreur lors de la création de l\'utilisateur'})
+        }
+      }
     } else if (payload.role === 'admin') {
       await bouncer.with('UserPolicy').authorize('createAdmin')
-      await User.create(payload)
+      try{
+        await User.create(payload)
+      }catch(e){
+        console.log(e)
+        if(e.code === '23505'){
+          return response.status(400).json({message: 'Cet utilisateur existe déjà'})
+        }else{
+          return response.status(500).json({message: 'Erreur lors de la création de l\'utilisateur'})
+        }
+      }
     } else {
       return response.status(400).json({message: 'Rôle invalide'})
     }
@@ -24,7 +48,7 @@ export default class AuthController {
     const {email, password} = await request.validate(LoginUserValidator)
     try {
       const token = await auth.use('api').attempt(email, password,{
-        expiresIn: '30 mins'
+        expiresIn: '12 hours'
       })
       return token
     } catch {
