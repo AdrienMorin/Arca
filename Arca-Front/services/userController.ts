@@ -186,7 +186,7 @@ class UserController {
     return response;
   }
 
-  public async updateDoc(
+  public async updateDocument(
     token: string,
     file: File,
     titre: string,
