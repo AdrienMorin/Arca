@@ -1,0 +1,6 @@
+modèle vosk fr 0.22:
+https://alphacephei.com/vosk/models
+
+ffmpeg pour la conversion de wav à wav mono, 16-bit, 16 kHz:
+https://www.gyan.dev/ffmpeg/builds/ (full version)
+(bien penser à l'ajouter au path)
