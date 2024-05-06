@@ -9,7 +9,6 @@ import ModifyDocValidator from 'App/Validators/Pipelines/ModifyDocValidator';
 import axios from 'axios';
 const https = require('https');
 import Env from '@ioc:Adonis/Core/Env';
-import Person from "App/Models/Person";
 import S3FileUpdateValidator from 'App/Validators/Pipelines/S3FileUpdateValidator';
 
 
@@ -86,24 +85,15 @@ export default class UploadDocsController {
     }
 
     public async updateDocContentOnS3({ auth, response, request }: HttpContextContract) {
-        // Authenticate the user
         await auth.use('api').authenticate();
 
-        // Validate the request against the custom validator
         const validatedData = await request.validate(S3FileUpdateValidator);
         const { fileName, file } = validatedData;
 
-        // Check if the file is provided in the temporary path for update
         if (file.tmpPath) {
             console.log(`Updating file content for: ${fileName}`);
-
-            // Read the file data from the temporary location
             const buffer = fs.readFileSync(file.tmpPath);
-
-            // Overwrite the existing file on S3 using the same file name
             await Drive.put(fileName, buffer);
-
-            // Return a success response
             return response.status(200).json({ message: 'Document content updated successfully' });
         } else {
             console.error('No temporary file path provided, unable to update document content.');
@@ -141,8 +131,6 @@ export default class UploadDocsController {
             type: type,
             author: "Retranscription automatique",
         }
-
-        //await client.db("reviewDB").collection("review").insertOne(doc);
 
         if (payload.file.tmpPath) {
             console.log(payload.file.tmpPath)
@@ -245,18 +233,11 @@ export default class UploadDocsController {
 
     public async transferDocumentById({ request, response }: HttpContextContract) {
         await client.connect();
-        
-        // Get document ID from request
         const docId = request.input('documentId');
-    
-        // Declare the session variable using the MongoDB client
         const session = client.startSession();
     
         try {
-            // Start the transaction
             session.startTransaction();
-    
-            // Retrieve and delete the document from the review database
             const reviewCollection = client.db("reviewDB").collection("review");
             const documentToMove = await reviewCollection.findOne({ _id: docId }, { session });
     
@@ -265,14 +246,10 @@ export default class UploadDocsController {
                 return response.status(404).json({ message: 'Document not found in the review database.' });
             }
     
-            // Delete the document from the review database
             await reviewCollection.deleteOne({ _id: docId }, { session });
     
-            // Insert the document into the arca database
             const arcaCollection = client.db("arca-metadata").collection("arca");
             await arcaCollection.insertOne(documentToMove, { session });
-    
-            // Commit the transaction
             await session.commitTransaction();
     
             return response.status(200).json({ message: 'Document transferred successfully.' });
@@ -283,7 +260,6 @@ export default class UploadDocsController {
             }
             return response.status(500).json({ message: 'Failed to transfer document.', error });
         } finally {
-            // End the session regardless of the outcome
             session.endSession();
         }
     }

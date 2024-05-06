@@ -51,6 +51,8 @@ Route.group(() => {
   Route.post('/updateDocuments/:id', 'UploadDocsController.updateDoc')
   Route.post('/transferDocumentById/:id', 'UploadDocsController.transferDocumentById')
 
+  //Delete routes
+  Route.post('/deleteDocument', 'DeleteDocsController.deleteDocument')
 
   // A passer en admin
   Route.post('/deleteArca', 'DeleteDocsController.deleteDocumentArca')

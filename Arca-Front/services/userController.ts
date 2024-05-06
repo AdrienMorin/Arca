@@ -89,8 +89,6 @@ class UserController {
     return response;
   }
 
-
-
   public async getUser(token: string):Promise<any>{
     const response = await axios.get(`${baseUrl}/user/getUser`, {
       headers: {
@@ -109,7 +107,6 @@ class UserController {
     console.log(response);
     return response;
   }
-
 
   public async uploadDocument(
     token: string,
@@ -168,13 +165,13 @@ class UserController {
     return response;
   }
 
-  public async transferDocById(
+  public async transferDocumentById(
     token: string,
     id:string,
 
   ): Promise<any> {
-    const response = await axios.post(`${baseUrl}/basic/transferDocumentById/${id}`,
-      {id},
+    const response = await axios.post(`${baseUrl}/basic/updateDocuments/${id}`,
+      {},
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -186,6 +183,25 @@ class UserController {
     return response;
   }
 
+  public async deleteDocument(
+    token: string,
+    id:string,
+    db: string
+
+  ): Promise<any> {
+    const response = await axios.post(`${baseUrl}/basic/deleteDocument`,
+      {id, db},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+
+        }
+      });
+    console.log(response);
+    return response;
+  }
+  
   public async getSearchResults(
     token: string,
     query: string,
@@ -202,8 +218,6 @@ class UserController {
     console.log(response);
     return response;
   }
-
-
 
   public async getDocument(
     token: string,
