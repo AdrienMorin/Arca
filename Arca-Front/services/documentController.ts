@@ -73,6 +73,15 @@ public async modifyDocument(
     console.log(response);
     return response;
   }
+
+  public async getDocumentById(token: string, docId: string): Promise<any> {
+    const response = await axios.post(`${API_URL}/ai/get`, { s3_name: docId }, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    });
+    return response.data;
+  }
 }
 
 export default DocumentController;
