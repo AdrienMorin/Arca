@@ -99,6 +99,7 @@ export default class GetDocsController {
             const people = await Person.query().whereIn('id', personIds);
             const peopleMap = new Map(people.map(person => [person.id.toString(), person.displayname]));        
             const result = documents.map(doc => ({
+                id: doc.filename,
                 extension: doc.filename?.split('.')[1],
                 name: doc.name?.split('.')[0],
                 villes: doc.villes || [],
@@ -143,19 +144,21 @@ export default class GetDocsController {
 
         const id = s3_name.split('.')[0];
         const result = await client.db("reviewDB").collection("review").findOne({ _id: id });
+        console.log(result)
+        if(result.people){
+            interface Person {
+                id: string;
+                name: string;
+            }
 
-        interface Person {
-            id: string;
-            name: string;
+            const peopleList: Person[] = [];
+            
+            for (const personId of result.people) {
+                const fetchedPerson = await Person.findOrFail(personId);
+                peopleList.push({ id: personId, name: fetchedPerson.displayname });
+            }
+            result.people = peopleList
         }
-
-        const peopleList: Person[] = [];
-
-        for (const personId of result.people) {
-            const fetchedPerson = await Person.findOrFail(personId);
-            peopleList.push({ id: personId, name: fetchedPerson.displayname });
-        }
-        result.people = peopleList
 
         console.log(result);
         console.log("mongo db done")
