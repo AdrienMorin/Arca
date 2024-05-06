@@ -192,13 +192,11 @@ export default class UploadDocsController {
         const docId = request.param("id");
         const payload = await request.validate(ModifyDocValidator);
     
-        // Build the update document from optional and required fields
         let updateData = {
             updatedAt: new Date(),
             updatedBy: auth.user?.lastname + ' ' + auth.user?.firstname,
         };
     
-        // Conditional assignment for optional fields
         if (payload.titre) {
             updateData['name'] = payload.titre;
         }
@@ -229,7 +227,6 @@ export default class UploadDocsController {
         const targetCollection = payload.mongoDB === "ntbr" ? "arca" : "review";
         
         try {
-            // Update the document in the specified collection
             const result = await client.db(targetDatabase).collection(targetCollection).updateOne(
                 { _id: docId },
                 { $set: updateData }

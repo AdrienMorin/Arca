@@ -12,7 +12,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in documents" :key="index">
+          <tr v-for="(item, index) in documents" :key="index" @click="redirectToModif(item.id)">
             <td class="border px-4 py-2 truncate max-w-xs">{{ item.extension }}</td>
             <td class="border px-4 py-2 truncate max-w-xs">{{ item.name }}</td>
             <td class="border px-4 py-2 truncate max-w-xs">{{ item.villes.join(', ') }}</td>
@@ -30,7 +30,7 @@ import { ref, onMounted } from 'vue';
 import DocumentService from '~/services/documentController';
 
 export default {
-  setup () {
+  setup() {
     const documents = ref([]);
 
     const fetchDocuments = async () => {
@@ -41,14 +41,19 @@ export default {
       } catch (error) {
         console.error('Error fetching documents:', error);
       }
-    }
+    };
+
+    const redirectToModif = (id) => {
+      window.location.href = `/ModifDocument?id=${id}`;
+    };
 
     onMounted(fetchDocuments);
 
     return {
       documents,
-      fetchDocuments
+      fetchDocuments,
+      redirectToModif
     };
   }
-}
+};
 </script>

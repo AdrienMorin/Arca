@@ -100,6 +100,7 @@ export default class GetDocsController {
             const peopleMap = new Map(people.map(person => [person.id.toString(), person.displayname]));
                             
             const result = documents.map(doc => ({
+                id : doc._id,
                 extension: doc.filename?.split('.').pop(),
                 name: doc.name,
                 villes: doc.villes || [],
