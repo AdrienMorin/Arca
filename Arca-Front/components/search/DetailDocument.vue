@@ -88,7 +88,7 @@ definePageMeta({
       <div class=" flex items-stretch	flex-col lg:space-y-4 md:space-y-2 ">
         <div class="flex-1/6 justify-left items-center relative md:top-5 lg:left-12 md:left-3">
           <div class="text-justify lg:text-4xl  md:text-2xl font-medium object-left-bottom relatvie">{{
-              metadata.yname
+              metadata.name
             }}
           </div>
         </div>
