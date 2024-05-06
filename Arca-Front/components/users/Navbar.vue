@@ -22,6 +22,16 @@
             </div>
             <div>
               <NuxtLink to="/archiver" class="text-white px-3 font-medium hover:underline">Archiver</NuxtLink>
+              <span class="text-white px-4">|</span>
+
+            </div>
+          </div>
+          <div class="flex items-center">
+            <div class="ml-4">
+              <img src="~/public/check-icon.png" alt="Vérification" class="h-5 w-5">
+            </div>
+            <div>
+              <NuxtLink to="/review" class="text-white px-3 font-medium hover:underline">Vérifier</NuxtLink>
             </div>
           </div>
           <div v-if="isAdmin" class="flex items-center">
