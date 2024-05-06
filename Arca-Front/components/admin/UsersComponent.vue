@@ -93,11 +93,36 @@ export default {
       console.log('Adding user:', this.newUser);
       const tokenCookie = useCookie('token')
       const token = tokenCookie.value
-      const response = await UserController.getInstance().createUser(this.newUser.firstname, this.newUser.lastname, this.newUser.email, this.newUser.password, token)
-      if (response.status === 200){
-        this.newUser.role = 'user'
-        this.users.push(this.newUser) // Push user to the list
-        this.newUser = { firstname: '', lastname: '',  email: '', password: '' }; // Reset form
+      try {
+        const response = await UserController.getInstance().createUser(this.newUser.firstname, this.newUser.lastname, this.newUser.email, this.newUser.password, token)
+        if (response.status === 200){
+          this.newUser.role = 'user'
+          this.users.push(this.newUser) // Push user to the list
+          this.newUser = { firstname: '', lastname: '',  email: '', password: '' }; // Reset form
+          this.$snackbar.add({
+            text: 'Utilisateur ajouté avec succès',
+            type: 'success'
+          })
+        }
+      } catch (error) {
+        console.error(error);
+        if (error.response.status === 400 && error.response.message === 'Rôle invalide') {
+          this.$snackbar.add({
+            text: 'Le rôle de l\'utilisateur n\'est pas valide',
+            type: 'error'
+          })
+        }else if (error.response.status === 400) {
+          this.$snackbar.add({
+            text: 'La personne existe déjà',
+            type: 'error'
+          })
+        }else{
+          this.$snackbar.add({
+            text: 'Erreur lors de l\'ajout de l\'utilisateur',
+            type: 'error'
+          })
+        }
+        // Handle the error here
       }
     },
     async deleteUser(event, id) {
@@ -105,12 +130,24 @@ export default {
         console.log('Deleting user:', id)
         const tokenCookie = useCookie('token')
         const token = tokenCookie.value
-        const response = await UserController.getInstance().deleteUser(id, token)
-        if (response.status === 200){
-          const index = this.users.findIndex(user => user.id === id);
-          if (index !== -1) {
-            this.users.splice(index, 1);
+        try{
+          const response = await UserController.getInstance().deleteUser(id, token)
+          if (response.status === 200){
+            const index = this.users.findIndex(user => user.id === id);
+            if (index !== -1) {
+              this.users.splice(index, 1);
+            }
+            this.$snackbar.add({
+              text: 'Utilisateur supprimé avec succès',
+              type: 'success'
+            })
           }
+        } catch (error) {
+          console.error(error);
+          this.$snackbar.add({
+            text: 'Erreur lors de la suppression de l\'utilisateur',
+            type: 'error'
+          })
         }
       }
     },
