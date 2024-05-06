@@ -82,7 +82,7 @@ export default {
       console.log('fileCreated:', file);
 
       // ou utiliser l'action setFile
-      fileStore.setFile(file, response);
+      fileStore.setFile(file, response, 'review');
       const test=fileStore.getFile;
       const testmeta=fileStore.getMetadata;
       console.log('testname : ',test);
