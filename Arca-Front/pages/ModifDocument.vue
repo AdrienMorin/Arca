@@ -122,10 +122,7 @@
     flipSupprimer() {
       this.$refs.popupSupprimer.mainshow = !this.$refs.popupSupprimer.mainshow;
     },
-    flipModifier() {
-      this.$refs.popupModifier.mainshow = !this.$refs.popupModifier.mainshow;
-    },
-    
+   
     getDocument() {
       console.log('Checking document...');
       const fileStore = useFileStore();
@@ -144,13 +141,21 @@
       console.log('eeeeeeeeeeeeeeeeeee')
       console.log('metadataaaaa:', this.metadata.retranscription);
       this.nom=this.metadata.filename
-      this.mongoDB=this.metadata.mongoDB;
       console.log("+++++++++++++++++++++++++",this.metadata)
     },
     handleSelectedRange(range) {
       this.date.start= range.start;
       this.date.start=new Date(range.start).toISOString();
       this.date.end= new Date(range.end).toISOString();
+    },
+
+    async handleUpdateClick() {
+      console.log('Updating document...');
+      const res = await this.updateDocument();
+      if (res === true) {
+        console.log('update successful')
+        this.flipModifier();
+      }
     },
 
     async updateDocument() {
@@ -185,19 +190,21 @@
       console.log('Date', this.date)
       console.log('Cities', this.citiesListe)
       console.log('Personnes', this.personneListe)
-      console.log('MongoDB', this.nom)
+      console.log('MongoDB', this.mongoDB)
 
       const response = await UserController.getInstance().updateDocument(token,
       this.File,this.metadata.name,this.description,this.retrancription,this.date,this.citiesListe,this.personneListe,this.mongoDB, this.nom);
       
       if (response.status === 200) {
         console.log('Vous êtes connecté')
-        this.flipModifier();
+        return true
+      } else {
+        return false
       }
     },
 
     async transferDocumentById() {
-      this.updateDocument();
+      await this.updateDocument();
       console.log('Transfering document............................');
       const tokenCookie = useCookie('token');
       const token= tokenCookie.value;
@@ -245,7 +252,7 @@
       ref="popupAnnul"
       :title="'Annuler Modifications'"
       :description1="'Etes-vous sûr de vouloir annuler l`ajout du document suivant'"
-      :titreDoc="'Complainte du'"
+      :titreDoc="this.metadata.name"
       :annuler="true" >
     </Popup>
 
@@ -253,7 +260,7 @@
           ref="popupAjout"
           :title="'Ajouter Document'"
           :description1="'Votre Document'"
-          :titreDoc="'Complainte du'"
+      :titreDoc="this.metadata.name"
           :description2="'a bien été Ajouté à la base de donnée.'"
           :color="true" 
           :annuler="false">
@@ -263,60 +270,23 @@
       ref="popupModif"
       :title="'Modifier Document'"
       :description1="'Votre Document'"
-      :titreDoc="'Complainte du'"
+      :titreDoc="this.metadata.name"
       :description2="'a bien été modifié dans la base de donnée.'"
       :color="true" 
       :annuler="false">
     </Popup>
 
-    <Popup 
-      ref="popupModif"
-      :title="'Modifier Document'"
-      :description1="'Votre Document'"
-      :titreDoc="'Complainte du'"
-      :description2="'a bien été modifié dans la base de donnée.'"
-      :color="true" 
-      :annuler="false">
-    </Popup>
 
     <Popup 
       ref="popupEnregistrer"
       :title="'Ajouter Document'"
       :description1="'Votre Document'"
-      :titreDoc="'Complainte du'"
+      :titreDoc="this.metadata.name"
       :description2="'a bien été Enregistrée à la base de donnée et devrait être Vérifier par la suite.'"
       :color="true" 
       :annuler="false">
     </Popup>
-    <Popup 
-      ref="popupEnregistrer"
-      :title="'Ajouter Document'"
-      :description1="'Votre Document'"
-      :titreDoc="'Complainte du'"
-      :description2="'a bien été Enregistrée à la base de donnée et devrait être Vérifier par la suite.'"
-      :color="true" 
-      :annuler="false">
-    </Popup>
-
-    <Popup 
-      ref="popupSupprimer"
-      :title="'Supprimer Document'"
-      :description1="'Votre Document'"
-      :titreDoc="'Complainte du'"
-      :description2="'a bien été supprimé de la base de donnée.'"
-      :color="true" 
-      :annuler="false">
-    </Popup>
-
-    <Popup 
-      ref="popupModifier"
-      :title="'Modifier Document'"
-      :description1="'Votre Document'"
-      :titreDoc="'Complainte du'"
-      :description2="'a bien été modifié de la base de donnée.'"
-      :color="true" 
-      :annuler="false">
-    </Popup>
+   
 
 
   <!--popup --> 
@@ -336,7 +306,7 @@
          <div class="flex-none xl:w-1/3 lg:w-1/4 bg-[#027BCE] bg-opacity-10 h-full h-screen overflow-auto overflow-x-hidden">
            <div class=" flex items-stretch	 flex-col h-full lg:space-y-4 md:space-y-2">
              <div class="flex-1/6 justify-left items-center relative md:top-5 lg:left-12 md:left-3">
-               <div class="text-justify lg:text-3xl  md:text-2xl font-bold object-left-bottom relatvie">Ajout de document</div>
+               <div class="text-justify lg:text-3xl  md:text-2xl font-bold object-left-bottom relatvie">Modification du document</div>
              </div>
              <div class=" flex-5/6 relative lg:left-24 lg:top-12 md:top-6 md:left-6 w-3/4 grid grid-rows-auto justify-left items-left  grid-flow-row gap-1 ">
                <div class="flex-col justify-left items-center h-max space-y-4 lg:w-5/6 md:w-2/2">
@@ -402,7 +372,7 @@
                 <div class="flex-row place-content-between  border flex  mx-auto">
 
                     <div class=" place-content-center items-center flex w-3/4 ">
-                      <button @click="updateDocument()" type="button" class="relative top-1 text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-100 font-medium rounded-lg text-base px-10 py-3 me-2 mb-2 dark:bg-blue-400 dark:hover:bg-blue-500 focus:outline-none dark:focus:ring-blue-600">
+                      <button @click="handleUpdateClick()" type="button" class="relative top-1 text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-100 font-medium rounded-lg text-base px-10 py-3 me-2 mb-2 dark:bg-blue-400 dark:hover:bg-blue-500 focus:outline-none dark:focus:ring-blue-600">
                         <p class="text-xl">Enregistrer les modifications</p>
                       </button>
                     </div>
@@ -427,18 +397,7 @@
                       </button>
                     </div>
 
-                  <div class=" place-content-start items-start flex w-2/4 ">
-                    <button @click="deleteDocument()" type="button" class="relative top-1 text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-100 font-medium rounded-lg text-base px-10 py-3 me-2 mb-2 dark:bg-red-400 dark:hover:bg-red-500 focus:outline-none dark:focus:ring-red-600">
-                      <p class="text-xl">Supprimer</p>
-                    </button>
-                  </div>
-
-
-                  <div class=" place-content-start items-start flex w-2/4 ">
-                    <button @click="downloadDocument()" type="button" class="relative top-1 text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-100 font-medium rounded-lg text-base px-10 py-3 me-2 mb-2 dark:bg-green-400 dark:hover:bg-green-500 focus:outline-none dark:focus:ring-green-600">
-                      <p class="text-xl">Télécharger</p>
-                    </button>
-                  </div>
+                 
 
                   </div>
 

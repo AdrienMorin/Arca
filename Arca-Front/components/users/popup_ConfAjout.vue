@@ -9,8 +9,7 @@
           <p class=" inline-block mt-2 text-balck-500">
             Votre document “
           </p>
-          <p class="inline-block">La complainte du partisan</p>
-          <p class="inline-block">” a bien été ajouté.</p>
+          <p class="inline-block">Document ajouté avec succès</p>
         </div>
         <div class="mt-4 flex gap-2 place-content-center">
          

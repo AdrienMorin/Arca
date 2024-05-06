@@ -181,7 +181,7 @@
           ref="popupAnnul"
           :title="'Annuler Modifications'"
           :description1="'Etes-vous sûr de vouloir annuler l`ajout du document suivant'"
-          :titreDoc="'Complainte du'"
+          :titreDoc=this.titre
           :annuler="true" >
 
         </Popup>
@@ -190,7 +190,7 @@
           ref="popupAjout"
           :title="'Ajouter Document'"
           :description1="'Votre Document'"
-          :titreDoc="'Complainte du'"
+          :titreDoc=this.titre
           :description2="'a bien été Ajouté à la base de donnée.'"
           :color="true" 
           :annuler="false">
@@ -200,7 +200,7 @@
           ref="popupEnregistrer"
           :title="'Ajouter Document'"
           :description1="'Votre Document'"
-          :titreDoc="'Complainte du'"
+          :titreDoc=this.titre
           :description2="'a bien été Enregistrée à la base de donnée et devrait être Vérifier par la suite.'"
           :color="true" 
           :annuler="false">

@@ -10,7 +10,6 @@
             Votre document “
           </p>
           <p class="inline-block">La complainte du partisan</p>
-          <p class="inline-block">” a bien été ajouté.</p>
         </div>
         <div class="mt-4 flex gap-2 place-content-center">
          

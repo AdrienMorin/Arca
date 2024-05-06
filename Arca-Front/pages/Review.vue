@@ -13,7 +13,6 @@
         </thead>
         <tbody>
           <tr v-for="(item, index) in documents" :key="index" @click="handleRowClick(item.id)">
-          <tr v-for="(item, index) in documents" :key="index" @click="handleRowClick(item.id)">
             <td class="border px-4 py-2 truncate max-w-xs">{{ item.extension }}</td>
             <td class="border px-4 py-2 truncate max-w-xs">{{ item.name }}</td>
             <td class="border px-4 py-2 truncate max-w-xs">{{ item.villes.join(', ') }}</td>
@@ -31,23 +30,18 @@ import { ref, onMounted } from 'vue';
 import DocumentService from '~/services/documentController';
 import { useFileStore } from "~/detailDocumentTransfert.js";
 import { useRouter } from 'vue-router';
-import { useFileStore } from "~/detailDocumentTransfert.js";
-import { useRouter } from 'vue-router';
 
 export default {
-  setup() {
   setup() {
     const documents = ref([]);
     const router = useRouter();
     let metadata = "";
-    const router = useRouter();
-    let metadata = "";
+
 
     const fetchDocuments = async () => {
       try {
         const tokenCookie = useCookie('token');
         const token = tokenCookie.value;
-        console.log("ok")
         console.log("ok")
         documents.value = await DocumentService.getInstance().getDocuments(token);
       } catch (error) {
@@ -102,12 +96,9 @@ export default {
       documents,
       fetchDocuments,
       handleRowClick,
-      fileDownloadAndTransfer
-      fetchDocuments,
-      handleRowClick,
-      fileDownloadAndTransfer
+      fileDownloadAndTransfer,
     };
   }
 };
-};
+
 </script>
