@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import UserController from '~/services/userController'
+import LocationController from '~/services/locationController'
 
 export default {
   data() {
@@ -84,14 +84,14 @@ export default {
     async fetchVilles() {
       const tokenCookie = useCookie('token')
       const token = tokenCookie.value
-      const response = await UserController.getInstance().fetchLocations(token)
+      const response = await LocationController.getInstance().fetchLocations(token)
       return response
     },
     async addVille() {
-      console.log('Adding Ville:', this.newVille);
+      console.log('Adding Ville:', this.newVille.regionname, this.newVille.cityname, this.newVille.zipcode, this.newVille.country);
       const tokenCookie = useCookie('token')
       const token = tokenCookie.value
-      const response = await UserController.getInstance().createLocation(
+      const response = await LocationController.getInstance().createLocation(
         this.newVille.regionname,
         this.newVille.cityname,
         this.newVille.zipcode,
@@ -113,7 +113,7 @@ export default {
         console.log('Deleting Ville:', id)
         const tokenCookie = useCookie('token')
         const token = tokenCookie.value
-        const response = await UserController.getInstance().deleteLocation(id, token)
+        const response = await LocationController.getInstance().deleteLocation(id, token)
         if (response.status === 200){
           const index = this.villes.findIndex(ville => ville.id === id);
           if (index !== -1) {

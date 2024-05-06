@@ -6,7 +6,7 @@
     <div v-html="fileTag" class="w-full h-full flex justify-center items-center" v-show="!ismp3"></div>
 
 </div>
-   
+
 </template>
 
 <script>
@@ -80,17 +80,17 @@ export default {
           <img src="${filePath}" alt="image"></img>
           </div>`;
         break;
-      
+
         default:
           tag = `<p>Unsupported file type: ${extension}</p>`;
       }
       return tag;
-      
+
     },
     getFileExtension(filePath) {
       return filePath.split('.').pop().toLowerCase();
     },
-    
+
   }
 }
 </script>

@@ -50,22 +50,21 @@
           <div class="w-1/6 text-sm font-medium text-gray-900">Personnes</div>
         </li>
         <!-- User rows -->
-        <li v-for="doc in this.documents" :key="doc._id" class="px-10 py-4 flex">
-          <div class="w-1/6 text-sm text-gray-900">{{ doc.categories }}</div>
-          <div class="w-1/6 text-sm text-gray-900">{{ doc.name }}</div>
-          <div class="w-2/6 text-sm text-gray-900">{{ doc.description }}</div>
-          <div class="w-1/6 text-sm text-gray-500">{{ doc.towns }}</div>
-          <div class="w-1/6 text-sm text-gray-900">{{ doc.people }}</div>
-        </li>
+          <li v-for="doc in this.documents" :key="doc._id" @click="emitDetailEvent(doc.filename)" class="px-10 py-4 flex">
+              <div class="w-1/6 text-sm text-gray-900">{{ doc.categories }}</div>
+              <div class="w-1/6 text-sm text-gray-900">{{ doc.name }}</div>
+              <div class="w-2/6 text-sm text-gray-900">{{ doc.description }}</div>
+              <div class="w-1/6 text-sm text-gray-500">{{ doc.towns }}</div>
+          </li>
       </ul>
     </div>
   </div>
 </template>
 
 <script>
-import Datepicker from 'vue3-datepicker'
 import UserController from '~/services/userController.ts';
 import DatePicker from "~/components/search/DatePicker.vue";
+import {useFileStore} from "~/detailDocumentTransfert.js";
 
 export default {
   props: {
@@ -75,8 +74,7 @@ export default {
     }
   },
   components: {
-    DatePicker,
-    Datepicker,
+    DatePicker
   },
   async created() {
     console.log('searchQuery : ' + this.searchQuery);
@@ -108,6 +106,48 @@ export default {
     },
     emitSearchEvent() {
       this.getSearchResults()
+    },
+    async emitDetailEvent(docName) {
+      console.log('docName : ' + docName);
+      await this.fileDownloadAndTransfer(docName)
+      this.$emit('detail-event')
+      //this.$emit('detail-event', 'docName')
+    },
+    async fileDownloadAndTransfer(docName){
+      // mettre un argument filename et get le fichier sur s3
+      // Mettre le file et sa metadata dans le store
+      console.log('File download and transfer initiated...');
+
+      const tokenCookie = useCookie('token');
+      const token = tokenCookie.value;
+      const response = await UserController.getInstance().getDocument(token, docName)
+
+      const date = new Date(response.data.date);
+      this.formattedDate = new Intl.DateTimeFormat('fr-FR', {
+        dateStyle: 'long'
+      }).format(date);
+      const dateModif = new Date(response.data.updatedAt);
+      const formattedDateModif = new Intl.DateTimeFormat('fr-FR', {
+        dateStyle: 'long'
+      }).format(dateModif);
+
+      // Store in pinia
+      const fileStore = useFileStore();
+      console.log('reading file from url');
+      const fileFetched = await fetch('/_nuxt/temp/'+docName)
+      console.log('file read from url');
+      const blob = await fileFetched.blob()
+      const file = new File([blob], docName, {type: blob.type});
+      console.log('file:', file);
+
+      const metadata = response.data;
+
+      // ou utiliser l'action setFile
+      fileStore.setFile(file, metadata);
+      const test=fileStore.getFile;
+      const testmeta=fileStore.getMetadata;
+      console.log('testname : ',test);
+      console.log('testmetadata : ',testmeta);
     }
   },
   watch: {

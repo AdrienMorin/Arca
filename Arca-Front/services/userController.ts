@@ -66,33 +66,6 @@ class UserController {
     return response;
   }
 
-  public async createLocation(regionname: string, cityname: string, zipcode: number, country: string, token: string): Promise<any> {
-    const response = await axios.post(`${baseUrl}/location/create`,
-    {
-        regionname,
-        cityname,
-        zipcode,
-        country
-    }, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-    });
-
-    return response;
-  }
-
-  public async createCategory(name: string, token: string): Promise<any> {
-    const response = await axios.post(`${baseUrl}/category/create`,
-    {name},
-    {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
-
-    return response;
-  }
 
   public async isAdmin(token: string): Promise<any> {
     const response = await axios.get('https://127.0.0.1:3333/api/auth/isLoggedInAsAdmin', {
@@ -116,18 +89,7 @@ class UserController {
     return response;
   }
 
-  public async deleteLocation(id: number, token: string): Promise<any> {
-    const response = await axios.post(`${baseUrl}/location/delete`,
-      {
-        id
-      }, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
 
-    return response;
-  }
 
   public async getUser(token: string):Promise<any>{
     const response = await axios.get(`${baseUrl}/user/getUser`, {
@@ -148,15 +110,6 @@ class UserController {
     return response;
   }
 
-  public async fetchLocations(token: string):Promise<any>{
-    const response = await axios.get(`${baseUrl}/location/fetchLocations`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-    console.log(response);
-    return response;
-  }
 
   public async uploadDocument(
     token: string,
@@ -288,17 +241,6 @@ class UserController {
     return response;
   }
 
-
-  public async fetchCategories(token: string):Promise<any>{
-    const response = await axios.get(`${baseUrl}/category/fetchCategories`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-    return response;
-  }
-
-
   public async register(
     email: string,
     password: string,
@@ -328,22 +270,6 @@ class UserController {
         Authorization: `Bearer ${token}`
       }
     });
-    return response;
-  }
-
-  public async updateCategory(
-    token: string,
-    oldName: string,
-    newName: string
-  ): Promise<any> {
-    const response = await axios.post(`${baseUrl}/category/update`,
-    {oldName, newName},
-    {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-    console.log(response);
     return response;
   }
 

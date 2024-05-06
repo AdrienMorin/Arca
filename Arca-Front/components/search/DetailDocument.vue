@@ -1,6 +1,6 @@
 <script>
 import personne_menu from '~/components/users/personne_menu.vue';
-import display_files from '~/components/users/display_files.vue';
+import display_files from '~/components/search/display_files_search.vue';
 import { MicrophoneIcon } from "@heroicons/vue/24/outline";
 import Navbar from '~/components/users/Navbar.vue';
 import UserController from '~/services/userController.ts';
@@ -25,10 +25,10 @@ export default {
 
   data() {
     return {
-      docName: '',
       metadata: '',
       formattedDate: '',
-      file: null
+      file: null,
+      formattedDateModif: '',
     };
   },
   methods: {
@@ -46,16 +46,17 @@ export default {
       const fileStore = useFileStore();
       const test = fileStore.getFile;
       const testmeta = fileStore.getMetadata;
-      this.file = test.content;
-      this.docName = test.name;
+      this.file = test;
       this.metadata = testmeta;
       console.log('metadata:', this.metadata);
       console.log("ee", this.file);
+      console.log("metadata date", this.metadata.date);
+
+      const date = new Date(this.metadata.date);
 
       this.formattedDate = new Intl.DateTimeFormat('fr-FR', {
         dateStyle: 'long'
       }).format(date);
-      console.log(this.formattedDate)
 
       const dateModif = new Date(this.metadata.updatedAt);
       this.formattedDateModif = new Intl.DateTimeFormat('fr-FR', {
@@ -63,7 +64,10 @@ export default {
       }).format(dateModif);
 
       console.log(this.metadata)
-    }
+    },
+    retour() {
+      this.$emit('showSearchResult-event');
+    },
   },
 }
 definePageMeta({
@@ -179,8 +183,8 @@ definePageMeta({
         </div>
       </div>
     </div>
-    <div class="flex-grow ">
-      <display_files :filePath="'_nuxt/temp/' + docName" class="border"/>
+    <div class="flex-grow w-1/3 border-black border">
+      <display_files class="border"/>
     </div>
   </div>
 
