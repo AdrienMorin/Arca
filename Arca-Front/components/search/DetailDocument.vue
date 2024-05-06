@@ -39,7 +39,7 @@ export default {
       location.reload();
     },
     modifyDocument() {
-      this.$router.push('/Modif_document');
+      this.$router.push('/ModifDocument');
     },
     getDocument() {
       console.log('Checking document...');
@@ -131,7 +131,7 @@ definePageMeta({
                 <!-- User rows -->
                 <li v-for="person in metadata.people" :key="person.id" class="px-10 py-4 flex">
                   <div class="w-1/5 text-sm text-gray-900">{{ person.id }}</div>
-                  <div class="w-4/5 text-sm text-gray-900">{{ person.name }}</div>
+                  <div class="w-4/5 text-sm text-gray-900">{{ person.displayname }}</div>
                 </li>
               </ul>
             </div>
