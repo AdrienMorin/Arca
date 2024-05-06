@@ -13,6 +13,7 @@
   import display_files from '~/components/search/display_files_search.vue';
   import Datepicker from '~/components/search/DatePicker.vue'
   
+  
   export default {
     components: {
       Popup, 
@@ -28,6 +29,7 @@
     },
      data() {
       return {
+        nom: '',
         nom: '',
         File: '',
         titre: '',
@@ -45,7 +47,7 @@
         selectedPersonne: '',
         selectedCities: '',
         categories:[],
-        mongoDB: '',
+        mongoDB: 'ntbr',
         metadata: '',
         dateModif:'',
         id:'',
@@ -74,6 +76,7 @@
     },
       
     methods: {
+    async fetchCategories() {
     async fetchCategories() {
       const tokenCookie = useCookie('token');
       const token = tokenCookie.value;
@@ -268,6 +271,16 @@
     </Popup>
 
     <Popup 
+      ref="popupModif"
+      :title="'Modifier Document'"
+      :description1="'Votre Document'"
+      :titreDoc="'Complainte du'"
+      :description2="'a bien été modifié dans la base de donnée.'"
+      :color="true" 
+      :annuler="false">
+    </Popup>
+
+    <Popup 
       ref="popupEnregistrer"
       :title="'Ajouter Document'"
       :description1="'Votre Document'"
@@ -414,6 +427,21 @@
                         <p class="text-xl">Télécharger</p>
                       </button>
                     </div>
+
+                  <div class=" place-content-start items-start flex w-2/4 ">
+                    <button @click="deleteDocument()" type="button" class="relative top-1 text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-100 font-medium rounded-lg text-base px-10 py-3 me-2 mb-2 dark:bg-red-400 dark:hover:bg-red-500 focus:outline-none dark:focus:ring-red-600">
+                      <p class="text-xl">Supprimer</p>
+                    </button>
+                  </div>
+
+
+                  <div class=" place-content-start items-start flex w-2/4 ">
+                    <button @click="downloadDocument()" type="button" class="relative top-1 text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-100 font-medium rounded-lg text-base px-10 py-3 me-2 mb-2 dark:bg-green-400 dark:hover:bg-green-500 focus:outline-none dark:focus:ring-green-600">
+                      <p class="text-xl">Télécharger</p>
+                    </button>
+                  </div>
+
+                  </div>
 
             </div>
               
