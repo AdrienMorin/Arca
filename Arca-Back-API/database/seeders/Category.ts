@@ -3,8 +3,32 @@ import Category from "App/Models/Category";
 
 export default class extends BaseSeeder {
   public async run () {
-    await Category.create({
-      "name":"article"
-    })
+
+    await Category.createMany([
+      {
+        "name":"PV gendarmerie"
+      },
+      {
+        "name":"Témoignages"
+      },
+      {
+        "name":"Attestations"
+      },
+      {
+        "name":"Poèmes"
+      },
+      {
+        "name":"État civil"
+      },
+      {
+        "name":"Chants"
+      },
+      {
+        "name":"Textes"
+      },
+      {
+        "name":"Comptes-rendus Procès"
+      }
+    ])
   }
 }
