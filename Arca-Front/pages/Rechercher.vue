@@ -31,10 +31,8 @@ export default {
       this.activeLink = 'ResultsComponent';
       console.log('search : ' + this.searchQuery);
     },
-    handleDetailDocumentEvent(name) {
-      this.docName = name;
+    handleDetailDocumentEvent() {
       this.activeLink = 'DetailDocument';
-      console.log('docName : ' + this.docName);
     },
     handleShowSearchResult() {
       this.activeLink = 'ResultsComponent';
