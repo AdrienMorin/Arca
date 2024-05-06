@@ -32,7 +32,7 @@ import { useFileStore } from "~/detailDocumentTransfert.js";
 import { useRouter } from 'vue-router';
 
 export default {
-  setup () {
+  setup() {
     const documents = ref([]);
     const router = useRouter();
     let metadata = "";
@@ -98,5 +98,5 @@ export default {
       fileDownloadAndTransfer
     };
   }
-}
+};
 </script>

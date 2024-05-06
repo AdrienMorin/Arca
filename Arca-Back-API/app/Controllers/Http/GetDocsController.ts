@@ -69,6 +69,7 @@ export default class GetDocsController {
             peopleList.push({ id: personId, displayname: fetchedPerson.displayname });
         }
         result.people = peopleList;
+        result.source="arca"
 
         console.log(result);
         console.log("mongo db done");

@@ -48,7 +48,11 @@ Route.group(() => {
   Route.post('/basic/update', 'UploadDocsController.updateDocContentOnS3')
   Route.post('/basic/get', 'GetDocsController.getDoc')
   Route.post('/search', 'SearchDocsController.advancedSearch')
-  Route.post('/updateDocuments/:id', 'UploadDocsController.updateDoc')
+  Route.post('/updateDocument', 'UploadDocsController.updateDocument')
+  Route.post('/transferDocumentById', 'UploadDocsController.transferDocumentById')
+
+  //Delete routes
+  Route.post('/deleteDocument', 'DeleteDocsController.deleteDocument')
 
   // A passer en admin
   Route.post('/deleteArca', 'DeleteDocsController.deleteDocumentArca')
