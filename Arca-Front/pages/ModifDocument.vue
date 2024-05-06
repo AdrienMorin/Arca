@@ -149,21 +149,52 @@
         //this.$router.push('/rechercher');
       }
     },
+
+    async updateDocument(db) {
+      this.getListCitier();
+      this.getListPersonne();
+      this.citiesListe='';
+      this.personneListe='';
+      for (let i = 0; i < this.selectedCities.length; i++) {
+        this.citiesListe+=this.selectedCities[i];
+        if(i!=this.selectedCities.length-1){
+          this.citiesListe+=';';
+        }
+      }
+      for (let i = 0; i < this.selectedPersonne.length; i++) {
+        this.personneListe+=this.selectedPersonne[i];
+        if(i!=this.selectedPersonne.length-1){
+          this.personneListe+=';';
+        }
+      }
+      this.description=this.$refs.description.description;
+      this.retrancription=this.$refs.retranscription.description;
+      this.mongoDB = db;
+      const tokenCookie = useCookie('token');
+      const token= tokenCookie.value;
+
+      const response = await UserController.getInstance().updateDocument(token,
+      this.File,this.titre,this.description,this.retrancription,this.date,this.citiesListe,this.personneListe,this.mongoDB, this.id);
+      
+      if (response.status === 200) {
+        console.log('Vous êtes connecté')
+        this.flipAjouter();
+      }
+    },
+
     getDocument() {
       console.log('Checking document...');
       const fileStore = useFileStore();
       const test=fileStore.getFile;
       this.File=test.content;
       this.titreDoc=test.name;
-      console.log("ee",this.File);
-
     },
+
     handleSelectedRange(range) {
-    this.date.start= range.start;
-    this.date.start=new Date(range.start).toISOString();
-    this.date.end= new Date(range.end).toISOString();
-    //console.log('newDateeeee',this.date.start);
-}
+      this.date.start= range.start;
+      this.date.start=new Date(range.start).toISOString();
+      this.date.end= new Date(range.end).toISOString();
+    }
   },
   };
 
