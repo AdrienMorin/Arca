@@ -131,7 +131,7 @@
           }
         }
         this.description=this.$refs.description.description;
-        this.retrancription=this.$refs.retranscription.description;
+        this.retranscription=this.$refs.retranscription.description;
         this.mongoDB = db;
         const tokenCookie = useCookie('token');
         const token= tokenCookie.value;
@@ -139,7 +139,7 @@
  
         console.log(this.File);
       const response = await UserController.getInstance().uploadDocument(token,
-      this.File,this.titre,this.description,this.retrancription,this.date,this.citiesListe,this.personneListe,this.mongoDB);
+      this.File,this.titre,this.description,this.retranscription,this.date,this.citiesListe,this.personneListe,this.mongoDB);
       
       
       // redirect to homepage if user is authenticated
