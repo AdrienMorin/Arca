@@ -97,15 +97,17 @@ export default class GetDocsController {
             }, []);
     
             const people = await Person.query().whereIn('id', personIds);
-            const peopleMap = new Map(people.map(person => [person.id.toString(), person.displayname]));
-                            
+            const peopleMap = new Map(people.map(person => [person.id.toString(), person.displayname]));        
             const result = documents.map(doc => ({
-                extension: doc.filename?.split('.').pop(),
-                name: doc.name,
+                extension: doc.filename?.split('.')[1],
+                name: doc.name?.split('.')[0],
                 villes: doc.villes || [],
-                personnes: (doc.personnes || []).map(id => peopleMap.get(id) || 'Unknown'),
-                type: doc.type,
-                date: doc.createdAt
+                personnes: (doc.personnes || []).map(id => {
+                    const stringId = id.toString();
+                    return peopleMap.get(stringId) || '';
+                }),
+                type: doc.type || '',
+                date: doc.createdAt ? new Date(doc.createdAt).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' }) : 'pas de date disponible'
             }));
     
             return response.json(result);
