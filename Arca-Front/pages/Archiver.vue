@@ -2,7 +2,7 @@
 
   
 <div class="flex justify-center items-center h-screen mt-[-5%]">
-  <div class="drop-document-container w-[45%] max-h-[50%]  text-center border-2 border-[#027BCE] rounded-[10px] p-[8%]" v-if="!uploaded">
+    <div class="relative drop-document-container w-[45%] max-h-[50%] text-center border-2 border-[#027BCE] rounded-[10px] p-[8%]" v-if="!uploaded">
     <div >
       <h1 class="text-[#000] mb-[16px]">Déposer un document</h1>
       <div class="drop-area py-[20px]"
@@ -19,7 +19,10 @@
     </div>
   </div>
 
-  <div class="drop-document-container w-[45%] max-h-[50%] flex flex-col justify-center items-center border-2 border-[#027BCE] rounded-[10px]  p-[2%]" v-else>
+  <div class="relative drop-document-container w-[45%] max-h-[50%] flex flex-col justify-center items-center border-2 border-[#027BCE] rounded-[10px]  p-[2%]" v-else>
+    <button class="absolute top-0 right-0 m-2 w-6 h-6 bg-[#007BFF] rounded text-white text-center" @click="closeFile">
+      X
+    </button>
   <div class="flex-col justify-center items-center  w-2/3 h-2/3 p-[5%]">
     <div class="flex justify-center items-center">
       <DocumentCheckIcon class="w-1/2 h-1/2 text-gray-400"/>
@@ -77,6 +80,12 @@ export default {
       event.preventDefault();
       },
 
+      closeFile(){
+        this.uploaded= false;
+        this.fileName= '';
+        this.file= null;
+      },
+
       handleFileDrop(event){
       if (event.dataTransfer?.files) {
         this.file = event.dataTransfer.files[0];
@@ -104,19 +113,18 @@ export default {
         console.log('File transfer initiated...');
         const tokenCookie = useCookie('token');
         const token= tokenCookie.value;
+        this.$snackbar.add({ type:'info',text: 'Téléchargement en cours...' });
+        const file= this.file;
+        this.closeFile();
         try {
-          this.openModal()
-          const response = await UserController.getInstance().uploadAiDocument(token,this.file);
+          const response = await UserController.getInstance().uploadAiDocument(token,file);
           
           if (response.status === 200) {
-            this.closeModal()
             this.$snackbar.add({ type:'success',text: 'Le téléchargement a réussi.' });  
           } else {
-            this.closeModal()
             this.$snackbar.add({ type:'error',text: "Le téléchargement n'a pas réussi." });  
           }
         } catch (error) {
-          this.closeModal()
           this.$snackbar.add({ type:'error',text: "Le téléchargement n'a pas réussi." });  
         }
         
