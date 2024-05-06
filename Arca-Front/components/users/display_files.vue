@@ -1,12 +1,12 @@
 <template>
-<div class="flex flex-col items-center justify-center w-full h-full gap-6">
+<div class="flex flex-col items-center justify-center gap-6">
   <div class="w-full h-1/3" v-show="ismp3"></div>
     <MicrophoneIcon class="w-1/5 h-1/5 text-black-700" v-show="ismp3"></MicrophoneIcon>
-    <div v-html="fileTag" class="w-full h-full" v-show="ismp3"></div>
-    <div v-html="fileTag" class="w-full h-full flex justify-center items-center" v-show="!ismp3"></div>
+    <div v-html="fileTag" v-show="ismp3"></div>
+    <div v-html="fileTag" class="flex justify-center items-center" v-show="!ismp3"></div>
 
 </div>
-
+   
 </template>
 
 <script>
@@ -65,7 +65,7 @@ export default {
           break;
         case 'doc':
         case 'docx':
-          const pdfPath = filePath.replace('.docx', '.pdf'); // Assuming the server replaces .docx with .pdf
+          const pdfPath = filePath.replace('.docx', '.pdf');
           tag = `<embed src="${pdfPath}" type="application/pdf" class="h-full w-full object-contain" style="width:100%; height:100vh;" />`;
           break;
         case 'xls':
@@ -75,22 +75,22 @@ export default {
             `;
           break;
         case 'jpg':
-          tag = `
-          <div class="flex items-center h-full justify-center ">
-          <img src="${filePath}" alt="image"></img>
-          </div>`;
+          tag = `<div class="flex items-center justify-center" style="max-height:100%">
+                    <img src="${filePath}" alt="image" style="max-height:100%; overflow:auto;">
+                </div>`;
+          break;
         break;
-
+      
         default:
           tag = `<p>Unsupported file type: ${extension}</p>`;
       }
       return tag;
-
+      
     },
     getFileExtension(filePath) {
       return filePath.split('.').pop().toLowerCase();
     },
-
+    
   }
 }
 </script>

@@ -59,14 +59,14 @@ export default class GetDocsController {
 
         interface Person {
             id: string;
-            name: string;
+            displayname: string;
         }
 
         const peopleList: Person[] = [];
 
         for (const personId of result.people) {
             const fetchedPerson = await Person.findOrFail(personId);
-            peopleList.push({ id: personId, name: fetchedPerson.displayname });
+            peopleList.push({ id: personId, displayname: fetchedPerson.displayname });
         }
         result.people = peopleList;
 

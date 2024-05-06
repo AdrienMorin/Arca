@@ -39,7 +39,7 @@ export default {
       location.reload();
     },
     modifyDocument() {
-      this.$router.push('/Modif_document');
+      this.$router.push('/ModifDocument');
     },
     getDocument() {
       console.log('Checking document...');
@@ -79,16 +79,16 @@ definePageMeta({
 
 <template>
 
-  <div class="flex flex-row relative w-full ">
+  <div class="flex flex-row relative w-full" style="max-height: calc(100vh - 64px)">
 
     <div class="xl:w-1/3 lg:w-1/4  bg-[#027BCE] bg-opacity-10 p-20% h-screen overflow-auto">
-      <button @click="retour" type="button" class="relative top-1  w- text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-base px-10 py-3 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+      <button @click="retour" type="button" class="relative top-1  w- text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-base px-8 py-1 me-2 mb-2 ml-4 mt-4 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
         <p class="text-lg font-light">Retour</p>
       </button>
       <div class=" flex items-stretch	flex-col lg:space-y-4 md:space-y-2 ">
         <div class="flex-1/6 justify-left items-center relative md:top-5 lg:left-12 md:left-3">
           <div class="text-justify lg:text-4xl  md:text-2xl font-medium object-left-bottom relatvie">{{
-              metadata.name
+              metadata.yname
             }}
           </div>
         </div>
@@ -131,7 +131,7 @@ definePageMeta({
                 <!-- User rows -->
                 <li v-for="person in metadata.people" :key="person.id" class="px-10 py-4 flex">
                   <div class="w-1/5 text-sm text-gray-900">{{ person.id }}</div>
-                  <div class="w-4/5 text-sm text-gray-900">{{ person.name }}</div>
+                  <div class="w-4/5 text-sm text-gray-900">{{ person.displayname }}</div>
                 </li>
               </ul>
             </div>

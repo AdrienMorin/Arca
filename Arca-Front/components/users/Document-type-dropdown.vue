@@ -41,13 +41,18 @@ export default {
       type: Array,
       required: false,
     },
+    categorie:{
+      type: String,
+      required: false,
+      default: 'Choisir type de document',
+    }
   },
   mounted() {
 console.log(this.liste);
   },
   data () {
     return {
-      selectedOption: 'Choisir type de document',
+      selectedOption: this.categorie,
     };
   },
   methods: {
