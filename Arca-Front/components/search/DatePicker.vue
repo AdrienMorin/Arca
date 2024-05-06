@@ -15,9 +15,23 @@
 </template>
 
 <script setup lang="ts">
-import { sub, format, isSameDay, type Duration } from 'date-fns'
+
+import { sub, format, isSameDay, type Duration, setDate } from 'date-fns'
+import { ref, defineProps, defineEmits, onMounted } from 'vue'
 const selected = ref({ start: sub(new Date(), { days: 14 }), end: new Date() })
 import DatePicker from "~/components/users/DatePicker.vue";
+
+const props = defineProps<{
+  start?: Date,
+  end?: Date
+}>()
+
+onMounted(() => {
+  // Set the selected value based on the start and end props
+  if (props.start && props.end) {
+    selected.value = { start: props.start, end: props.end };
+  }
+})
 
 function isRangeSelected(duration: Duration) {
   return isSameDay(selected.value.start, sub(new Date(), duration)) && isSameDay(selected.value.end, new Date())
@@ -34,7 +48,10 @@ function emitSearchEvent() {
   close
 }
 
-
+function setDateRange(start,end) {
+  selected.value = { start: start, end: end };
+  console.log('selected-range emitted',selected.value);
+}
 
 function getDatePicker() {
   // Emit the 'selected-range' event with the current selected value

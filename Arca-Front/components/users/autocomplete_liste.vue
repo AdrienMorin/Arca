@@ -75,17 +75,21 @@
           required: false,
           default: false,
         },
+        old_items:{
+          type: Array,
+          required: false,
+          default: () => [],
+        },
       },
       data() {
         return {
           search: '',
           results: [],
           isOpen: false,
-          personnes: [],
+          personnes: this.old_items,
           isHovered: true,
         };
-      },
-      
+      }, 
       methods: {
       filterResults() {
         let array=null;
