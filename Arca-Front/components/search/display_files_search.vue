@@ -20,7 +20,7 @@
       <embed :src="fileUrl" type="application/pdf" class="h-full w-full object-contain "/>
 
     </div>
-    <div v-else-if="Photo" class="w-full h-full flex justify-center items-center overflow-auto ">
+    <div v-else-if="Photo" class="flex justify-center items-center overflow-auto" style="max-height:100vh">
       <img :src="fileUrl" class="object-contain max-h-full max-w-full min-h-1/2 border min-h-1/2" />
     </div>
     <!-- Add other cases for different file types if needed -->
