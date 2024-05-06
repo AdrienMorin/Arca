@@ -50,7 +50,7 @@
           <div class="w-1/6 text-sm font-medium text-gray-900">Personnes</div>
         </li>
         <!-- User rows -->
-          <li v-for="doc in this.documents" :key="doc._id" @click="emitDetailEvent(doc.filename)" class="px-10 py-4 flex">
+          <li v-for="doc in this.documents" :key="doc._id" @click="emitDetailEvent(doc.filename)" class="px-10 py-4 flex hover:cursor-pointer">
               <div class="w-1/6 text-sm text-gray-900">{{ doc.categories }}</div>
               <div class="w-1/6 text-sm text-gray-900">{{ doc.name }}</div>
               <div class="w-2/6 text-sm text-gray-900">{{ doc.description }}</div>
