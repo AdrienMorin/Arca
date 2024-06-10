@@ -35,9 +35,9 @@
     <div class="flex justify-center items-center relative w-1/3">
       <button type="button" class="browse-button bg-[#007BFF] text-white border-none rounded-[20px] px-[20px]  w-full py-[10px] text-[20px] cursor-pointer outline-none hover:bg-[#0056b3]" @click="fileTransfer()">Saisie Manuelle</button>
     </div>
-    <div class="flex justify-center items-center  relative w-1/3">
+    <!--<div class="flex justify-center items-center  relative w-1/3">
       <button type="button" class="browse-button bg-[#007BFF] text-white -none rounded-[20px] px-[15px]  w-full py-[10px] text-[20px] cursor-pointer outline-none hover:bg-[#0056b3]" @click="aiFileTransfer">Analyse Automatique</button>
-    </div>
+    </div>-->
   </div>
 </div>
 
@@ -109,7 +109,7 @@ export default {
         this.$refs.fileInput.click();
       },
 
-      async aiFileTransfer(){
+      /*async aiFileTransfer(){
         console.log('File transfer initiated...');
         const tokenCookie = useCookie('token');
         const token= tokenCookie.value;
@@ -130,7 +130,7 @@ export default {
         
 
         
-      },
+      },*/
 
 
 
