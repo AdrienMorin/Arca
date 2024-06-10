@@ -39,9 +39,9 @@ Route.group(() => {
   Route.post('/category/update', 'CategoriesController.updateCategory')
 
   // AI routes
-  Route.post('/ai/upload', 'UploadDocsController.uploadDocAi')
+  /*Route.post('/ai/upload', 'UploadDocsController.uploadDocAi')
   Route.get('/ai/getDocs', 'GetDocsController.getOldestDocuments')
-  Route.post('/ai/get', 'GetDocsController.getDocReview')
+  Route.post('/ai/get', 'GetDocsController.getDocReview')*/
 
   // Upload routes
   Route.post('/basic/upload', 'UploadDocsController.uploadDoc')
