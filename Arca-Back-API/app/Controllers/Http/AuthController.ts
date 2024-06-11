@@ -2,6 +2,8 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import RegisterUserValidator from "App/Validators/User/RegisterUserValidator";
 import User from "App/Models/User";
 import LoginUserValidator from "App/Validators/Auth/LoginUserValidator";
+import Redis from '@ioc:Adonis/Addons/Redis'
+
 
 export default class AuthController {
 
@@ -47,6 +49,7 @@ export default class AuthController {
   public async login({auth, request, response}: HttpContextContract){
     const {email, password} = await request.validate(LoginUserValidator)
     try {
+      console.log("attempting to login")
       const token = await auth.use('api').attempt(email, password,{
         expiresIn: '12 hours'
       })

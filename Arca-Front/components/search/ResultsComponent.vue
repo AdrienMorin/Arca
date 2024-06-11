@@ -123,15 +123,20 @@ export default {
       const response = await UserController.getInstance().getDocument(token, docName)
 
       if(response.data.date){
-      const date = new Date(response.data.date);
-      this.formattedDate = new Intl.DateTimeFormat('fr-FR', {
-        dateStyle: 'long'
-      }).format(date);
-      const dateModif = new Date(response.data.updatedAt);
-      const formattedDateModif = new Intl.DateTimeFormat('fr-FR', {
-        dateStyle: 'long'
-      }).format(dateModif);
-    }
+        try{
+          const date = new Date(response.data.date);
+          this.formattedDate = new Intl.DateTimeFormat('fr-FR', {
+            dateStyle: 'long'
+          }).format(date);
+          const dateModif = new Date(response.data.updatedAt);
+          const formattedDateModif = new Intl.DateTimeFormat('fr-FR', {
+            dateStyle: 'long'
+          }).format(dateModif);
+        } catch (e) {
+          console.log('Error while formatting date : ', e);
+        }
+
+      }
       // Store in pinia
       const fileStore = useFileStore();
       console.log('reading file from url');
