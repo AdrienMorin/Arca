@@ -8,23 +8,29 @@
           <div class="mb-4 flex justify-between">
             <div class="w-1/2 pr-2">
               <label class="block text-gray-700 text-sm font-bold mb-1" for="lastname">Nom</label>
-              <input v-model="newUser.lastname" type="text" id="name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+              <input v-model="newUser.lastname" type="text" id="name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required >
             </div>
             <div class="w-1/2 pl-2">
               <label class="block text-gray-700 text-sm font-bold mb-1" for="firstname">Prénom</label>
-              <input v-model="newUser.firstname" type="text" id="firstname" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" required>
+              <input v-model="newUser.firstname" type="text" id="firstname" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" required >
             </div>
           </div>
-          <div class="mb-4 ">
+          <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-1" for="email">Mail</label>
-            <input v-model="newUser.email" type="email" id="email" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" required>
+            <input v-model="newUser.email" type="email" id="email" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" required >
           </div>
           <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-1" for="password">Mot de passe</label>
-            <input v-model="newUser.password" type="password" id="password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" required>
+            <input v-model="newUser.password" type="password" id="password" :class="passwordClass"
+                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                   required >
+            <span v-if="passwordError"
+                  class="text-red-500 text-sm">Le mot de passe doit contenir entre 8 et 30 caractères.</span>
           </div>
           <div class="flex items-center justify-center">
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+            <button :disabled="isSubmitDisabled"
+                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    type="submit">
               Ajouter
             </button>
           </div>
@@ -76,7 +82,25 @@ export default {
         email: '',
         password: ''
       },
+      passwordError: false,
+      passwordEntered: false
     };
+  },
+  computed: {
+    passwordClass() {
+      return {
+        'border-red-500': this.passwordError,
+      };
+    },
+    isSubmitDisabled() {
+      return this.newUser.password.length < 8;
+    }
+  },
+  watch: {
+    'newUser.password'(newVal) {
+      this.passwordEntered = true;
+      this.passwordError = (newVal.length < 8 || newVal.length > 30) && this.passwordEntered;
+    }
   },
   async created() {
     const fetchedUsers = await this.fetchUsers()
@@ -95,10 +119,12 @@ export default {
       const token = tokenCookie.value
       try {
         const response = await UserController.getInstance().createUser(this.newUser.firstname, this.newUser.lastname, this.newUser.email, this.newUser.password, token)
-        if (response.status === 200){
+        if (response.status === 200) {
           this.newUser.role = 'user'
           this.users.push(this.newUser) // Push user to the list
-          this.newUser = { firstname: '', lastname: '',  email: '', password: '' }; // Reset form
+          this.newUser = {firstname: '', lastname: '', email: '', password: ''}; // Reset form
+          this.passwordEntered = false;
+          this.passwordError = false;
           this.$snackbar.add({
             text: 'Utilisateur ajouté avec succès',
             type: 'success'
@@ -111,12 +137,12 @@ export default {
             text: 'Le rôle de l\'utilisateur n\'est pas valide',
             type: 'error'
           })
-        }else if (error.response.status === 400) {
+        } else if (error.response.status === 400) {
           this.$snackbar.add({
             text: 'La personne existe déjà',
             type: 'error'
           })
-        }else{
+        } else {
           this.$snackbar.add({
             text: 'Erreur lors de l\'ajout de l\'utilisateur',
             type: 'error'
@@ -126,13 +152,13 @@ export default {
       }
     },
     async deleteUser(event, id) {
-      if(confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action est irréversible.')) {
+      if (confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action est irréversible.')) {
         console.log('Deleting user:', id)
         const tokenCookie = useCookie('token')
         const token = tokenCookie.value
-        try{
+        try {
           const response = await UserController.getInstance().deleteUser(id, token)
-          if (response.status === 200){
+          if (response.status === 200) {
             const index = this.users.findIndex(user => user.id === id);
             if (index !== -1) {
               this.users.splice(index, 1);
@@ -155,37 +181,3 @@ export default {
 };
 
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

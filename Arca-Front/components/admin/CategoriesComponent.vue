@@ -92,7 +92,7 @@
                 const token = tokenCookie.value
                 
                 try{
-                    const response = await UserController.getInstance().createCategory(this.newCategory.name, token)
+                    const response = await CategoryController.getInstance().createCategory(this.newCategory.name, token)
                     if (response.status === 200){
                         this.categories.push({"name": `${this.newCategory.name}`}) // Push category to the list
                         this.newCategory.name = '';
@@ -122,7 +122,7 @@
                 const token = tokenCookie.value
 
                 try{
-                    const response = await UserController.getInstance().updateCategory(token, this.oldCategory.name, this.updatedCategory.name)
+                    const response = await CategoryController.getInstance().updateCategory(token, this.oldCategory.name, this.updatedCategory.name)
                     if (response.status === 200){
                         const index = this.categories.findIndex(category => category.name === this.oldCategory.name);
                         if (index !== -1) {

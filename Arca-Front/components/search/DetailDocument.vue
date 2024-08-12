@@ -53,16 +53,21 @@ export default {
       console.log("metadata date", this.metadata.date);
 
       if(this.metadata.date){
-      const date = new Date(this.metadata.date);
+        try{
+          const date = new Date(this.metadata.date);
 
-      this.formattedDate = new Intl.DateTimeFormat('fr-FR', {
-        dateStyle: 'long'
-      }).format(date);
+          this.formattedDate = new Intl.DateTimeFormat('fr-FR', {
+            dateStyle: 'long'
+          }).format(date);
 
-      const dateModif = new Date(this.metadata.updatedAt);
-      this.formattedDateModif = new Intl.DateTimeFormat('fr-FR', {
-        dateStyle: 'long'
-      }).format(dateModif);
+          const dateModif = new Date(this.metadata.updatedAt);
+          this.formattedDateModif = new Intl.DateTimeFormat('fr-FR', {
+            dateStyle: 'long'
+          }).format(dateModif);
+        } catch (e) {
+          console.log('Error while formatting date : ', e);
+        }
+
     }
       console.log(this.metadata)
     },
